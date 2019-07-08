@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const cypherNodeClient_1 = __importDefault(require("./lib/cypherNodeClient"));
-exports.default = ({ apiKey = null, userType = null, client = cypherNodeClient_1.default({ apiKey, userType }) } = {}) => {
+exports.default = ({ apiKey = undefined, userType = undefined, client = cypherNodeClient_1.default({ apiKey, userType }) } = {}) => {
     const { get, post } = client;
     const api = {
         getNodeInfo() {
@@ -27,7 +27,6 @@ exports.default = ({ apiKey = null, userType = null, client = cypherNodeClient_1
         getNewAddress() {
             return __awaiter(this, void 0, void 0, function* () {
                 const { address } = yield get("ln_newaddr");
-                console.log('sssss', address);
                 return address;
             });
         },

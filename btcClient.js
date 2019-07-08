@@ -12,8 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const cypherNodeClient_1 = __importDefault(require("./lib/cypherNodeClient"));
-const debug_1 = __importDefault(require("debug"));
-const d = debug_1.default("BtcClient");
 exports.default = ({ apiKey = undefined, userType = undefined, client = cypherNodeClient_1.default({ apiKey, userType }) } = {}) => {
     const { get, post } = client;
     const api = {

@@ -4,7 +4,8 @@ import btcClient from "./btcClient";
 test.before(t => {
   t.context = {
     ...btcClient({
-      apiKey: "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
+      apiKey:
+        "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
       userType: 3
     })
   };

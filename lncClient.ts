@@ -1,5 +1,10 @@
 import cypherNodeClient from "./lib/cypherNodeClient";
 import {
+  CypherNodeClient,
+  CypherNodeClientParam,
+  ClientConfig
+} from "./lib/types/clients";
+import {
   ConnectionString,
   LnNodeInfo,
   CreatedInvoice,
@@ -9,10 +14,10 @@ import {
   DecodedBolt11
 } from "./lib/types/lightning-c";
 export default ({
-  apiKey = null,
-  userType = null,
+  apiKey = undefined,
+  userType = undefined,
   client = cypherNodeClient({ apiKey, userType })
-} = {}) => {
+}: ClientConfig = {}) => {
   const { get, post } = client;
   const api = {
     getNodeInfo(): Promise<LnNodeInfo> {
@@ -23,8 +28,7 @@ export default ({
       return connectstring;
     },
     async getNewAddress(): Promise<LnAddress> {
-      const  {address}  = await get("ln_newaddr");
-      console.log('sssss',address)
+      const { address } = await get("ln_newaddr");
       return address;
     },
     createInvoice(invoice: CreateInvoicePayload) {

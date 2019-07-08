@@ -1,0 +1,21 @@
+{
+  "name": "cyphernode-js-sdk",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js btcClient.spec.js",
+    "test:ln": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js lncClient.spec.js",
+    "test:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js ots.spec.js"
+  },
+  "dependencies": {
+    "debug": "^4.1.1",
+    "superagent": "^5.0.6"
+  },
+  "devDependencies": {
+    "ava": "^2.1.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.5.2",
+    "uuid": "^3.3.2"
+  }
+}

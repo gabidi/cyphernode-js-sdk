@@ -11,13 +11,14 @@ import {
   CreateInvoicePayload,
   LnAddress,
   Bolt11String,
-  DecodedBolt11
+  DecodedBolt11,
+  CypherNodeLncClient
 } from "./lib/types/lightning-c";
-export default ({
+export const client = ({
   apiKey = undefined,
   userType = undefined,
   client = cypherNodeClient({ apiKey, userType })
-}: ClientConfig = {}) => {
+}: ClientConfig = {}): CypherNodeLncClient => {
   const { get, post } = client;
   const api = {
     getNodeInfo(): Promise<LnNodeInfo> {
@@ -31,15 +32,15 @@ export default ({
       const { address } = await get("ln_newaddr");
       return address;
     },
-    createInvoice(invoice: CreateInvoicePayload) {
-      return post<CreatedInvoice>("ln_create_invoice", invoice);
+    createInvoice(invoice: CreateInvoicePayload): Promise<CreatedInvoice> {
+      return post("ln_create_invoice", invoice);
     },
     async getInvoice(invoiceLabel?: string): Promise<DecodedBolt11[]> {
       const { invoices } = await get("ln_getinvoice", invoiceLabel);
       return invoices;
     },
-    decodeBolt(bolt11: Bolt11String) {
-      return get<DecodedBolt11>("ln_decodebolt11", bolt11);
+    decodeBolt(bolt11: Bolt11String): Promise<DecodedBolt11> {
+      return get("ln_decodebolt11", bolt11);
     }
   };
   return api;

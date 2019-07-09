@@ -56,3 +56,12 @@ export interface DecodedBolt11 {
   payment_hash: "c6ca9e52649c58079caa0d47d27a810332bb0b4ea9e3c2fd8e9fa16c99407edf";
   signature: "3045022100c32b5bfc445313971035cd4797e08ee0d73c041c2cacc69a4771d8d828112bc202202078bdf35f64b164f056aa8da7e0111";
 }
+
+export interface CypherNodeLncClient {
+  getNodeInfo(): Promise<LnNodeInfo>;
+  getConnectionString(): Promise<ConnectionString>;
+  getNewAddress(): Promise<LnAddress>;
+  createInvoice(invoice: CreateInvoicePayload): Promise<CreatedInvoice>;
+  getInvoice(invoiceLabel?: string): Promise<DecodedBolt11[]>;
+  decodeBolt(bolt11: Bolt11String): Promise<DecodedBolt11>;
+}

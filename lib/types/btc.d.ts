@@ -66,3 +66,10 @@ export interface TxnInfo {
   time: TimeStamp;
   blocktime: TimeStamp;
 }
+
+export interface CypherNodeBtcClient {
+    getNewAddress(): Promise<Address> 
+    getBestBlockHash(): Promise<Hash> 
+    getBlockInfo(blockHash: Hash): Promise<BlockInfo> 
+    getTxn(txnHash: Hash): Promise<TxnInfo> 
+}

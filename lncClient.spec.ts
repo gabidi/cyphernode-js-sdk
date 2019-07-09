@@ -1,11 +1,19 @@
-import { serial as test } from "ava";
-import lnClient from "./lncClient";
+import { serial, TestInterface } from "ava";
+import { client as lnClient } from "./lncClient";
 import uuid from "uuid/v4";
+import { CypherNodeClient } from "./lib/types/clients";
+import { CypherNodeLncClient } from "./lib/types/lightning-c";
+interface TestContext extends CypherNodeLncClient {
+  lightingInvoiceLabel: string;
+}
+
+const test = serial as TestInterface<TestContext>;
 test.before(t => {
   t.context = {
     lightingInvoiceLabel: uuid(),
     ...lnClient({
       apiKey:
+        process.env.CYPHERNODE_API_KEY ||
         "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
       userType: 3
     })
@@ -35,23 +43,23 @@ test("Should be able to a new LN address", async t => {
     context: { getNewAddress }
   } = t;
   const addrs = await getNewAddress();
-  t.is(addrs.length,42);
+  t.is(addrs.length, 42);
 });
 test("Should be able to create an invoice", async t => {
   const {
     context: { createInvoice, lightingInvoiceLabel }
   } = t;
   const makeInvoicePayload = {
-    msatoshi: "10",
+    msatoshi: 10,
     label: lightingInvoiceLabel,
     description: "Ava Test Inovice",
-    expiry: "900",
+    expiry: 900,
     callback_url: "http://192.168.122.159"
   };
   const body = await createInvoice(makeInvoicePayload);
   t.true(!!body);
   const invoice = body;
-  t.true(invoice.id > 0);
+  t.true(parseInt(invoice.id) > 0);
   t.true(invoice.bolt11.indexOf("ln") === 0);
   t.true(!!invoice.payment_hash.length);
 });

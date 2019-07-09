@@ -1,7 +1,11 @@
 import { createHmac } from "crypto";
 import * as agent from "superagent";
 import debug from "debug";
-import { CypherNodeClient, CypherNodeClientParam,CypherNodeCommand } from "./types/clients";
+import {
+  CypherNodeClient,
+  CypherNodeClientParam,
+  CypherNodeCommand
+} from "./types/clients";
 const CYPHER_GATEWAY_URL =
   (process && process.env.CYPHER_GATEWAY_URL) || "https://localhost:2009/v0/";
 

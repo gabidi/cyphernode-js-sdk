@@ -12,51 +12,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ava_1 = require("ava");
-const lncClient_1 = __importDefault(require("./lncClient"));
+const lncClient_1 = require("./lncClient");
 const v4_1 = __importDefault(require("uuid/v4"));
-ava_1.serial.before(t => {
-    t.context = Object.assign({ lightingInvoiceLabel: v4_1.default() }, lncClient_1.default({
-        apiKey: "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
+const test = ava_1.serial;
+test.before(t => {
+    t.context = Object.assign({ lightingInvoiceLabel: v4_1.default() }, lncClient_1.client({
+        apiKey: process.env.CYPHERNODE_API_KEY ||
+            "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
         userType: 3
     }));
 });
 /**
 LN tests
 */
-ava_1.serial("Should be able to get the lightning nodes info", (t) => __awaiter(this, void 0, void 0, function* () {
+test("Should be able to get the lightning nodes info", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getNodeInfo } } = t;
     const nodeInfo = yield getNodeInfo();
     t.true(!!nodeInfo.id.length);
     t.false(isNaN(nodeInfo.blockheight));
     t.false(isNaN(nodeInfo.num_peers));
 }));
-ava_1.serial("Should be able to a connection string", (t) => __awaiter(this, void 0, void 0, function* () {
+test("Should be able to a connection string", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getConnectionString } } = t;
     const connString = yield getConnectionString();
     t.is(connString.length, 86);
 }));
-ava_1.serial("Should be able to a new LN address", (t) => __awaiter(this, void 0, void 0, function* () {
+test("Should be able to a new LN address", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getNewAddress } } = t;
     const addrs = yield getNewAddress();
     t.is(addrs.length, 42);
 }));
-ava_1.serial("Should be able to create an invoice", (t) => __awaiter(this, void 0, void 0, function* () {
+test("Should be able to create an invoice", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { createInvoice, lightingInvoiceLabel } } = t;
     const makeInvoicePayload = {
-        msatoshi: "10",
+        msatoshi: 10,
         label: lightingInvoiceLabel,
         description: "Ava Test Inovice",
-        expiry: "900",
+        expiry: 900,
         callback_url: "http://192.168.122.159"
     };
     const body = yield createInvoice(makeInvoicePayload);
     t.true(!!body);
     const invoice = body;
-    t.true(invoice.id > 0);
+    t.true(parseInt(invoice.id) > 0);
     t.true(invoice.bolt11.indexOf("ln") === 0);
     t.true(!!invoice.payment_hash.length);
 }));
-ava_1.serial("Should be able to decode a bolt", (t) => __awaiter(this, void 0, void 0, function* () {
+test("Should be able to decode a bolt", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { decodeBolt } } = t;
     const bolt11 = "lnbc100p1pw0aw9qpp5cm9fu5nyn3vq0892p4ray75pqvetkz6w483u9lvwn7skex2q0m0sdqugfukcmrnyphhyer9wgszxvfsxc6qxqzuycqp2cv44hlzy2vfewyp4e4re0cywurtncpqu9jkvdxj8w8vds2q390pzq79a7d0kfvty7pt24rd8uqg3n0jxz702lkn9l2vxyqwh08ru27qpayvd5j";
     const decodedBolt = yield decodeBolt(bolt11);
@@ -66,7 +68,7 @@ ava_1.serial("Should be able to decode a bolt", (t) => __awaiter(this, void 0, v
     t.true(!!decodedBolt.payment_hash.length);
     t.true(!!decodedBolt.signature.length);
 }));
-ava_1.serial("Should be able to get invoices and created invoice should be included", (t) => __awaiter(this, void 0, void 0, function* () {
+test("Should be able to get invoices and created invoice should be included", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getInvoice, lightingInvoiceLabel } } = t;
     const invoices = yield getInvoice();
     t.true(invoices.some(({ label }) => label === lightingInvoiceLabel));

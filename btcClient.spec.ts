@@ -1,10 +1,12 @@
-import { serial as test } from "ava";
+import { serial, TestInterface } from "ava";
 import btcClient from "./btcClient";
-
+import { CypherNodeBtcClient } from "./lib/types/btc.d";
+const test = serial as TestInterface<CypherNodeBtcClient>;
 test.before(t => {
   t.context = {
     ...btcClient({
       apiKey:
+        process.env.CYPHERNODE_API_KEY ||
         "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
       userType: 3
     })

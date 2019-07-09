@@ -4,12 +4,18 @@ import {
   CypherNodeClientParam,
   ClientConfig
 } from "./lib/types/clients";
-import { Hash, BlockInfo, TxnInfo, Address } from "./lib/types/btc.d";
+import {
+  CypherNodeBtcClient,
+  Hash,
+  BlockInfo,
+  TxnInfo,
+  Address
+} from "./lib/types/btc.d";
 export default ({
   apiKey = undefined,
   userType = undefined,
   client = cypherNodeClient({ apiKey, userType })
-}: ClientConfig = {}) => {
+}: ClientConfig = {}): CypherNodeBtcClient => {
   const { get, post } = client;
   const api = {
     async getNewAddress(): Promise<Address> {

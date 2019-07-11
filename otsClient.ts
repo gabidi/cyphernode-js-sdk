@@ -13,17 +13,11 @@ export const client = ({
   const { get, post } = client;
   const api = {
     async stamp(fileHash: Hash): Promise<OTSStampRcpt> {
-      const stampRct = await (<OTSStampRcpt>(
-        post("ots_stamp", { hash: fileHash })
-      ));
+      const stampRct = await post("ots_stamp", { hash: fileHash });
       return stampRct;
     },
     async getStamp(fileHash: Hash) {
       const poop = await get("ots_getfile", fileHash);
-      return poop;
-    },
-    async updateStamp() {
-      const poop = await get("ots_backoffice");
       return poop;
     }
   };

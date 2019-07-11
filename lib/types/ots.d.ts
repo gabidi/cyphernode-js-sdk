@@ -13,5 +13,4 @@ export interface OTSStampRcpt {
 export interface CypherNodeOTSClient {
   stamp(fileHash: Hash): Promise<OTSStampRcpt>;
   getStamp(fileHash: Hash): Promise<any>;
-  updateStamp(): Promise<any>;
 }

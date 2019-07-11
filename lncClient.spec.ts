@@ -13,6 +13,7 @@ test.before(t => {
     lightingInvoiceLabel: uuid(),
     ...lnClient({
       apiKey:
+        // @TODO if api key not detected, should prompt user for it https://stackoverflow.com/questions/18193953/waiting-for-user-to-enter-input-in-node-js
         process.env.CYPHERNODE_API_KEY ||
         "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
       userType: 3
@@ -62,6 +63,22 @@ test("Should be able to create an invoice", async t => {
   t.true(parseInt(invoice.id) > 0);
   t.true(invoice.bolt11.indexOf("ln") === 0);
   t.true(!!invoice.payment_hash.length);
+});
+/** FAILS 403 */
+test.skip("Should be able to delete an invoice", async t => {
+  const {
+    context: { deleteInvoice, lightingInvoiceLabel }
+  } = t;
+  const makeInvoicePayload = {
+    msatoshi: 10,
+    label: lightingInvoiceLabel,
+    description: "Ava Test Inovice",
+    expiry: 900,
+    callback_url: "http://192.168.122.159"
+  };
+  const deletedInvoice = await deleteInvoice(lightingInvoiceLabel);
+  t.true(!!deletedInvoice);
+  t.true(deletedInvoice.label === lightingInvoiceLabel);
 });
 
 test("Should be able to decode a bolt", async t => {

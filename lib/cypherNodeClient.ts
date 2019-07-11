@@ -1,6 +1,5 @@
 import { createHmac } from "crypto";
 import * as agent from "superagent";
-import debug from "debug";
 import {
   CypherNodeClient,
   CypherNodeClientParam,
@@ -9,20 +8,17 @@ import {
 const CYPHER_GATEWAY_URL =
   (process && process.env.CYPHER_GATEWAY_URL) || "https://localhost:2009/v0/";
 
-const d = debug("CypherNodeClient");
 export default (config: CypherNodeClientParam): CypherNodeClient => {
   const {
     cypherGateway = CYPHER_GATEWAY_URL,
     transport = {
       async get<T>(command: CypherNodeCommand, payload?: any): Promise<T> {
-        debug("Getting", command, payload);
         const { body } = await agent
           .get(`${cypherGateway}${command}/${payload ? payload : ""}`)
           .set("Authorization", `Bearer ${_authToken}`);
         return body;
       },
       async post<T>(command: CypherNodeCommand, payload: any): Promise<T> {
-        debug("Posting", command, payload);
         const { body } = await agent
           .post(`${cypherGateway}${command}`)
           .set("Authorization", `Bearer ${_authToken}`)

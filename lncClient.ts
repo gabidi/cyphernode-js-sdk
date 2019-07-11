@@ -35,13 +35,18 @@ export const client = ({
     createInvoice(invoice: CreateInvoicePayload): Promise<CreatedInvoice> {
       return post("ln_create_invoice", invoice);
     },
-    async getInvoice(invoiceLabel?: string): Promise<DecodedBolt11[]> {
+    async getInvoice(invoiceLabel?: string): Promise<CreatedInvoice[]> {
       const { invoices } = await get("ln_getinvoice", invoiceLabel);
       return invoices;
     },
+    /** FAILS 403 */
+    async deleteInvoice(invoiceLabel?: string): Promise<CreatedInvoice> {
+      const invoice = await get("ln_delinvoice", invoiceLabel);
+      return invoice;
+    },
     decodeBolt(bolt11: Bolt11String): Promise<DecodedBolt11> {
       return get("ln_decodebolt11", bolt11);
-    }
+    },
   };
   return api;
 };

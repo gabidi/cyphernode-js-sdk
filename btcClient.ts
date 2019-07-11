@@ -9,7 +9,9 @@ import {
   Hash,
   BlockInfo,
   TxnInfo,
-  Address
+  Address,
+  XPub,
+  AddressEvent
 } from "./lib/types/btc.d";
 export default ({
   apiKey = undefined,
@@ -33,6 +35,24 @@ export default ({
     async getTxn(txnHash: Hash): Promise<TxnInfo> {
       const { result: txnInfo } = await get("gettransaction", txnHash);
       return txnInfo;
+    },
+    async watch(
+      address: XPub | Address,
+    ): Promise<AddressEvent> {
+      const result = await post("watch", {
+        address,
+        unconfirmedCallbackURL: "",
+        confirmedCallbackURL: ""
+      });
+      return result;
+    },
+    async unwatch(
+      address: XPub | Address,
+    ): Promise<AddressEvent> {
+      const result = await post("unwatch", {
+        address
+      });
+      return result;
     }
   };
   return api;

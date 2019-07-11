@@ -6,10 +6,9 @@
   "scripts": {
     "test:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js btcClient.spec.js",
     "test:ln": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js lncClient.spec.js",
-    "test:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js ots.spec.js"
+    "test:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js otsClient.spec.js"
   },
   "dependencies": {
-    "debug": "^4.1.1",
     "superagent": "^5.0.6"
   },
   "devDependencies": {

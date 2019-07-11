@@ -15,40 +15,24 @@ const cypherNodeClient_1 = __importDefault(require("./lib/cypherNodeClient"));
 exports.client = ({ apiKey = undefined, userType = undefined, client = cypherNodeClient_1.default({ apiKey, userType }) } = {}) => {
     const { get, post } = client;
     const api = {
-        getNodeInfo() {
-            return get("ln_getinfo");
-        },
-        getConnectionString() {
+        stamp(fileHash) {
             return __awaiter(this, void 0, void 0, function* () {
-                const { connectstring } = yield get("ln_getconnectionstring");
-                return connectstring;
+                const stampRct = yield (post("ots_stamp", { hash: fileHash }));
+                return stampRct;
             });
         },
-        getNewAddress() {
+        getStamp(fileHash) {
             return __awaiter(this, void 0, void 0, function* () {
-                const { address } = yield get("ln_newaddr");
-                return address;
+                const poop = yield get("ots_getfile", fileHash);
+                return poop;
             });
         },
-        createInvoice(invoice) {
-            return post("ln_create_invoice", invoice);
-        },
-        getInvoice(invoiceLabel) {
+        updateStamp() {
             return __awaiter(this, void 0, void 0, function* () {
-                const { invoices } = yield get("ln_getinvoice", invoiceLabel);
-                return invoices;
+                const poop = yield get("ots_backoffice");
+                return poop;
             });
-        },
-        /** FAILS 403 */
-        deleteInvoice(invoiceLabel) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const invoice = yield get("ln_delinvoice", invoiceLabel);
-                return invoice;
-            });
-        },
-        decodeBolt(bolt11) {
-            return get("ln_decodebolt11", bolt11);
-        },
+        }
     };
     return api;
 };

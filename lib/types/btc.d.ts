@@ -7,6 +7,7 @@ export type TimeStamp = number;
 export type TxnHex = string;
 export type TxnId = string;
 export type Address = string;
+export type XPub = string;
 export type TxnOp = string;
 // "OP_HASH160 c449a7fafb3b13b2952e064f2c3c58e851bb9430 OP_EQUAL"
 // "OP_DUP OP_HASH160 b0379374df5eab8be9a21ee96711712bdb781a95 OP_EQUALVERIFY OP_CHECKSIG"
@@ -44,8 +45,8 @@ export interface BlockInfo {
   mediantime: TimeStamp;
   nonce: number;
   bits: string;
-  difficulty: 7934713219630.606;
-  chainwork: "00000000000000000000000000000000000000000703dedf2a137316057ce942";
+  difficulty: number; // 7934713219630.606;
+  chainwork: string; // "00000000000000000000000000000000000000000703dedf2a137316057ce942";
   nTx: number;
   previousblockhash: BlockHash;
   nextblockhash: BlockHash;
@@ -66,10 +67,25 @@ export interface TxnInfo {
   time: TimeStamp;
   blocktime: TimeStamp;
 }
+export interface AddressEvent {
+  id: number; // "291";
+  event: string; //"watch";
+  imported: number; //  "1";
+  inserted: number; //  "1";
+  address: Address;
+  unconfirmedCallbackURL: string; // "192.168.133.233:1111/callback0conf";
+  confirmedCallbackURL: string; //"192.168.133.233:1111/callback1conf";
+  estimatesmartfee2blocks: number; // "0.000010";
+  estimatesmartfee6blocks: number; // "0.000010";
+  estimatesmartfee36blocks: number; // "0.000010";
+  estimatesmartfee144blocks: number; // "0.000010";
+}
 
 export interface CypherNodeBtcClient {
-    getNewAddress(): Promise<Address> 
-    getBestBlockHash(): Promise<Hash> 
-    getBlockInfo(blockHash: Hash): Promise<BlockInfo> 
-    getTxn(txnHash: Hash): Promise<TxnInfo> 
+  getNewAddress(): Promise<Address>;
+  getBestBlockHash(): Promise<Hash>;
+  getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
+  getTxn(txnHash: Hash): Promise<TxnInfo>;
+  watch(address: Address): Promise<AddressEvent>;
+  watch(address: XPub): Promise<AddressEvent>;
 }

@@ -38,6 +38,24 @@ exports.default = ({ apiKey = undefined, userType = undefined, client = cypherNo
                 const { result: txnInfo } = yield get("gettransaction", txnHash);
                 return txnInfo;
             });
+        },
+        watch(address) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const result = yield post("watch", {
+                    address,
+                    unconfirmedCallbackURL: "",
+                    confirmedCallbackURL: ""
+                });
+                return result;
+            });
+        },
+        unwatch(address) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const result = yield post("unwatch", {
+                    address
+                });
+                return result;
+            });
         }
     };
     return api;

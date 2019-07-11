@@ -42,14 +42,7 @@ test("Should be able to get OTS stamp", async t => {
     context: { getStamp, fileHash }
   } = t;
   const poop = await getStamp(
-    "16d6059a20ff61245708f7878875627504de82c168c4743776d2a61ef97ba33f"
+    "7a96ac47d6a7ac28175a10e822d14def6e8958ae5680de32fbf08083648f831e"
   );
-  console.log(poop);
-});
-test("Should be able to trigger backoffice upgrade", async t => {
-  const {
-    context: { updateStamp, fileHash }
-  } = t;
-  const poop = await updateStamp();
   console.log(poop);
 });

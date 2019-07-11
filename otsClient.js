@@ -17,19 +17,13 @@ exports.client = ({ apiKey = undefined, userType = undefined, client = cypherNod
     const api = {
         stamp(fileHash) {
             return __awaiter(this, void 0, void 0, function* () {
-                const stampRct = yield (post("ots_stamp", { hash: fileHash }));
+                const stampRct = yield post("ots_stamp", { hash: fileHash });
                 return stampRct;
             });
         },
         getStamp(fileHash) {
             return __awaiter(this, void 0, void 0, function* () {
                 const poop = yield get("ots_getfile", fileHash);
-                return poop;
-            });
-        },
-        updateStamp() {
-            return __awaiter(this, void 0, void 0, function* () {
-                const poop = yield get("ots_backoffice");
                 return poop;
             });
         }

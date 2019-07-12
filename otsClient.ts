@@ -8,7 +8,9 @@ import { CypherNodeOTSClient, Hash, OTSStampRcpt } from "./lib/types/ots";
 export const client = ({
   apiKey = undefined,
   userType = undefined,
-  client = cypherNodeClient({ apiKey, userType })
+  token = undefined,
+  cypherGateway = undefined,
+  client = cypherNodeClient({ token, apiKey, userType, cypherGateway })
 }: ClientConfig = {}): CypherNodeOTSClient => {
   const { get, post } = client;
   const api = {

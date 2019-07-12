@@ -22,5 +22,6 @@ export interface CypherNodeClientParam extends ClientAuth {
   cypherGateway?: string;
 }
 export interface ClientConfig extends ClientAuth {
+  cypherGateway?: string;
   client?: CypherNodeClient;
 }

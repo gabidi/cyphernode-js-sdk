@@ -13,7 +13,7 @@ import {
   XPub,
   AddressEvent
 } from "./lib/types/btc.d";
-export default ({
+export const client = ({
   apiKey = undefined,
   userType = undefined,
   client = cypherNodeClient({ apiKey, userType })
@@ -36,9 +36,7 @@ export default ({
       const { result: txnInfo } = await get("gettransaction", txnHash);
       return txnInfo;
     },
-    async watch(
-      address: XPub | Address,
-    ): Promise<AddressEvent> {
+    async watch(address: XPub | Address): Promise<AddressEvent> {
       const result = await post("watch", {
         address,
         unconfirmedCallbackURL: "",
@@ -46,9 +44,7 @@ export default ({
       });
       return result;
     },
-    async unwatch(
-      address: XPub | Address,
-    ): Promise<AddressEvent> {
+    async unwatch(address: XPub | Address): Promise<AddressEvent> {
       const result = await post("unwatch", {
         address
       });

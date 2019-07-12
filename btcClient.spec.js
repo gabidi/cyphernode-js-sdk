@@ -32,7 +32,15 @@ test("Should be able to get the latest block's hash", (t) => __awaiter(this, voi
     const blockHash = yield getBestBlockHash();
     t.is(blockHash.length, 64);
 }));
-test("Should be able to get the latest block's info", (t) => __awaiter(this, void 0, void 0, function* () {
+test("Should be able to get the lastest block's info", (t) => __awaiter(this, void 0, void 0, function* () {
+    const { context: { getBestBlockInfo } } = t;
+    const blockInfo = yield getBestBlockInfo();
+    t.true(!!blockInfo.hash.length);
+    t.true(!isNaN(blockInfo.height));
+    t.true(!isNaN(blockInfo.time));
+    t.true(!!blockInfo.tx.length);
+}));
+test("Should be able to get the any block's info", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getBlockInfo } } = t;
     const blockHash = "0000000000000000001c6a6ae90f3f90f9a02098f5f447dc3ee09649097fa2cf";
     const blockInfo = yield getBlockInfo(blockHash);

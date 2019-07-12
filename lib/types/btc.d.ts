@@ -85,6 +85,7 @@ export interface CypherNodeBtcClient {
   getNewAddress(): Promise<Address>;
   getBestBlockHash(): Promise<Hash>;
   getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
+  getBestBlockInfo(): Promise<BlockInfo>;
   getTxn(txnHash: Hash): Promise<TxnInfo>;
   watch(address: Address): Promise<AddressEvent>;
   watch(address: XPub): Promise<AddressEvent>;

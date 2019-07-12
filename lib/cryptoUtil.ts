@@ -18,17 +18,19 @@ export const crypto = () => {
     };
     hmacSHA256Hex = async (text: string, key: string) => {
       const encoder = new TextEncoder();
-      //const hmacKey = await window.crypto.subtle.generateKey(
-      //  {
-      //    name: "HMAC",
-      //    hash: { name: "SHA-256" }
-      //  },
-      //  true,
-      //  ["sign", "verify"]
-      //);
+      const hmacKey = await window.crypto.subtle.importKey(
+        "raw",
+        encoder.encode(key),
+        {
+          name: "HMAC",
+          hash: { name: "SHA-256" }
+        },
+        true,
+        ["sign", "verify"]
+      );
       const digestBuffer = await window.crypto.subtle.sign(
         "HMAC",
-        key,
+        hmacKey,
         encoder.encode(text)
       );
       return hexString(digestBuffer);

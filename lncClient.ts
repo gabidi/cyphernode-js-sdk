@@ -17,7 +17,9 @@ import {
 export const client = ({
   apiKey = undefined,
   userType = undefined,
-  client = cypherNodeClient({ apiKey, userType })
+  token = undefined,
+  cypherGateway = undefined,
+  client = cypherNodeClient({ token, apiKey, userType, cypherGateway })
 }: ClientConfig = {}): CypherNodeLncClient => {
   const { get, post } = client;
   const api = {
@@ -46,7 +48,7 @@ export const client = ({
     },
     decodeBolt(bolt11: Bolt11String): Promise<DecodedBolt11> {
       return get("ln_decodebolt11", bolt11);
-    },
+    }
   };
   return api;
 };

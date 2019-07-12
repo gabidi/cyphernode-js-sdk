@@ -7,13 +7,11 @@ export const crypto = () => {
   if (typeof window !== "undefined" && window.crypto) {
     const hexString = (buffer: ArrayBuffer) => {
       const byteArray = new Uint8Array(buffer);
-
       const hexCodes = [...byteArray].map(value => {
         const hexCode = value.toString(16);
         const paddedHexCode = hexCode.padStart(2, "0");
         return paddedHexCode;
       });
-
       return hexCodes.join("");
     };
     hmacSHA256Hex = async (text: string, key: string) => {

@@ -4,8 +4,12 @@ export interface CypherNodeTransport {
   post: <T>(command: CypherNodeCommand, payload: any) => Promise<T>;
 }
 export interface CypherNodeClient extends CypherNodeTransport {
-  makeToken: Function;
-  token: String;
+  makeToken(auth: {
+    perm: number;
+    api_key: string;
+    expiryInSeconds: number;
+  }): Promise<string>;
+  token: Promise<string>;
 }
 
 export interface ClientAuth {

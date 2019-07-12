@@ -1,5 +1,5 @@
-import { createHmac } from "crypto";
 import * as agent from "superagent";
+import { crypto } from "./cryptoUtil";
 import {
   CypherNodeClient,
   CypherNodeClientParam,
@@ -13,15 +13,17 @@ export default (config: CypherNodeClientParam): CypherNodeClient => {
     cypherGateway = CYPHER_GATEWAY_URL,
     transport = {
       async get<T>(command: CypherNodeCommand, payload?: any): Promise<T> {
+        const token = await _authToken;
         const { body } = await agent
           .get(`${cypherGateway}${command}/${payload ? payload : ""}`)
-          .set("Authorization", `Bearer ${_authToken}`);
+          .set("Authorization", `Bearer ${token}`);
         return body;
       },
       async post<T>(command: CypherNodeCommand, payload: any): Promise<T> {
+        const token = await _authToken;
         const { body } = await agent
           .post(`${cypherGateway}${command}`)
-          .set("Authorization", `Bearer ${_authToken}`)
+          .set("Authorization", `Bearer ${token}`)
           .send(payload);
         return body;
       }
@@ -30,12 +32,12 @@ export default (config: CypherNodeClientParam): CypherNodeClient => {
     userType,
     apiKey
   } = config;
-
-  const makeToken = (
+  const makeToken = async (
     api_key = apiKey,
     perm = userType,
     expiryInSeconds = 3600
-  ): String => {
+  ): Promise<string> => {
+    const { hmacSHA256Hex } = crypto();
     const id = `00${perm}`;
     const exp = Math.round(new Date().getTime() / 1000) + expiryInSeconds;
     const h64 = Buffer.from(
@@ -43,15 +45,13 @@ export default (config: CypherNodeClientParam): CypherNodeClient => {
     ).toString("base64");
     const p64 = Buffer.from(JSON.stringify({ id, exp })).toString("base64");
     const msg = h64 + "." + p64;
-    // TODO for browser
-    // let hash = CryptoJS.HmacSHA256(`${h64}.${p64}`, api_key).toString();
-    const hmac = createHmac("sha256", <BinaryType>api_key);
-    hmac.update(msg);
-    const hash = hmac.digest("hex");
+    const hash = await hmacSHA256Hex(msg, api_key);
     return `${msg}.${hash}`;
   };
-  // Use supplied token if provided or generate one
-  const _authToken = token || makeToken();
+  if (!token && (!userType || !apiKey))
+    throw "You need to pass a token or userType and apiKey to generate one!";
+  const _authToken: Promise<string> =
+    (token && Promise.resolve(token)) || makeToken();
 
   return {
     ...transport,

@@ -28,6 +28,10 @@ export const client = ({
       const { result: blockHash } = await get("getbestblockhash");
       return blockHash;
     },
+    async getBestBlockInfo(): Promise<BlockInfo> {
+      const { result: blockInfo } = await get("getbestblockinfo");
+      return blockInfo;
+    },
     async getBlockInfo(blockHash: Hash): Promise<BlockInfo> {
       const { result: blockInfo } = await get("getblockinfo", blockHash);
       return blockInfo;

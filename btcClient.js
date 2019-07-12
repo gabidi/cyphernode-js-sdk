@@ -27,6 +27,12 @@ exports.client = ({ apiKey = undefined, userType = undefined, client = cypherNod
                 return blockHash;
             });
         },
+        getBestBlockInfo() {
+            return __awaiter(this, void 0, void 0, function* () {
+                const { result: blockInfo } = yield get("getbestblockinfo");
+                return blockInfo;
+            });
+        },
         getBlockInfo(blockHash) {
             return __awaiter(this, void 0, void 0, function* () {
                 const { result: blockInfo } = yield get("getblockinfo", blockHash);

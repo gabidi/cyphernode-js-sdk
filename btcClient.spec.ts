@@ -31,7 +31,17 @@ test("Should be able to get the latest block's hash", async t => {
   const blockHash = await getBestBlockHash();
   t.is(blockHash.length, 64);
 });
-test("Should be able to get the latest block's info", async t => {
+test("Should be able to get the lastest block's info", async t => {
+  const {
+    context: { getBestBlockInfo }
+  } = t;
+  const blockInfo = await getBestBlockInfo();
+  t.true(!!blockInfo.hash.length);
+  t.true(!isNaN(blockInfo.height));
+  t.true(!isNaN(blockInfo.time));
+  t.true(!!blockInfo.tx.length);
+});
+test("Should be able to get the any block's info", async t => {
   const {
     context: { getBlockInfo }
   } = t;

@@ -7,15 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const ava_1 = require("ava");
-const btcClient_1 = __importDefault(require("./btcClient"));
+const btcClient_1 = require("./btcClient");
 const test = ava_1.serial;
 test.before(t => {
-    t.context = Object.assign({}, btcClient_1.default({
+    t.context = Object.assign({}, btcClient_1.client({
         apiKey: process.env.CYPHERNODE_API_KEY ||
             "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
         userType: 3

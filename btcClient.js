@@ -15,9 +15,9 @@ const cypherNodeClient_1 = __importDefault(require("./lib/cypherNodeClient"));
 exports.client = ({ apiKey = undefined, userType = undefined, token = undefined, cypherGateway = undefined, client = cypherNodeClient_1.default({ token, apiKey, userType, cypherGateway }) } = {}) => {
     const { get, post } = client;
     const api = {
-        getNewAddress() {
+        getNewAddress(type = "p2sh-segwit") {
             return __awaiter(this, void 0, void 0, function* () {
-                const { address } = yield get("getnewaddress");
+                const { address } = yield get("getnewaddress", type);
                 return address;
             });
         },
@@ -43,6 +43,12 @@ exports.client = ({ apiKey = undefined, userType = undefined, token = undefined,
             return __awaiter(this, void 0, void 0, function* () {
                 const { result: txnInfo } = yield get("gettransaction", txnHash);
                 return txnInfo;
+            });
+        },
+        getBalance() {
+            return __awaiter(this, void 0, void 0, function* () {
+                const { balance } = yield get("getbalance");
+                return balance;
             });
         },
         watch(address) {

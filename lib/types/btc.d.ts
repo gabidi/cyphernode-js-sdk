@@ -81,24 +81,15 @@ export interface AddressEvent {
   estimatesmartfee36blocks: number; // "0.000010";
   estimatesmartfee144blocks: number; // "0.000010";
 }
-
-export interface CypherNodeBtcClient {
-  getBlockChainInfo(): Promise<BlockChainInfo>;
-  getNewAddress(addressType: AddressType): Promise<Address>;
-  getBestBlockHash(): Promise<Hash>;
-  getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
-  getBestBlockInfo(): Promise<BlockInfo>;
-  getTxn(txnHash: Hash): Promise<TxnInfo>;
-  getBalance(): Promise<number>;
-  watch(address: Address): Promise<AddressEvent>;
-  watch(address: XPub): Promise<AddressEvent>;
+export interface SpendConfirmation {
+  status: string;
+  hash: Hash;
 }
-
 export interface BlockChainSoftFork {
   id: "bip34";
   version: 2;
   reject: {
-    status: true;
+    status: boolean;
   };
 }
 export interface BlockChainInfo {
@@ -129,4 +120,16 @@ export interface BlockChainInfo {
     };
   };
   warnings: "Warning: unknown new rules activated (versionbit 28)";
+}
+export interface CypherNodeBtcClient {
+  getBlockChainInfo(): Promise<BlockChainInfo>;
+  getNewAddress(addressType: AddressType): Promise<Address>;
+  getBestBlockHash(): Promise<Hash>;
+  getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
+  getBestBlockInfo(): Promise<BlockInfo>;
+  getTxn(txnHash: Hash): Promise<TxnInfo>;
+  getBalance(): Promise<number>;
+  spend(address: Address, amount: number): Promise<SpendConfirmation>;
+  watch(address: Address): Promise<AddressEvent>;
+  watch(address: XPub): Promise<AddressEvent>;
 }

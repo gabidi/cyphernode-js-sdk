@@ -54,6 +54,12 @@ exports.client = ({ apiKey = undefined, userType = undefined, token = undefined,
                 return balance;
             });
         },
+        spend(address, amount) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const result = yield post("spend", { address, amount });
+                return result;
+            });
+        },
         watch(address) {
             return __awaiter(this, void 0, void 0, function* () {
                 const result = yield post("watch", {

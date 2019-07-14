@@ -9,7 +9,8 @@ test.before(async t => {
   });
   const { chain } = await client.getBlockChainInfo();
   if (!chain) throw "Could not get blockChaihInfo or undefined chain type";
-  if (chain === "main") console.warn("**** WARNING: RUNNING TESTS ON MAINNET!!! *****");
+  if (chain === "main")
+    console.warn("**** WARNING: RUNNING TESTS ON MAINNET!!! *****");
   // check which chain we're on
   t.context = { ...client, chain };
 });

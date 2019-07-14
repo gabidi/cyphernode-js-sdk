@@ -13,7 +13,8 @@ import {
   AddressType,
   XPub,
   AddressEvent,
-  BlockChainInfo
+  BlockChainInfo,
+  SpendConfirmation
 } from "./lib/types/btc.d";
 export const client = ({
   apiKey = undefined,
@@ -50,6 +51,10 @@ export const client = ({
     async getBalance(): Promise<number> {
       const { balance } = await get("getbalance");
       return balance;
+    },
+    async spend(address: Address, amount: number): Promise<SpendConfirmation> {
+      const result = await post("spend", { address, amount });
+      return result;
     },
     async watch(address: XPub | Address): Promise<AddressEvent> {
       const result = await post("watch", {

@@ -12,7 +12,8 @@ import {
   Address,
   AddressType,
   XPub,
-  AddressEvent
+  AddressEvent,
+  BlockChainInfo
 } from "./lib/types/btc.d";
 export const client = ({
   apiKey = undefined,
@@ -23,6 +24,9 @@ export const client = ({
 }: ClientConfig = {}): CypherNodeBtcClient => {
   const { get, post } = client;
   const api = {
+    getBlockChainInfo(): Promise<BlockChainInfo> {
+      return get("getblockchaininfo");
+    },
     async getNewAddress(type: AddressType = "p2sh-segwit"): Promise<Address> {
       const { address } = await get("getnewaddress", type);
       return address;

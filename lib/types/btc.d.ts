@@ -7,7 +7,7 @@ export type TimeStamp = number;
 export type TxnHex = string;
 export type TxnId = string;
 export type Address = string;
-export type AddressType = 'bech32' | 'legacy' | 'p2sh-segwit';
+export type AddressType = "bech32" | "legacy" | "p2sh-segwit";
 export type XPub = string;
 export type TxnOp = string;
 // "OP_HASH160 c449a7fafb3b13b2952e064f2c3c58e851bb9430 OP_EQUAL"
@@ -83,11 +83,50 @@ export interface AddressEvent {
 }
 
 export interface CypherNodeBtcClient {
-  getNewAddress(addressType:AddressType): Promise<Address>;
+  getBlockChainInfo(): Promise<BlockChainInfo>;
+  getNewAddress(addressType: AddressType): Promise<Address>;
   getBestBlockHash(): Promise<Hash>;
   getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
   getBestBlockInfo(): Promise<BlockInfo>;
   getTxn(txnHash: Hash): Promise<TxnInfo>;
+  getBalance(): Promise<number>;
   watch(address: Address): Promise<AddressEvent>;
   watch(address: XPub): Promise<AddressEvent>;
+}
+
+export interface BlockChainSoftFork {
+  id: "bip34";
+  version: 2;
+  reject: {
+    status: true;
+  };
+}
+export interface BlockChainInfo {
+  chain: "test" | "main";
+  blocks: number;
+  headers: number;
+  bestblockhash: string; //"000000000000002fb99d683e64bbfc2b7ad16f9a425cf7be77b481fb1afa363b";
+  difficulty: number; //13971064.71015782;
+  mediantime: number; //1554149114;
+  verificationprogress: number; //0.9999994536561675;
+  initialblockdownload: boolean; //false;
+  chainwork: string; //"000000000000000000000000000000000000000000000103ceb57a5896f347ce";
+  size_on_disk: number; // 23647567017;
+  pruned: boolean;
+  softforks: [BlockChainSoftFork];
+  bip9_softforks: {
+    csv: {
+      status: "active";
+      startTime: 1456790400;
+      timeout: 1493596800;
+      since: 770112;
+    };
+    segwit: {
+      status: "active";
+      startTime: 1462060800;
+      timeout: 1493596800;
+      since: 834624;
+    };
+  };
+  warnings: "Warning: unknown new rules activated (versionbit 28)";
 }

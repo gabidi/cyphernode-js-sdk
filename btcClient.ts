@@ -10,6 +10,7 @@ import {
   BlockInfo,
   TxnInfo,
   Address,
+  AddressType,
   XPub,
   AddressEvent
 } from "./lib/types/btc.d";
@@ -22,8 +23,8 @@ export const client = ({
 }: ClientConfig = {}): CypherNodeBtcClient => {
   const { get, post } = client;
   const api = {
-    async getNewAddress(): Promise<Address> {
-      const { address } = await get("getnewaddress");
+    async getNewAddress(type: AddressType = "p2sh-segwit"): Promise<Address> {
+      const { address } = await get("getnewaddress", type);
       return address;
     },
     async getBestBlockHash(): Promise<Hash> {
@@ -41,6 +42,10 @@ export const client = ({
     async getTxn(txnHash: Hash): Promise<TxnInfo> {
       const { result: txnInfo } = await get("gettransaction", txnHash);
       return txnInfo;
+    },
+    async getBalance(): Promise<number> {
+      const { balance } = await get("getbalance");
+      return balance;
     },
     async watch(address: XPub | Address): Promise<AddressEvent> {
       const result = await post("watch", {

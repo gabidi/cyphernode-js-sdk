@@ -13,19 +13,25 @@ const btcClient_1 = require("./btcClient");
 const test = ava_1.serial;
 test.before(t => {
     t.context = Object.assign({}, btcClient_1.client({
-        apiKey: process.env.CYPHERNODE_API_KEY ||
-            "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
+        apiKey: process.env.CYPHERNODE_API_KEY,
         userType: 3
     }));
 });
 /**
 BTC tests
 */
-test("Should be able to get a new bitcoin address", (t) => __awaiter(this, void 0, void 0, function* () {
+test("Should be able to get a new legacy, p2sh or bech32 bitcoin address ", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getNewAddress } } = t;
-    const address = yield getNewAddress();
-    t.is(address.length, 34);
-    t.is(address[0], "3");
+    const addressTypes = {
+        legacy: "1",
+        "p2sh-segwit": "3",
+        bech32: "b"
+    };
+    yield Promise.all(Object.entries(addressTypes).map(([addressType, firstChar]) => __awaiter(this, void 0, void 0, function* () {
+        const address = yield getNewAddress(addressType);
+        t.true(address.length >= 33);
+        t.is(address[0].toString(), firstChar);
+    })));
 }));
 test("Should be able to get the latest block's hash", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getBestBlockHash } } = t;

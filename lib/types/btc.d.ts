@@ -7,6 +7,7 @@ export type TimeStamp = number;
 export type TxnHex = string;
 export type TxnId = string;
 export type Address = string;
+export type AddressType = 'bech32' | 'legacy' | 'p2sh-segwit';
 export type XPub = string;
 export type TxnOp = string;
 // "OP_HASH160 c449a7fafb3b13b2952e064f2c3c58e851bb9430 OP_EQUAL"
@@ -82,7 +83,7 @@ export interface AddressEvent {
 }
 
 export interface CypherNodeBtcClient {
-  getNewAddress(): Promise<Address>;
+  getNewAddress(addressType:AddressType): Promise<Address>;
   getBestBlockHash(): Promise<Hash>;
   getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
   getBestBlockInfo(): Promise<BlockInfo>;

@@ -1,13 +1,11 @@
 import { serial, TestInterface } from "ava";
 import { client as btcClient } from "./btcClient";
-import { CypherNodeBtcClient } from "./lib/types/btc.d";
+import { CypherNodeBtcClient, AddressType } from "./lib/types/btc.d";
 const test = serial as TestInterface<CypherNodeBtcClient>;
 test.before(t => {
   t.context = {
     ...btcClient({
-      apiKey:
-        process.env.CYPHERNODE_API_KEY ||
-        "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
+      apiKey: process.env.CYPHERNODE_API_KEY,
       userType: 3
     })
   };
@@ -16,13 +14,22 @@ test.before(t => {
 BTC tests
 */
 
-test("Should be able to get a new bitcoin address", async t => {
+test("Should be able to get a new legacy, p2sh or bech32 bitcoin address ", async t => {
   const {
     context: { getNewAddress }
   } = t;
-  const address = await getNewAddress();
-  t.is(address.length, 34);
-  t.is(address[0], "3");
+  const addressTypes: { AddressType: string } = {
+    legacy: "1",
+    "p2sh-segwit": "3",
+    bech32: "b"
+  };
+  await Promise.all(
+    Object.entries(addressTypes).map(async ([addressType, firstChar]) => {
+      const address = await getNewAddress(addressType);
+      t.true(address.length >= 33);
+      t.is(address[0].toString(), firstChar);
+    })
+  );
 });
 test("Should be able to get the latest block's hash", async t => {
   const {

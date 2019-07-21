@@ -14,10 +14,7 @@ test.before(t => {
       .update(`${Date.now}:${parseInt(Math.random() * 100)}`)
       .digest("hex"),
     ...otsClient({
-      apiKey:
-        // @TODO if api key not detected, should prompt user for it https://stackoverflow.com/questions/18193953/waiting-for-user-to-enter-input-in-node-js
-        process.env.CYPHERNODE_API_KEY ||
-        "5b5d6ff9027dc1fdce9e84645329a194d79f346b3c7a5338d9610139c1fbd2e8",
+      apiKey: process.env.CYPHERNODE_API_KEY,
       userType: 3
     })
   };

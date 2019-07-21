@@ -7,11 +7,11 @@ test.before(async t => {
     apiKey: process.env.CYPHERNODE_API_KEY,
     userType: 3
   });
+  // check which chain we're on
   const { chain } = await client.getBlockChainInfo();
-  if (!chain) throw "Could not get blockChaihInfo or undefined chain type";
+  if (!chain) throw "Could not get blockChainInfo or undefined chain type";
   if (chain === "main")
     console.warn("**** WARNING: RUNNING TESTS ON MAINNET!!! *****");
-  // check which chain we're on
   t.context = { ...client, chain };
 });
 /**

@@ -16,12 +16,12 @@ test.before((t) => __awaiter(this, void 0, void 0, function* () {
         apiKey: process.env.CYPHERNODE_API_KEY,
         userType: 3
     });
+    // check which chain we're on
     const { chain } = yield client.getBlockChainInfo();
     if (!chain)
-        throw "Could not get blockChaihInfo or undefined chain type";
+        throw "Could not get blockChainInfo or undefined chain type";
     if (chain === "main")
         console.warn("**** WARNING: RUNNING TESTS ON MAINNET!!! *****");
-    // check which chain we're on
     t.context = Object.assign({}, client, { chain });
 }));
 /**

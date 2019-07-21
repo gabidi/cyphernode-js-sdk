@@ -13,7 +13,10 @@
     "superagent": "^5.0.6"
   },
   "devDependencies": {
+    "@types/sinon": "^7.0.13",
     "ava": "^2.1.0",
+    "mqtt": "^3.0.0",
+    "sinon": "^7.3.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.2",
     "uuid": "^3.3.2"

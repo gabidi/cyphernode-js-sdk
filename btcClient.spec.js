@@ -57,7 +57,7 @@ test("Should be able to get the lastest block's info", (t) => __awaiter(this, vo
 test("Should be able to get the any block's info", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getBlockInfo, chain } } = t;
     if (chain === "test")
-        return;
+        t.pass();
     const blockHash = "0000000000000000001c6a6ae90f3f90f9a02098f5f447dc3ee09649097fa2cf";
     const blockInfo = yield getBlockInfo(blockHash);
     t.true(!!blockInfo.hash.length);
@@ -68,7 +68,7 @@ test("Should be able to get the any block's info", (t) => __awaiter(this, void 0
 test("Should be able to get a transactions info", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getTxn, chain } } = t;
     if (chain === "test")
-        return;
+        t.pass();
     const txnId = "356a61085702ef1b89c8027a4169b124f09e157577494ea6dcfe81cb5065aaba ";
     const txnInfo = yield getTxn(txnId);
     t.true(!!txnInfo.txid.length);
@@ -79,5 +79,16 @@ test("Should be able to get a transactions info", (t) => __awaiter(this, void 0,
 test("Should be able to get a wallets balance", (t) => __awaiter(this, void 0, void 0, function* () {
     const { context: { getBalance } } = t;
     const balance = yield getBalance();
+    t.false(isNaN(balance));
+}));
+test("Should be able to spend (will only run when testnet)", (t) => __awaiter(this, void 0, void 0, function* () {
+    const { context: { getBalance, getNewAddress, spend, chain } } = t;
+    if (chain !== "test")
+        t.pass();
+    const [balance, sendToAddress] = yield Promise.all([
+        getBalance(),
+        getNewAddress()
+    ]);
+    const confirmation = spend(sendToAddress, balance / 1000);
     t.false(isNaN(balance));
 }));

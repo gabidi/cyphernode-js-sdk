@@ -26,7 +26,7 @@ test.before((t) => __awaiter(this, void 0, void 0, function* () {
     const { chain } = yield client.getBlockChainInfo();
     if (!chain)
         throw "Could not get blockChainInfo or undefined chain type";
-    if (chain === "test")
+    if (chain !== "test")
         throw "**** WARNING: RUNNING TESTS ON MAINNET!!! ****, switch to testnet for notifier tests";
     const balance = yield client.getBalance();
     if (balance <= 0)

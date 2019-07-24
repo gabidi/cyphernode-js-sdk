@@ -13,8 +13,9 @@ test.before(async t => {
   // check which chain we're on
   const { chain } = await client.getBlockChainInfo();
   if (!chain) throw "Could not get blockChainInfo or undefined chain type";
-  if (chain !== "test")
+  if (chain !== "test") {
     throw "**** WARNING: RUNNING TESTS ON MAINNET!!! ****, switch to testnet for notifier tests";
+  }
   const balance = await client.getBalance();
   if (balance <= 0) throw "We have no balance to run spend/watch tests";
   t.context = { ...client, chain };

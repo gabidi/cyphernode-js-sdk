@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test:btc": "CYPHERNODE_API_KEY=$(gopass show misc/cyphernode_gatekeeper_admin_apikey) NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js btcClient.spec.js",
+    "test:btc": "node ./node_modules/ava/cli.js btcClient.spec.js",
     "test:ln": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js lncClient.spec.js",
     "test:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js otsClient.spec.js",
     "test:unit": "node ./node_modules/ava/cli.js ./lib/*.spec*.js"

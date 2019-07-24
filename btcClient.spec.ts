@@ -60,7 +60,10 @@ test("Should be able to get the any block's info", async t => {
   const {
     context: { getBlockInfo, chain }
   } = t;
-  if (chain === "test") t.pass();
+  if (chain === "test") {
+    t.pass();
+    return;
+  }
   const blockHash =
     "0000000000000000001c6a6ae90f3f90f9a02098f5f447dc3ee09649097fa2cf";
   const blockInfo = await getBlockInfo(blockHash);
@@ -74,7 +77,10 @@ test("Should be able to get a transactions info", async t => {
   const {
     context: { getTxn, chain }
   } = t;
-  if (chain === "test") t.pass();
+  if (chain === "test") {
+    t.pass();
+    return;
+  }
   const txnId =
     "356a61085702ef1b89c8027a4169b124f09e157577494ea6dcfe81cb5065aaba ";
   const txnInfo = await getTxn(txnId);
@@ -95,12 +101,16 @@ test("Should be able to spend (will only run when testnet)", async t => {
   const {
     context: { getBalance, getNewAddress, spend, chain }
   } = t;
-  if (chain !== "test") t.pass();
+  if (chain !== "test") {
+    t.pass();
+    return;
+  }
 
   const [balance, sendToAddress] = await Promise.all([
     getBalance(),
     getNewAddress()
   ]);
-  const confirmation = spend(sendToAddress, balance / 1000);
-  t.false(isNaN(balance));
+  if (balance <= 0) t.fail("Not enough funds to run spend test");
+  const { status, hash } = await spend(sendToAddress, balance / 1000);
+  t.is(status, "accepted");
 });

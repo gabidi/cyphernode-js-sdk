@@ -39,7 +39,7 @@ BTC tests
 */
 test("Should be able to watch an address and get notificaitons", (t) => __awaiter(this, void 0, void 0, function* () {
     const { watch, getNewAddress, spend } = t.context;
-    const mqttClient = mqtt_1.default.connect(MQTT_BROKER);
+    const mqttClient = mqtt_1.default.connect({ host: MQTT_BROKER, protocolId: 'MQTT', port: 1883 });
     const messageProcesor = sinon_1.default.stub();
     yield new Promise((res, rej) => {
         mqttClient.on("connect", () => {

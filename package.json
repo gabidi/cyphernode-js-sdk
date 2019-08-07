@@ -10,11 +10,15 @@
     "test:unit": "node ./node_modules/ava/cli.js ./lib/*.spec*.js"
   },
   "dependencies": {
+    "matrix-js-sdk": "^2.3.0",
     "superagent": "^5.0.6"
   },
   "devDependencies": {
+    "@types/async": "^3.0.1",
     "@types/sinon": "^7.0.13",
+    "async": "^3.1.0",
     "ava": "^2.1.0",
+    "debug": "^4.1.1",
     "mqtt": "^3.0.0",
     "sinon": "^7.3.2",
     "tslint-config-prettier": "^1.18.0",

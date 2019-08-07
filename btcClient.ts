@@ -9,10 +9,11 @@ import {
   Hash,
   BlockInfo,
   TxnInfo,
+  TxnWatchConfimation,
   Address,
   AddressType,
-  XPub,
-  AddressEvent,
+  AddressWatchConfirmation,
+  AddressWatchPayload,
   BlockChainInfo,
   SpendConfirmation
 } from "./lib/types/btc.d";
@@ -24,6 +25,26 @@ export const client = ({
   client = cypherNodeClient({ token, apiKey, userType, cypherGateway })
 }: ClientConfig = {}): CypherNodeBtcClient => {
   const { get, post } = client;
+  const parseBtcAddressType = (address: Address): AddressType | null => {
+    const addressStart = address.substr(0, 4);
+    switch (addressStart) {
+      case "upub":
+      case "zpub":
+      case "xpub":
+        return "expub";
+      default:
+        switch (addressStart[0]) {
+          case "1":
+            return "legacy";
+          case "3":
+            return "p2sh-segwit";
+          case "b":
+            return "bech32";
+          default:
+            return null;
+        }
+    }
+  };
   const api = {
     getBlockChainInfo(): Promise<BlockChainInfo> {
       return get("getblockchaininfo");
@@ -56,18 +77,42 @@ export const client = ({
       const result = await post("spend", { address, amount });
       return result;
     },
-    async watch(address: XPub | Address): Promise<AddressEvent> {
-      const result = await post("watch", {
+    //  TODO Get watch list xpub , label, and tesssst
+    async watchAddress(
+      address: Address,
+      options: any
+    ): Promise<AddressWatchConfirmation> {
+      const command =
+        parseBtcAddressType(address) == "expub" ? "watchxpub" : "watch";
+      if (command === "watchxpub" && !options.path)
+        throw "Must provide a derivation path for extended public addresss watches";
+      const result = await post(command, {
         address,
-        unconfirmedCallbackURL: "",
-        confirmedCallbackURL: ""
+        ...options
       });
       return result;
     },
-    async unwatch(address: XPub | Address): Promise<AddressEvent> {
-      const result = await post("unwatch", {
-        address
-      });
+    async watchTxnId(
+      txn: string,
+      { nbxconf = 6 } = {}
+    ): Promise<TxnWatchConfimation> {
+      const result = await get("watchtxnid", { nbxconf });
+      return result;
+    },
+    async getActiveAddressWatch(): Promise<[AddressWatchPayload]> {
+      const { watches } = await get("getactivewatches");
+      return watches;
+    },
+    async unwatchAddress(address: Address): Promise<AddressWatchConfirmation> {
+      const command =
+        parseBtcAddressType(address) === "expub"
+          ? "unwatchxpubbyxpub"
+          : "unwatch";
+      const result = await get(command, address);
+      return result;
+    },
+    async unwatchLabel(label: number): Promise<AddressWatchConfirmation> {
+      const result = await get("unwatchxpubbylabel", label);
       return result;
     }
   };

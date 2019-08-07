@@ -7,8 +7,7 @@ export type TimeStamp = number;
 export type TxnHex = string;
 export type TxnId = string;
 export type Address = string;
-export type AddressType = "bech32" | "legacy" | "p2sh-segwit";
-export type XPub = string;
+export type AddressType = "bech32" | "legacy" | "p2sh-segwit" | "expub";
 export type TxnOp = string;
 // "OP_HASH160 c449a7fafb3b13b2952e064f2c3c58e851bb9430 OP_EQUAL"
 // "OP_DUP OP_HASH160 b0379374df5eab8be9a21ee96711712bdb781a95 OP_EQUALVERIFY OP_CHECKSIG"
@@ -68,18 +67,26 @@ export interface TxnInfo {
   time: TimeStamp;
   blocktime: TimeStamp;
 }
-export interface AddressEvent {
+interface WatchConfirmation {
   id: number; // "291";
   event: string; //"watch";
-  imported: number; //  "1";
   inserted: number; //  "1";
-  address: Address;
   unconfirmedCallbackURL: string; // "192.168.133.233:1111/callback0conf";
   confirmedCallbackURL: string; //"192.168.133.233:1111/callback1conf";
+}
+export interface AddressWatchConfirmation extends WatchConfirmation {
+  event: "watch"; //"watch";
+  imported: number; //  "1";
+  address: Address;
   estimatesmartfee2blocks: number; // "0.000010";
   estimatesmartfee6blocks: number; // "0.000010";
   estimatesmartfee36blocks: number; // "0.000010";
   estimatesmartfee144blocks: number; // "0.000010";
+}
+export interface TxnWatchConfimation extends WatchConfirmation {
+  event: "watchtxid";
+  txnId: string;
+  nbxconf: number;
 }
 export interface SpendConfirmation {
   status: string;
@@ -124,12 +131,24 @@ export interface BlockChainInfo {
 export interface CypherNodeBtcClient {
   getBlockChainInfo(): Promise<BlockChainInfo>;
   getNewAddress(addressType: AddressType): Promise<Address>;
+  getNewAddress(): Promise<Address>;
   getBestBlockHash(): Promise<Hash>;
   getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
   getBestBlockInfo(): Promise<BlockInfo>;
   getTxn(txnHash: Hash): Promise<TxnInfo>;
   getBalance(): Promise<number>;
   spend(address: Address, amount: number): Promise<SpendConfirmation>;
-  watch(address: Address): Promise<AddressEvent>;
-  watch(address: XPub): Promise<AddressEvent>;
+  watchTxnId(txnId: string): Promise<TxnWatchConfimation>;
+  getActiveAddressWatch(): Promise<[AddressWatchPayload]>;
+  unwatchAddress(address: Address): Promise<AddressWatchConfirmation>;
+  unwatchLabel(label: number): Promise<AddressWatchConfirmation>;
+}
+
+export interface AddressWatchPayload {
+  id: number; //"291";
+  address: Address; //"2N8DcqzfkYi8CkYzvNNS5amoq3SbAcQNXKp";
+  imported: number; // "1";
+  unconfirmedCallbackURL: string; // "192.168.133.233:1111/callback0conf";
+  confirmedCallbackURL: string; //"192.168.133.233:1111/callback1conf";
+  watching_since: string; // "2018-09-06 21:14:03";
 }

@@ -128,6 +128,25 @@ export interface BlockChainInfo {
   };
   warnings: "Warning: unknown new rules activated (versionbit 28)";
 }
+interface WatcherOptions {
+  unconfirmedCallbackURL?: string;
+  confirmedCallbackURL?: string;
+}
+
+export interface AddressWatchOptions extends WatcherOptions {
+  path?: string;
+}
+export interface TxnWatchOptions extends WatcherOptions {
+  nbxconf: number;
+}
+export interface AddressWatchPayload {
+  id: number; //"291";
+  address: Address; //"2N8DcqzfkYi8CkYzvNNS5amoq3SbAcQNXKp";
+  imported: number; // "1";
+  unconfirmedCallbackURL: string; // "192.168.133.233:1111/callback0conf";
+  confirmedCallbackURL: string; //"192.168.133.233:1111/callback1conf";
+  watching_since: string; // "2018-09-06 21:14:03";
+}
 export interface CypherNodeBtcClient {
   getBlockChainInfo(): Promise<BlockChainInfo>;
   getNewAddress(addressType: AddressType): Promise<Address>;
@@ -138,17 +157,15 @@ export interface CypherNodeBtcClient {
   getTxn(txnHash: Hash): Promise<TxnInfo>;
   getBalance(): Promise<number>;
   spend(address: Address, amount: number): Promise<SpendConfirmation>;
-  watchTxnId(txnId: string): Promise<TxnWatchConfimation>;
+  watchAddress(
+    address: Address,
+    options?: AddressWatchOptions
+  ): Promise<AddressWatchConfirmation>;
+  watchTxnId(
+    txnId: string,
+    options: TxnWatchOptions
+  ): Promise<TxnWatchConfimation>;
   getActiveAddressWatch(): Promise<[AddressWatchPayload]>;
   unwatchAddress(address: Address): Promise<AddressWatchConfirmation>;
   unwatchLabel(label: number): Promise<AddressWatchConfirmation>;
-}
-
-export interface AddressWatchPayload {
-  id: number; //"291";
-  address: Address; //"2N8DcqzfkYi8CkYzvNNS5amoq3SbAcQNXKp";
-  imported: number; // "1";
-  unconfirmedCallbackURL: string; // "192.168.133.233:1111/callback0conf";
-  confirmedCallbackURL: string; //"192.168.133.233:1111/callback1conf";
-  watching_since: string; // "2018-09-06 21:14:03";
 }

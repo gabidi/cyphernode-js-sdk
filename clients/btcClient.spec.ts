@@ -1,6 +1,6 @@
 import { serial, TestInterface } from "ava";
 import { client as btcClient } from "./btcClient";
-import { CypherNodeBtcClient, AddressType } from "./lib/types/btc.d";
+import { CypherNodeBtcClient, AddressType } from "../lib/types/btc.d";
 const test = serial as TestInterface<CypherNodeBtcClient & { chain: string }>;
 test.before(async t => {
   const client = btcClient({

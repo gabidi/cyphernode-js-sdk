@@ -1,10 +1,10 @@
-import cypherNodeClient from "./lib/cypherNodeClient";
+import cypherNodeClient from "../lib/cypherNodeClient";
 import {
   CypherNodeClient,
   CypherNodeClientParam,
   ClientConfig
-} from "./lib/types/clients";
-import { CypherNodeOTSClient, Hash, OTSStampRcpt } from "./lib/types/ots";
+} from "../lib/types/clients";
+import { CypherNodeOTSClient, Hash, OTSStampRcpt } from "../lib/types/ots";
 export const client = ({
   apiKey = undefined,
   userType = undefined,

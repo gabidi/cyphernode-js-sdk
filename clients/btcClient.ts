@@ -1,22 +1,24 @@
-import cypherNodeClient from "./lib/cypherNodeClient";
+import cypherNodeClient from "../lib/cypherNodeClient";
 import {
   CypherNodeClient,
   CypherNodeClientParam,
   ClientConfig
-} from "./lib/types/clients";
+} from "../lib/types/clients";
 import {
   CypherNodeBtcClient,
   Hash,
   BlockInfo,
   TxnInfo,
   TxnWatchConfimation,
+  TxnWatchOptions,
   Address,
   AddressType,
   AddressWatchConfirmation,
   AddressWatchPayload,
+  AddressWatchOptions,
   BlockChainInfo,
   SpendConfirmation
-} from "./lib/types/btc.d";
+} from "../lib/types/btc.d";
 export const client = ({
   apiKey = undefined,
   userType = undefined,
@@ -80,11 +82,11 @@ export const client = ({
     //  TODO Get watch list xpub , label, and tesssst
     async watchAddress(
       address: Address,
-      options: any
+      options?: AddressWatchOptions
     ): Promise<AddressWatchConfirmation> {
       const command =
         parseBtcAddressType(address) == "expub" ? "watchxpub" : "watch";
-      if (command === "watchxpub" && !options.path)
+      if (command === "watchxpub" && (!options || !options.path))
         throw "Must provide a derivation path for extended public addresss watches";
       const result = await post(command, {
         address,
@@ -94,9 +96,13 @@ export const client = ({
     },
     async watchTxnId(
       txn: string,
-      { nbxconf = 6 } = {}
+      options: TxnWatchOptions
     ): Promise<TxnWatchConfimation> {
-      const result = await get("watchtxnid", { nbxconf });
+      let param = {
+        nbxconf: 6,
+        ...options
+      };
+      const result = await post("watchtxid", { txid: txn, ...param });
       return result;
     },
     async getActiveAddressWatch(): Promise<[AddressWatchPayload]> {

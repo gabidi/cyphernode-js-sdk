@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const ava_1 = require("ava");
-const btcClient_1 = require("../btcClient");
+const btcClient_1 = require("../clients/btcClient");
 const mqtt_1 = __importDefault(require("mqtt"));
 const sinon_1 = __importDefault(require("sinon"));
-const MQTT_BROKER = "localhost" || process.env.CYPHERNODE_MQTT_BROKER;
+const MQTT_BROKER = process.env.CYPHERNODE_MQTT_BROKER || "localhost";
 const test = ava_1.serial;
 test.before(async (t) => {
     const client = btcClient_1.client({
@@ -18,19 +18,16 @@ test.before(async (t) => {
     const { chain } = await client.getBlockChainInfo();
     if (!chain)
         throw "Could not get blockChainInfo or undefined chain type";
+    t.context = { ...client, chain };
+});
+test.skip("Should be able to watch an address and get notificaitons", async (t) => {
+    const { watchAddress, getNewAddress, spend, chain, getBalance } = t.context;
     if (chain !== "test") {
         throw "**** WARNING: RUNNING TESTS ON MAINNET!!! ****, switch to testnet for notifier tests";
     }
-    const balance = await client.getBalance();
+    const balance = await getBalance();
     if (balance <= 0)
         throw "We have no balance to run spend/watch tests";
-    t.context = { ...client, chain };
-});
-/**
-BTC tests
-*/
-test("Should be able to watch an address and get notificaitons", async (t) => {
-    const { watch, getNewAddress, spend } = t.context;
     const mqttClient = mqtt_1.default.connect({
         host: MQTT_BROKER,
         protocolId: "MQTT",
@@ -53,8 +50,8 @@ test("Should be able to watch an address and get notificaitons", async (t) => {
         });
     });
     const rcvAddress = await getNewAddress("legacy");
-    // Do watch here
-    const watchEvent = await watch(rcvAddress);
+    // Do watchAddress here
+    const watchEvent = await watchAddress(rcvAddress);
     // Do spend here
     const { hash } = await spend(rcvAddress, 0.00000000001);
     await messageAckPromise;

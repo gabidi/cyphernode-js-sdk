@@ -1,9 +1,11 @@
 import { serial, TestInterface } from "ava";
-import { client as btcClient } from "../btcClient";
+import { client as btcClient } from "../clients/btcClient";
 import { CypherNodeBtcClient, AddressType } from "../lib/types/btc.d";
+import { until } from "async";
 import mqtt from "mqtt";
 import sinon from "sinon";
-const MQTT_BROKER = "localhost" || process.env.CYPHERNODE_MQTT_BROKER;
+import { EventEmitter } from "events";
+const MQTT_BROKER = process.env.CYPHERNODE_MQTT_BROKER || "localhost";
 const test = serial as TestInterface<CypherNodeBtcClient & { chain: string }>;
 test.before(async t => {
   const client = btcClient({
@@ -13,19 +15,16 @@ test.before(async t => {
   // check which chain we're on
   const { chain } = await client.getBlockChainInfo();
   if (!chain) throw "Could not get blockChainInfo or undefined chain type";
+  t.context = { ...client, chain };
+});
+
+test.skip("Should be able to watch an address and get notificaitons", async t => {
+  const { watchAddress, getNewAddress, spend, chain, getBalance } = t.context;
   if (chain !== "test") {
     throw "**** WARNING: RUNNING TESTS ON MAINNET!!! ****, switch to testnet for notifier tests";
   }
-  const balance = await client.getBalance();
+  const balance = await getBalance();
   if (balance <= 0) throw "We have no balance to run spend/watch tests";
-  t.context = { ...client, chain };
-});
-/**
-BTC tests
-*/
-
-test("Should be able to watch an address and get notificaitons", async t => {
-  const { watch, getNewAddress, spend } = t.context;
   const mqttClient = mqtt.connect({
     host: MQTT_BROKER,
     protocolId: "MQTT",
@@ -47,8 +46,8 @@ test("Should be able to watch an address and get notificaitons", async t => {
     });
   });
   const rcvAddress = await getNewAddress("legacy");
-  // Do watch here
-  const watchEvent = await watch(rcvAddress);
+  // Do watchAddress here
+  const watchEvent = await watchAddress(rcvAddress);
   // Do spend here
   const { hash } = await spend(rcvAddress, 0.00000000001);
   await messageAckPromise;

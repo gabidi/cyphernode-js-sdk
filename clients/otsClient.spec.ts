@@ -1,8 +1,8 @@
 import { createHash, Hash } from "crypto";
 import { serial, TestInterface } from "ava";
 import { client as otsClient } from "./otsClient";
-import { CypherNodeClient } from "./lib/types/clients";
-import { CypherNodeOTSClient } from "./lib/types/ots";
+import { CypherNodeClient } from "../lib/types/clients";
+import { CypherNodeOTSClient } from "../lib/types/ots";
 interface TestContext extends CypherNodeOTSClient {
   fileHash: Hash;
 }

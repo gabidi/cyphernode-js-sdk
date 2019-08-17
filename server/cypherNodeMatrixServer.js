@@ -5,11 +5,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const cypherNodeClient_1 = __importDefault(require("../lib/cypherNodeClient"));
 const v4_1 = __importDefault(require("uuid/v4"));
+const events_1 = require("events");
 const debug_1 = __importDefault(require("debug"));
 const matrixUtil_1 = require("../lib/matrixUtil");
 const debug = debug_1.default("cypherNodeMatrixServer");
+const emitter = new events_1.EventEmitter();
 const cypherNodeMatrixServer = ({ baseUrl = undefined, user = undefined, password = undefined, apiKey = undefined, userType = undefined, cypherGateway = undefined, matrixClient = matrixUtil_1.getSyncMatrixClient({ baseUrl, user, password }), cypherNodeClient = cypherNodeClient_1.default({ apiKey, userType, cypherGateway }) } = {}) => {
     let serverRoom;
+    /**
+     * Helper fn that will forwarda n emitter to the room
+     * Injected with CN event emitter so we can forward cn events to roomId
+     */
+    const emitCnEventToRoomId = ({ emitter, roomId }) => {
+        emitter.on("cn-event", async (payload) => {
+            if (!roomId)
+                return;
+            await matrixClient.sendEvent(roomId, "m.room.cypherNodeEvent", {
+                body: JSON.stringify({ uuid: v4_1.default(), ...payload }),
+                msgtype: "m.cypherNodeEventPayload"
+            }, "");
+        });
+    };
     /**
      * @todo Flow
      * 1. start a channel that we use to intiate with user -> qrcode(server,channel,key)

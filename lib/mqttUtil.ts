@@ -48,6 +48,9 @@ const cypherNodeMqttSub = ({
     const parsedBody = cypherNodeMqttMsgParser(message);
     if (!parsedBody) return;
     const { id } = parsedBody;
+    // TODO quick hack to be able to sub to all events or a specific one
+    // Maybe use something with wild card support ?
+    emitter.emit(`cn-events`, parsedBody);
     emitter.emit(`cn-${id}`, parsedBody);
   };
   mqttClient.on("message", msgEmitterLsner);

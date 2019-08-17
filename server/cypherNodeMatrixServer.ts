@@ -7,8 +7,9 @@ import uuid from "uuid/v4";
 import { EventEmitter } from "events";
 import _debug from "debug";
 import { getSyncMatrixClient } from "../lib/matrixUtil";
-
+import { cypherNodeMqttSub } from "../lib/mqttUtil";
 const debug = _debug("cypherNodeMatrixServer");
+const emitter = new EventEmitter();
 const cypherNodeMatrixServer = ({
   baseUrl = undefined,
   user = undefined,
@@ -20,6 +21,30 @@ const cypherNodeMatrixServer = ({
   cypherNodeClient = _cypherNodeClient({ apiKey, userType, cypherGateway })
 } = {}): { startServer: Function; getRoomId: Function } => {
   let serverRoom;
+  /**
+   * Helper fn that will forwarda n emitter to the room
+   * Injected with CN event emitter so we can forward cn events to roomId
+   */
+  const emitCnEventToRoomId = ({
+    emitter,
+    roomId
+  }: {
+    emitter: EventEmitter;
+    roomId: string;
+  }) => {
+    emitter.on("cn-event", async payload => {
+      if (!roomId) return;
+      await matrixClient.sendEvent(
+        roomId,
+        "m.room.cypherNodeEvent",
+        {
+          body: JSON.stringify({ uuid: uuid(), ...payload }),
+          msgtype: "m.cypherNodeEventPayload"
+        },
+        ""
+      );
+    });
+  };
   /**
    * @todo Flow
    * 1. start a channel that we use to intiate with user -> qrcode(server,channel,key)

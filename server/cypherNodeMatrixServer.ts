@@ -55,9 +55,8 @@ const cypherNodeMatrixServer = ({
     const { get, post } = cypherNodeClient;
     const _room = await matrixClient.createRoom({
       inviteUser,
-      visibility: "private", // 'public'
+      visibility: "private", 
       name: `cyphernode-${uuid()}`,
-      //topic: "ava-test-topic",
       room_alias_name: `cyphernode-${uuid()}`
     });
     serverRoom = await matrixClient.joinRoom(_room.room_id);

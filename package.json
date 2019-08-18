@@ -4,12 +4,17 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test:client:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js ./clients/btcClient.spec.js",
-    "test:client:lnc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js ./clients/lncClient.spec.js",
-    "test:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js ./clients/otsClient.spec.js",
-    "test:clients": "NODE_TLS_REJECT_UNAUTHORIZED=0 node ./node_modules/ava/cli.js ./lib/*.spec*.js ./clients/*.spec.js"
+    "test:client:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./clients/btcClient.spec.js",
+    "test:client:lnc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./clients/lncClient.spec.js",
+    "test:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./clients/otsClient.spec.js",
+    "test:clients": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./lib/*.spec*.js ./clients/*.spec.js"
   },
   "dependencies": {
+    "@types/express": "^4.17.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.1.0",
+    "express": "^4.17.1",
+    "qr-image": "^3.2.0",
     "superagent": "^5.0.6"
   },
   "optionalDependencies": {

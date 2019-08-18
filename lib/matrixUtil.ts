@@ -1,9 +1,11 @@
 import matrix from "matrix-js-sdk";
+import _debug from "debug";
+const debug = _debug("matrixUtil");
 const getSyncMatrixClient = async ({
   user = process.env.CYPHERNODE_MATRIX_USER,
   password = process.env.CYPHERNODE_MATRIX_PASS,
   baseUrl = process.env.CYPHERNODE_MATRIX_SERVER
-}) => {
+} = {}) => {
   const matrixClient = await matrix.createClient({
     baseUrl,
     initialSyncLimit: 10,

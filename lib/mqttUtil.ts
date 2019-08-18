@@ -6,7 +6,7 @@ import mqtt from "mqtt";
  */
 const cypherNodeMqttSub = ({
   host = process.env.CYPHERNODE_MQTT_BROKER || "localhost",
-  port = 1883,
+  port = process.env.CYPHERNODE_MQTT_PORT || 1883,
   mqttClient = mqtt.connect({
     host,
     protocol: "mqtt",

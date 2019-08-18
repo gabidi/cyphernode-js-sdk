@@ -27,21 +27,23 @@ test("Should be able to route and process a cypherNode-sdk request over Matrix",
     const { getSyncMatrixClient, getCypherNodeClient, apiKey } = t.context;
     // Setup server
     const serverMatrixClient = await getSyncMatrixClient({
-        baseUrl: "https://matrix.sifir.io",
-        password: "}w7'+uB9_@jH_H8~",
-        user: "@test7:matrix.sifir.io"
+        baseUrl: process.env.CYPHERNODE_MATRIX_SERVER,
+        password: process.env.CYPHERNODE_MATRIX_PASS,
+        user: process.env.CYPHERNODE_MATRIX_USER
     });
     // create another cypherNodeClent using matrix transport
     const transportMatrixClient = await getSyncMatrixClient({
-        baseUrl: "https://matrix.sifir.io",
-        password: "}w7'+uB9_@jH_H8~",
-        user: "@test5:matrix.sifir.io"
+        baseUrl: process.env.CYPHERNODE_MATRIX_SERVER,
+        password: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_PASS,
+        user: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER
     });
     const { startServer, getRoomId } = cypherNodeMatrixServer_1.cypherNodeMatrixServer({
         cypherNodeClient: getCypherNodeClient(),
         matrixClient: serverMatrixClient
     });
-    await startServer();
+    await startServer({
+        inviteUser: [process.env.CYPERNODE_MATRIX_TEST_CLIENT_USER]
+    });
     const frontEndCypherNodeClient = cypherNodeClient_1.default({
         transport: await cyphernodeMatrixTransport_1.cypherNodeMatrixTransport({
             matrixClient: transportMatrixClient,

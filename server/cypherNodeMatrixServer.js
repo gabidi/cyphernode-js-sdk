@@ -32,7 +32,7 @@ const cypherNodeMatrixServer = ({ baseUrl = undefined, user = undefined, passwor
      * 2. user logs in server, channel and sends key
      * 3. server checks if key is valid and calls startServer({inviteUser}) which creates a private channel for that user to start connecting to their cyphernode
      */
-    const startServer = async ({ inviteUser = ["@test5:matrix.sifir.io"] } = {}) => {
+    const startServer = async ({ inviteUser = [] } = {}) => {
         const { get, post } = cypherNodeClient;
         const _room = await matrixClient.createRoom({
             inviteUser,
@@ -80,7 +80,8 @@ const cypherNodeMatrixServer = ({ baseUrl = undefined, user = undefined, passwor
     const getRoomId = () => serverRoom.roomId;
     return {
         startServer,
-        getRoomId
+        getRoomId,
+        emitCnEventToRoomId
     };
 };
 exports.cypherNodeMatrixServer = cypherNodeMatrixServer;

@@ -6,6 +6,7 @@ const getSyncMatrixClient = async ({
   password = process.env.CYPHERNODE_MATRIX_PASS,
   baseUrl = process.env.CYPHERNODE_MATRIX_SERVER
 } = {}) => {
+  debug("Conneting to", baseUrl, user);
   const matrixClient = await matrix.createClient({
     baseUrl,
     initialSyncLimit: 10,

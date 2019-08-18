@@ -38,7 +38,6 @@ const cypherNodeMatrixServer = ({ baseUrl = undefined, user = undefined, passwor
             inviteUser,
             visibility: "private",
             name: `cyphernode-${v4_1.default()}`,
-            //topic: "ava-test-topic",
             room_alias_name: `cyphernode-${v4_1.default()}`
         });
         serverRoom = await matrixClient.joinRoom(_room.room_id);

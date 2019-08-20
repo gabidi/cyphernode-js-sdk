@@ -1,9 +1,9 @@
-import cypherNodeClient from "./lib/cypherNodeClient";
+import cypherNodeClient from "../lib/cypherNodeClient";
 import {
   CypherNodeClient,
   CypherNodeClientParam,
   ClientConfig
-} from "./lib/types/clients";
+} from "../lib/types/clients";
 import {
   ConnectionString,
   LnNodeInfo,
@@ -13,7 +13,7 @@ import {
   Bolt11String,
   DecodedBolt11,
   CypherNodeLncClient
-} from "./lib/types/lightning-c";
+} from "../lib/types/lightning-c";
 export const client = ({
   apiKey = undefined,
   userType = undefined,

@@ -6,7 +6,8 @@ import {
   CypherNodeCommand
 } from "./types/clients";
 const CYPHER_GATEWAY_URL =
-  (process && process.env.CYPHERNODE_GATEWAY_URL) || "https://localhost:2009/v0/";
+  (process && process.env.CYPHERNODE_GATEWAY_URL) ||
+  "https://localhost:2009/v0/";
 
 export default (config: CypherNodeClientParam): CypherNodeClient => {
   const {

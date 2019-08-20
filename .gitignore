@@ -1,2 +1,4 @@
 node_modules/
 tslint.json
+scripts/
+.env

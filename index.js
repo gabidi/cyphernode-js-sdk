@@ -1,8 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var btcClient_1 = require("./btcClient");
+var btcClient_1 = require("./clients/btcClient");
 exports.btcClient = btcClient_1.client;
-var lncClient_1 = require("./lncClient");
+var lncClient_1 = require("./clients/lncClient");
 exports.lnClient = lncClient_1.client;
-var otsClient_1 = require("./otsClient");
+var otsClient_1 = require("./clients/otsClient");
 exports.otsClient = otsClient_1.client;
+var cypherNodeMatrixBridge_1 = require("./bridge/cypherNodeMatrixBridge");
+exports.cypherNodeMatrixBridge = cypherNodeMatrixBridge_1.cypherNodeMatrixBridge;
+var cyphernodeMatrixTransport_1 = require("./transport/cyphernodeMatrixTransport");
+exports.cypherNodeMatrixTransport = cyphernodeMatrixTransport_1.cypherNodeMatrixTransport;

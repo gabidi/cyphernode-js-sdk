@@ -1,8 +1,8 @@
 import { serial, TestInterface } from "ava";
 import { client as lnClient } from "./lncClient";
 import uuid from "uuid/v4";
-import { CypherNodeClient } from "./lib/types/clients";
-import { CypherNodeLncClient } from "./lib/types/lightning-c";
+import { CypherNodeClient } from "../lib/types/clients";
+import { CypherNodeLncClient } from "../lib/types/lightning-c";
 interface TestContext extends CypherNodeLncClient {
   lightingInvoiceLabel: string;
 }

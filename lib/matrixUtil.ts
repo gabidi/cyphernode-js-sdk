@@ -5,7 +5,7 @@ const getSyncMatrixClient = async ({
   user = process.env.CYPHERNODE_MATRIX_USER,
   password = process.env.CYPHERNODE_MATRIX_PASS,
   baseUrl = process.env.CYPHERNODE_MATRIX_SERVER
-} = {}) => {
+} = {}): Promise<matrix.MatrixClient> => {
   debug("Conneting to", baseUrl, user);
   const matrixClient = await matrix.createClient({
     baseUrl,
@@ -19,7 +19,7 @@ const getSyncMatrixClient = async ({
   matrixClient.startClient();
   let syncFailCount = 0;
   return new Promise((res, rej) => {
-    matrixClient.once("sync", (syncState, a, event) => {
+    matrixClient.once("sync", (syncState:string, a, event: matrix.EventTimeline) => {
       if (syncState === "ERROR") {
         debug("Matrix Sync error", event, syncState, a);
         if (event) {

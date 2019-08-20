@@ -58,8 +58,8 @@ const cypherNodeMatrixTransport = async ({ baseUrl = undefined, user = undefined
         });
         return commandPromise;
     };
-    const get = (command, payload) => _sendCommand({ method: "GET", command, param: payload });
-    const post = (command, payload) => _sendCommand({ method: "POST", command, param: payload });
+    const get = (command, payload) => _sendCommand({ method: "GET", command, payload });
+    const post = (command, payload) => _sendCommand({ method: "POST", command, payload });
     return { get, post };
 };
 exports.cypherNodeMatrixTransport = cypherNodeMatrixTransport;

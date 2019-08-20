@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ava_1 = require("ava");
 const btcClient_1 = require("../clients/btcClient");
 const cypherNodeClient_1 = __importDefault(require("../lib/cypherNodeClient"));
-const cypherNodeMatrixServer_1 = require("../server/cypherNodeMatrixServer");
+const cypherNodeMatrixBridge_1 = require("../bridge/cypherNodeMatrixBridge");
 const cyphernodeMatrixTransport_1 = require("../transport/cyphernodeMatrixTransport");
 const matrixUtil_1 = require("../lib/matrixUtil");
 const debug_1 = __importDefault(require("debug"));
@@ -20,29 +20,30 @@ test.before(async (t) => {
     t.context = {
         getCypherNodeClient,
         getSyncMatrixClient: matrixUtil_1.getSyncMatrixClient,
-        apiKey: process.env.CYPHERNODE_API_KEY
+        apiKey: process.env.CYPHERNODE_API_KEY,
+        baseUrl: process.env.CYPHERNODE_MATRIX_SERVER
     };
 });
 test("Should be able to route and process a cypherNode-sdk request over Matrix", async (t) => {
-    const { getSyncMatrixClient, getCypherNodeClient, apiKey } = t.context;
+    const { baseUrl, getSyncMatrixClient, getCypherNodeClient, apiKey } = t.context;
     // Setup server
     const serverMatrixClient = await getSyncMatrixClient({
-        baseUrl: process.env.CYPHERNODE_MATRIX_SERVER,
+        baseUrl,
         password: process.env.CYPHERNODE_MATRIX_PASS,
         user: process.env.CYPHERNODE_MATRIX_USER
     });
     // create another cypherNodeClent using matrix transport
     const transportMatrixClient = await getSyncMatrixClient({
-        baseUrl: process.env.CYPHERNODE_MATRIX_SERVER,
+        baseUrl,
         password: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_PASS,
         user: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER
     });
-    const { startServer, getRoomId } = cypherNodeMatrixServer_1.cypherNodeMatrixServer({
+    const { startBridge, getRoomId } = cypherNodeMatrixBridge_1.cypherNodeMatrixBridge({
         cypherNodeClient: getCypherNodeClient(),
         matrixClient: serverMatrixClient
     });
-    await startServer({
-        inviteUser: [process.env.CYPERNODE_MATRIX_TEST_CLIENT_USER]
+    await startBridge({
+        inviteUser: [process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER]
     });
     const frontEndCypherNodeClient = cypherNodeClient_1.default({
         transport: await cyphernodeMatrixTransport_1.cypherNodeMatrixTransport({

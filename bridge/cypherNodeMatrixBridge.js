@@ -10,7 +10,7 @@ const debug_1 = __importDefault(require("debug"));
 const matrixUtil_1 = require("../lib/matrixUtil");
 const debug = debug_1.default("cypherNodeMatrixServer");
 const emitter = new events_1.EventEmitter();
-const cypherNodeMatrixServer = ({ baseUrl = undefined, user = undefined, password = undefined, apiKey = undefined, userType = undefined, cypherGateway = undefined, matrixClient = matrixUtil_1.getSyncMatrixClient({ baseUrl, user, password }), cypherNodeClient = cypherNodeClient_1.default({ apiKey, userType, cypherGateway }) } = {}) => {
+const cypherNodeMatrixBridge = ({ baseUrl = undefined, user = undefined, password = undefined, apiKey = undefined, userType = undefined, cypherGateway = undefined, matrixClient = matrixUtil_1.getSyncMatrixClient({ baseUrl, user, password }), cypherNodeClient = cypherNodeClient_1.default({ apiKey, userType, cypherGateway }) } = {}) => {
     let serverRoom;
     /**
      * Helper fn that will forwarda n emitter to the room
@@ -32,10 +32,10 @@ const cypherNodeMatrixServer = ({ baseUrl = undefined, user = undefined, passwor
      * 2. user logs in server, channel and sends key
      * 3. server checks if key is valid and calls startServer({inviteUser}) which creates a private channel for that user to start connecting to their cyphernode
      */
-    const startServer = async ({ inviteUser = [] } = {}) => {
+    const startBridge = async ({ inviteUser = [] } = {}) => {
         const { get, post } = cypherNodeClient;
         const _room = await matrixClient.createRoom({
-            inviteUser,
+            invite: inviteUser,
             visibility: "private",
             name: `cyphernode-${v4_1.default()}`,
             room_alias_name: `cyphernode-${v4_1.default()}`
@@ -78,9 +78,9 @@ const cypherNodeMatrixServer = ({ baseUrl = undefined, user = undefined, passwor
     };
     const getRoomId = () => serverRoom.roomId;
     return {
-        startServer,
+        startBridge,
         getRoomId,
         emitCnEventToRoomId
     };
 };
-exports.cypherNodeMatrixServer = cypherNodeMatrixServer;
+exports.cypherNodeMatrixBridge = cypherNodeMatrixBridge;

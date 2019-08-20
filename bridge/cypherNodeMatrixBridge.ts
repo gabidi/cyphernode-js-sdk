@@ -10,7 +10,7 @@ import { getSyncMatrixClient } from "../lib/matrixUtil";
 import { cypherNodeMqttSub } from "../lib/mqttUtil";
 const debug = _debug("cypherNodeMatrixServer");
 const emitter = new EventEmitter();
-const cypherNodeMatrixServer = ({
+const cypherNodeMatrixBridge = ({
   baseUrl = undefined,
   user = undefined,
   password = undefined,
@@ -19,7 +19,11 @@ const cypherNodeMatrixServer = ({
   cypherGateway = undefined,
   matrixClient = getSyncMatrixClient({ baseUrl, user, password }),
   cypherNodeClient = _cypherNodeClient({ apiKey, userType, cypherGateway })
-} = {}): { startServer: Function; getRoomId: Function } => {
+} = {}): {
+  startBridge: Function;
+  getRoomId: Function;
+  emitCnEventToRoomId: Function;
+} => {
   let serverRoom;
   /**
    * Helper fn that will forwarda n emitter to the room
@@ -51,11 +55,11 @@ const cypherNodeMatrixServer = ({
    * 2. user logs in server, channel and sends key
    * 3. server checks if key is valid and calls startServer({inviteUser}) which creates a private channel for that user to start connecting to their cyphernode
    */
-  const startServer = async ({ inviteUser = [] } = {}) => {
+  const startBridge = async ({ inviteUser = [] } = {}) => {
     const { get, post } = cypherNodeClient;
     const _room = await matrixClient.createRoom({
-      inviteUser,
-      visibility: "private", 
+      invite: inviteUser,
+      visibility: "private",
       name: `cyphernode-${uuid()}`,
       room_alias_name: `cyphernode-${uuid()}`
     });
@@ -106,9 +110,9 @@ const cypherNodeMatrixServer = ({
   };
   const getRoomId = () => serverRoom.roomId;
   return {
-    startServer,
+    startBridge,
     getRoomId,
     emitCnEventToRoomId
   };
 };
-export { cypherNodeMatrixServer };
+export { cypherNodeMatrixBridge };

@@ -52,7 +52,7 @@ const cypherNodeMatrixTransport = async ({
     payload
   }: {
     method: "GET" | "POST";
-    command: string;
+    command: CypherNodeCommand;
     payload: any;
   }) => {
     const nonce = uuid();
@@ -78,9 +78,9 @@ const cypherNodeMatrixTransport = async ({
     return commandPromise;
   };
   const get = (command: CypherNodeCommand, payload: any) =>
-    _sendCommand({ method: "GET", command, param: payload });
+    _sendCommand({ method: "GET", command, payload });
   const post = (command: CypherNodeCommand, payload: any) =>
-    _sendCommand({ method: "POST", command, param: payload });
+    _sendCommand({ method: "POST", command, payload });
   return { get, post };
 };
 export { cypherNodeMatrixTransport };

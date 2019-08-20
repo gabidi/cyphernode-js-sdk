@@ -2,7 +2,7 @@ import { serial, TestInterface } from "ava";
 import { client as _btcClient } from "../clients/btcClient";
 import _cypherNodeClient from "../lib/cypherNodeClient";
 import { CypherNodeBtcClient, AddressType } from "../lib/types/btc.d";
-import { cypherNodeMatrixServer } from "../server/cypherNodeMatrixServer";
+import { cypherNodeMatrixBridge } from "../bridge/cypherNodeMatrixBridge";
 import { cypherNodeMatrixTransport } from "../transport/cyphernodeMatrixTransport";
 import { getSyncMatrixClient } from "../lib/matrixUtil";
 import { queue } from "async";
@@ -20,31 +20,37 @@ test.before(async t => {
   t.context = {
     getCypherNodeClient,
     getSyncMatrixClient,
-    apiKey: process.env.CYPHERNODE_API_KEY
+    apiKey: process.env.CYPHERNODE_API_KEY,
+    baseUrl: process.env.CYPHERNODE_MATRIX_SERVER
   };
 });
 
 test("Should be able to route and process a cypherNode-sdk request over Matrix", async t => {
-  const { getSyncMatrixClient, getCypherNodeClient, apiKey } = t.context;
+  const {
+    baseUrl,
+    getSyncMatrixClient,
+    getCypherNodeClient,
+    apiKey
+  } = t.context;
   // Setup server
   const serverMatrixClient = await getSyncMatrixClient({
-    baseUrl: process.env.CYPHERNODE_MATRIX_SERVER,
+    baseUrl,
     password: process.env.CYPHERNODE_MATRIX_PASS,
     user: process.env.CYPHERNODE_MATRIX_USER
   });
   // create another cypherNodeClent using matrix transport
   const transportMatrixClient = await getSyncMatrixClient({
-    baseUrl: process.env.CYPHERNODE_MATRIX_SERVER,
+    baseUrl,
     password: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_PASS,
     user: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER
   });
 
-  const { startServer, getRoomId } = cypherNodeMatrixServer({
+  const { startBridge, getRoomId } = cypherNodeMatrixBridge({
     cypherNodeClient: getCypherNodeClient(),
     matrixClient: serverMatrixClient
   });
-  await startServer({
-    inviteUser: [process.env.CYPERNODE_MATRIX_TEST_CLIENT_USER]
+  await startBridge({
+    inviteUser: [process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER]
   });
   const frontEndCypherNodeClient = _cypherNodeClient({
     transport: await cypherNodeMatrixTransport({

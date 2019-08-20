@@ -1,32 +1,46 @@
-# An Isomorphic Javascript SDK for Bitcoin, C-lightning and Opentimestamp visa-vi CypherNode.
+# An Isomorphic Javascript SDK for Bitcoin, C-lightning and Opentimestamp Vis-à-vis CypherNode.
 
 # Why ?
-Cyphernode simplifies to a large extent the historically cumbersome process for an individual to run, ergo sum participate, in the Bitcoin value network.
-The aim of the SDK is to help bring access by bridging access from the "systems software" technological stack into the "product space" where product developers can start easily building apps for the future.
+Cyphernode simplifies to a large extent the historically cumbersome process for an individual to run a full-node and thus participate in the Bitcoin value network.
+The aim of the SDK is to further help access by bridging the gap between the "systems software" technological stack and the "product space" where product developers can start easily building apps for the future.
 
-This SDK aims to abstract complications and offer a clean and friendly way to access the value proposition these systems offer.
+This SDK aims to abstract complications and offer a clean and friendly way to access the value proposition these systems offer with a value add of distributed communication stack.
 
-# What's the more part ?
+# Distributed Communication Stack
+
 This SDK also includes helpers and tools that bridge and integrate the Bitcoin network into [Matrix.org](https://matrix.org) distributed communication architecture. 
-I have this inhert belief that mixing an encrypted federeated distirbuted communication protocl with a disitrbuted exchange of value protocol is a reciepe for magic to happen.
+I have this inhert belief that mixing an encrypted,federated and distirbuted communication protocol with Bitcoin's disitrbuted exchange of value network is a reciepe for magic to happen.
 After all in the words of @aantonop
 
 ``` 
 Money is a language. 
 ```
+POC Apps to come.
 
 ---
+
 ** UNDER HEAVY WIP **
 
-## Tests and Examples
+## Usage,Tests and Examples
 
-Documentation of this SDK is WIP in the meantime client and integration tests serve as exmaples on how to use this SDK.
+Documentation of this SDK is WIP in the meantime client and integration tests serve as 'how-to' examples.
+Futhermore the SDK is written in typescript which should help give a better understanding of parameters and return types for the functions being called.
 
 ### Client Tests
+```
+/clients/
+```
+Contains the individual clients that can be instaniated to access each of Cyphernode's services, at this time these are:
 
-All tests need to have Cyphernode running on your PC.
-Note that you must have a valid Cyphernode admin api key to run the tests and you must pass the key to the SDK tests. The easiest way to do so is using environment variables.
-Simply create a 
+- btcClient.js : All things bitcoin
+- lncClient.js : All things lighting
+- otsClient.js : (WIP) All this opentimestamp
+
+Test files for each client are included that showcase the usage of functionality
+
+#### Client test requirements and steps:
+1. All tests need to have Cyphernode running on your PC
+2. You must have a valid Cyphernode admin api key to run the tests and you must pass the key to the SDK tests. The easiest way to do so is using environment variables. Simply create a 
 ```
 .env
 ``` 
@@ -42,10 +56,11 @@ yarn test:clients
 
 ### Integration Tests
 Integration tests currently cover
-1. Matrix transport and Bridge: Ability to use Matrix.io to communicate with your Cyphernode in a disritbuted and e2e encrypted fashion (@todo)
+1. Matrix transport and Bridge: Ability to use Matrix.io to communicate with your Cyphernode in a disritbuted and e2e encrypted fashion.
 2. Mqtt Event Lsner: Subscribing and acting on Cyphernode watch events.
 
-#### Integration Test requirments
+#### Integration Test requirements and steps:
+
 1. Must have a valid matrix synapse server url
 2. Must have two pairs of matrix user logins (One to be used to test the server and the other the client)
 Best way is to amend the previously mentioned .env file with the following variables:

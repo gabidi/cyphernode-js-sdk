@@ -1,4 +1,3 @@
-import { serial, TestInterface } from "ava";
 import _cypherNodeClient from "../lib/cypherNodeClient";
 import { CypherNodeBtcClient, AddressType } from "../lib/types/btc.d";
 import matrix from "matrix-js-sdk";

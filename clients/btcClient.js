@@ -34,6 +34,10 @@ exports.client = ({ apiKey = undefined, userType = undefined, token = undefined,
             const { address } = await get("getnewaddress", type);
             return address;
         },
+        async getBlockHash(height) {
+            const blockHash = await get("getblockhash", height);
+            return blockHash;
+        },
         async getBestBlockHash() {
             const { result: blockHash } = await get("getbestblockhash");
             return blockHash;

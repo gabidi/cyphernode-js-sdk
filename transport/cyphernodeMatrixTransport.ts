@@ -14,7 +14,7 @@ const cypherNodeMatrixTransport = async ({
   roomId = undefined,
   matrixClient = getSyncMatrixClient({ baseUrl, user, password }),
   emitter = new EventEmitter()
-} = {}): Promise<CypherNodeTransport> => {
+} = {}): Promise<CypherNodeTransport & { getMatrixClient: Function }> => {
   const transportRoom = await matrixClient.joinRoom(roomId);
   debug("Transport in room", transportRoom.roomId);
   // Setup room lsner, re-emits room commands as nonce events on emitter:w
@@ -81,6 +81,7 @@ const cypherNodeMatrixTransport = async ({
     _sendCommand({ method: "GET", command, payload });
   const post = (command: CypherNodeCommand, payload: any) =>
     _sendCommand({ method: "POST", command, payload });
-  return { get, post };
+  const getMatrixClient = () => matrixClient;
+  return { get, post, getMatrixClient };
 };
 export { cypherNodeMatrixTransport };

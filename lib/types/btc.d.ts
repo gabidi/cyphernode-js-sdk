@@ -11,23 +11,23 @@ export type AddressType = "bech32" | "legacy" | "p2sh-segwit" | "expub";
 export type TxnOp = string;
 // "OP_HASH160 c449a7fafb3b13b2952e064f2c3c58e851bb9430 OP_EQUAL"
 // "OP_DUP OP_HASH160 b0379374df5eab8be9a21ee96711712bdb781a95 OP_EQUALVERIFY OP_CHECKSIG"
-
-export interface TxnScriptPubKey {
-  asm: string;
-  hex: string;
-  reqSigs: number;
-  type: string;
-  addresses: Address;
-}
-export interface TxnUTXO {
+export interface VOut {
   value: number;
   n: number;
   scriptPubKey: {
     asm: TxnOp;
-    hex: TxnHash;
+    hex: string;
     reqSigs: number;
     type: string;
     addresses: [Address];
+  };
+}
+export interface VIn {
+  txid: string;
+  vout: number;
+  scriptSig: {
+    asm: string;
+    hex: string;
   };
 }
 export interface BlockInfo {
@@ -59,8 +59,8 @@ export interface TxnInfo {
   vsize: number;
   weight: number;
   locktime: number;
-  vin: [TxnUTXO];
-  vout: [TxnUTXO];
+  vin: [VIn];
+  vout: [VOut];
   hex: TxnHex;
   blockhash: BlockHash;
   confirmations: number;
@@ -151,6 +151,7 @@ export interface CypherNodeBtcClient {
   getBlockChainInfo(): Promise<BlockChainInfo>;
   getNewAddress(addressType: AddressType): Promise<Address>;
   getNewAddress(): Promise<Address>;
+  getBlockHash(height: number): Promise<Hash>;
   getBestBlockHash(): Promise<Hash>;
   getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
   getBestBlockInfo(): Promise<BlockInfo>;

@@ -55,6 +55,11 @@ export const client = ({
       const { address } = await get("getnewaddress", type);
       return address;
     },
+    async getBlockHash(height: number): Promise<Hash> {
+      const blockHash = await get("getblockhash", height);
+      return blockHash;
+    },
+
     async getBestBlockHash(): Promise<Hash> {
       const { result: blockHash } = await get("getbestblockhash");
       return blockHash;

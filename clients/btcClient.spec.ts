@@ -46,6 +46,16 @@ test("Should be able to get the latest block's hash", async t => {
   const blockHash = await getBestBlockHash();
   t.is(blockHash.length, 64);
 });
+test("Should be able to get the a block's hash from its height", async t => {
+  const {
+    context: { getBlockHash }
+  } = t;
+  const blockHash = await getBlockHash(593104);
+  t.is(
+    blockHash,
+    "00000000000000000005dc459f0575b17413dbe7685e3e0fd382ed521f1be68b"
+  );
+});
 test("Should be able to get the lastest block's info", async t => {
   const {
     context: { getBestBlockInfo }

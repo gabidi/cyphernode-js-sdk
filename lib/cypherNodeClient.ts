@@ -29,34 +29,16 @@ export default (config: CypherNodeClientParam): CypherNodeClient => {
         return body;
       }
     },
-    token,
     userType,
-    apiKey
+    apiKey,
+    makeToken = crypto().makeToken
   } = config;
-  const makeToken = async (
-    api_key = apiKey,
-    perm = userType,
-    expiryInSeconds = 3600
-  ): Promise<string> => {
-    const { hmacSHA256Hex } = crypto();
-    const id = `00${perm}`;
-    const exp = Math.round(new Date().getTime() / 1000) + expiryInSeconds;
-    const h64 = Buffer.from(
-      JSON.stringify({ alg: "HS256", typ: "JWT" })
-    ).toString("base64");
-    const p64 = Buffer.from(JSON.stringify({ id, exp })).toString("base64");
-    const msg = h64 + "." + p64;
-    const hash = await hmacSHA256Hex(msg, api_key);
-    return `${msg}.${hash}`;
-  };
-  if (!token && (!userType || !apiKey))
-    throw "You need to pass a token or userType and apiKey to generate one!";
-  const _authToken: Promise<string> =
-    (token && Promise.resolve(token)) || makeToken();
+  // FIXME move apiKey and userType somewhere else
+  // this mod allows the client to setup their own auth/not NEED to pass api/user
+  const _authToken: Promise<string> = makeToken(apiKey, userType);
 
   return {
     ...transport,
-    makeToken,
     token: _authToken
   };
 };

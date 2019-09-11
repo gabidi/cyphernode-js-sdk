@@ -4,7 +4,7 @@ import { client as otsClient } from "./otsClient";
 import { CypherNodeClient } from "../lib/types/clients";
 import { CypherNodeOTSClient } from "../lib/types/ots";
 interface TestContext extends CypherNodeOTSClient {
-  fileHash: Hash;
+  fileHash: string;
 }
 
 const test = serial as TestInterface<TestContext>;
@@ -19,13 +19,7 @@ test.before(t => {
     })
   };
 });
-/**
-/*
-
-OTS  test
-*/
-
-test.skip("Should be able to generate an OTS file", async t => {
+test("Should be able to generate an OTS file", async t => {
   const {
     context: { stamp, fileHash }
   } = t;
@@ -34,6 +28,7 @@ test.skip("Should be able to generate an OTS file", async t => {
   t.false(isNaN(hashRcpt.id));
   t.is(hashRcpt.result, "success");
 });
+// FIXME this currently returns undefined, should return id of event to watch at least
 test("Should be able to get OTS stamp", async t => {
   const {
     context: { getStamp, fileHash }

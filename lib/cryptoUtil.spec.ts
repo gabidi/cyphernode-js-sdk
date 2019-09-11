@@ -18,3 +18,17 @@ test("hmacSHA256Hex should generate a hash identifcal to reference fn", async t 
   const token = await hmacSHA256Hex(text, key);
   t.true(token === trueHash);
 });
+
+test("Cyphernodeclient should generate a valid auth hash", async t => {
+  const apiKey = "somekey";
+  const userType = 3;
+  const { makeToken } = crypto();
+  const token = await makeToken(apiKey, userType);
+  t.is(token.length, 142);
+  const [h64, p64, generatedHash] = token.split(".");
+  // Test generated hash vs reference
+  const hmac = createHmac("sha256", <BinaryType>apiKey);
+  hmac.update(`${h64}.${p64}`);
+  const trueHash = hmac.digest("hex");
+  t.true(generatedHash === trueHash);
+});

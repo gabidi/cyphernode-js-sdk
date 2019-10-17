@@ -1,7 +1,5 @@
-import cypherNodeClient from "../lib/cypherNodeClient";
+import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
 import {
-  CypherNodeClient,
-  CypherNodeClientParam,
   ClientConfig
 } from "../lib/types/clients";
 import {
@@ -15,13 +13,9 @@ import {
   CypherNodeLncClient
 } from "../lib/types/lightning-c";
 export const client = ({
-  apiKey = undefined,
-  userType = undefined,
-  token = undefined,
-  cypherGateway = undefined,
-  client = cypherNodeClient({ token, apiKey, userType, cypherGateway })
+  transport = cypherNodeHTTPTransport()
 }: ClientConfig = {}): CypherNodeLncClient => {
-  const { get, post } = client;
+  const { get, post } = transport;
   const api = {
     getNodeInfo(): Promise<LnNodeInfo> {
       return get("ln_getinfo");

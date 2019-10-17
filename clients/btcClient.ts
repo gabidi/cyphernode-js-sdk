@@ -1,7 +1,6 @@
-import cypherNodeClient from "../lib/cypherNodeClient";
+import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
 import {
   CypherNodeClient,
-  CypherNodeClientParam,
   ClientConfig
 } from "../lib/types/clients";
 import {
@@ -20,13 +19,9 @@ import {
   SpendConfirmation
 } from "../lib/types/btc.d";
 export const client = ({
-  apiKey = undefined,
-  userType = undefined,
-  token = undefined,
-  cypherGateway = undefined,
-  client = cypherNodeClient({ token, apiKey, userType, cypherGateway })
+  transport = cypherNodeHTTPTransport()
 }: ClientConfig = {}): CypherNodeBtcClient => {
-  const { get, post } = client;
+  const { get, post } = transport;
   const parseBtcAddressType = (address: Address): AddressType | null => {
     const addressStart = address.substr(0, 4);
     switch (addressStart) {

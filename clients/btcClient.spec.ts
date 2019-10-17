@@ -3,10 +3,7 @@ import { client as btcClient } from "./btcClient";
 import { CypherNodeBtcClient, AddressType } from "../lib/types/btc.d";
 const test = serial as TestInterface<CypherNodeBtcClient & { chain: string }>;
 test.before(async t => {
-  const client = btcClient({
-    apiKey: process.env.CYPHERNODE_API_KEY,
-    userType: 3
-  });
+  const client = btcClient();
   // check which chain we're on
   const { chain } = await client.getBlockChainInfo();
   if (!chain) throw "Could not get blockChainInfo or undefined chain type";

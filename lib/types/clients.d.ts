@@ -3,21 +3,18 @@ export interface CypherNodeTransport {
   get: <T>(command: CypherNodeCommand, payload?: any) => Promise<T>;
   post: <T>(command: CypherNodeCommand, payload: any) => Promise<T>;
 }
-export interface CypherNodeClient extends CypherNodeTransport {
+export interface CypherNodeHttpTransport extends CypherNodeTransport {
   token: Promise<string>;
 }
-
-export interface ClientAuth {
-  userType?: number;
-  apiKey?: string;
-  token?: string;
-  makeToken: Function;
+export interface CypherNodeMatrixTransportParam {
+	roomId:string;
+  client? : any; // TOOD matrixClient
+  emitter? : any;
 }
-export interface CypherNodeClientParam extends ClientAuth {
+export interface CypherNodeHTTPTransportParam {
+  gatewayUrl?: string;
+  auth?: Function
+}
+export interface ClientConfig {
   transport?: CypherNodeTransport;
-  cypherGateway?: string;
-}
-export interface ClientConfig extends ClientAuth {
-  cypherGateway?: string;
-  client?: CypherNodeClient;
 }

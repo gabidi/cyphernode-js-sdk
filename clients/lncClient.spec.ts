@@ -11,10 +11,7 @@ const test = serial as TestInterface<TestContext>;
 test.before(t => {
   t.context = {
     lightingInvoiceLabel: uuid(),
-    ...lnClient({
-      apiKey: process.env.CYPHERNODE_API_KEY,
-      userType: 3
-    })
+    ...lnClient()
   };
 });
 /**

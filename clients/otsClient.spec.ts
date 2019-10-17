@@ -13,10 +13,7 @@ test.before(t => {
     fileHash: createHash("sha256")
       .update(`${Date.now}:${parseInt(Math.random() * 100)}`)
       .digest("hex"),
-    ...otsClient({
-      apiKey: process.env.CYPHERNODE_API_KEY,
-      userType: 3
-    })
+    ...otsClient()
   };
 });
 test("Should be able to generate an OTS file", async t => {

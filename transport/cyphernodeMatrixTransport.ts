@@ -5,16 +5,16 @@ import uuid from "uuid/v4";
 import _debug from "debug";
 import { EventEmitter } from "events";
 import { getSyncMatrixClient } from "../lib/matrixUtil";
-import { CypherNodeTransport, CypherNodeCommand } from "../lib/types/clients";
+import { CypherNodeTransport, CypherNodeCommand,CypherNodeMatrixTransportParam } from "../lib/types/clients";
 const debug = _debug("cypherNodeMatrixTransport");
 const cypherNodeMatrixTransport = async ({
-  baseUrl = undefined,
-  user = undefined,
-  password = undefined,
-  roomId = undefined,
-  matrixClient = getSyncMatrixClient({ baseUrl, user, password }),
+  roomId = '',
+  client = getSyncMatrixClient(),
   emitter = new EventEmitter()
-} = {}): Promise<CypherNodeTransport & { getMatrixClient: Function }> => {
+}:CypherNodeMatrixTransportParam = {}): Promise<CypherNodeTransport & { getMatrixClient: Function }> => {
+	if (!roomId)
+		throw 'Must provide a room for the transport'
+	const matrixClient = await client;
   const transportRoom = await matrixClient.joinRoom(roomId);
   debug("Transport in room", transportRoom.roomId);
   // Setup room lsner, re-emits room commands as nonce events on emitter:w

@@ -1,6 +1,6 @@
 import { serial, TestInterface } from "ava";
 import { client as _btcClient } from "../clients/btcClient";
-import _cypherNodeClient from "../lib/cypherNodeClient";
+import cypherNodeHttpTransport from "../transport/cypherNodeHttpTransport";
 import { CypherNodeBtcClient, AddressType } from "../lib/types/btc.d";
 import { cypherNodeMatrixBridge } from "../bridge/cypherNodeMatrixBridge";
 import { cypherNodeMatrixTransport } from "../transport/cyphernodeMatrixTransport";
@@ -12,10 +12,7 @@ const debug = _debug("mqtt");
 const test = serial as TestInterface<CypherNodeBtcClient & any>; //FIXME this bullshit, interface for Matrix
 test.before(async t => {
   const getCypherNodeClient = () =>
-    _cypherNodeClient({
-      apiKey: process.env.CYPHERNODE_API_KEY,
-      userType: 3
-    });
+    cypherNodeHttpTransport({});
 
   t.context = {
     getCypherNodeClient,
@@ -38,12 +35,6 @@ test("Should be able to route and process a cypherNode-sdk request over Matrix",
     password: process.env.CYPHERNODE_MATRIX_PASS,
     user: process.env.CYPHERNODE_MATRIX_USER
   });
-  // create another cypherNodeClent using matrix transport
-  const transportMatrixClient = await getSyncMatrixClient({
-    baseUrl,
-    password: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_PASS,
-    user: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER
-  });
 
   const { startBridge, getRoomId } = cypherNodeMatrixBridge({
     cypherNodeClient: getCypherNodeClient(),
@@ -52,15 +43,18 @@ test("Should be able to route and process a cypherNode-sdk request over Matrix",
   await startBridge({
     inviteUser: [process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER]
   });
-  const frontEndCypherNodeClient = _cypherNodeClient({
-    transport: await cypherNodeMatrixTransport({
-      matrixClient: transportMatrixClient,
-      roomId: getRoomId()
-    }),
-    apiKey,
-    userType: 3
+	// Setup client (frontside)
+  const transportMatrixClient = await getSyncMatrixClient({
+    baseUrl,
+    password: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_PASS,
+    user: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER
   });
-  const btcClient = _btcClient({ client: frontEndCypherNodeClient });
+  const btcClient = _btcClient({ 
+    transport: await cypherNodeMatrixTransport({
+      client: transportMatrixClient,
+      roomId: getRoomId()
+    })
+  })
   // Send your request
   const hash = await btcClient.getBestBlockHash();
   t.true(!!hash.length);

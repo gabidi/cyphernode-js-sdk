@@ -11,8 +11,7 @@ import _debug from "debug";
 const debug = _debug("mqtt");
 const test = serial as TestInterface<CypherNodeBtcClient & any>; //FIXME this bullshit, interface for Matrix
 test.before(async t => {
-  const getCypherNodeClient = () =>
-    cypherNodeHttpTransport({});
+  const getCypherNodeClient = () => cypherNodeHttpTransport({});
 
   t.context = {
     getCypherNodeClient,
@@ -43,18 +42,18 @@ test("Should be able to route and process a cypherNode-sdk request over Matrix",
   await startBridge({
     inviteUser: [process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER]
   });
-	// Setup client (frontside)
+  // Setup client (frontside)
   const transportMatrixClient = await getSyncMatrixClient({
     baseUrl,
     password: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_PASS,
     user: process.env.CYPHERNODE_MATRIX_TEST_CLIENT_USER
   });
-  const btcClient = _btcClient({ 
+  const btcClient = _btcClient({
     transport: await cypherNodeMatrixTransport({
       client: transportMatrixClient,
       roomId: getRoomId()
     })
-  })
+  });
   // Send your request
   const hash = await btcClient.getBestBlockHash();
   t.true(!!hash.length);

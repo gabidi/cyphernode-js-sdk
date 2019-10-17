@@ -1,7 +1,6 @@
 // import { serial, TestInterface } from "ava";
 import { serial as test } from "ava";
 import { crypto } from "./cryptoUtil";
-import { ClientAuth } from "./types/clients";
 import { createHmac } from "crypto";
 //const test = serial as TestInterface<ClientAuth>;
 //test.before(t => {});

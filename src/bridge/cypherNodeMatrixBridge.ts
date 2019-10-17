@@ -1,4 +1,4 @@
-import _cypherNodeClient from "../lib/cypherNodeClient";
+import _cypherNodeClient from "../transport/cypherNodeHttpTransport";
 import { CypherNodeBtcClient, AddressType } from "../lib/types/btc.d";
 import matrix from "matrix-js-sdk";
 import { queue } from "async";
@@ -6,18 +6,11 @@ import uuid from "uuid/v4";
 import { EventEmitter } from "events";
 import _debug from "debug";
 import { getSyncMatrixClient } from "../lib/matrixUtil";
-import { cypherNodeMqttSub } from "../lib/mqttUtil";
 const debug = _debug("cypherNodeMatrixServer");
 const emitter = new EventEmitter();
 const cypherNodeMatrixBridge = ({
-  baseUrl = undefined,
-  user = undefined,
-  password = undefined,
-  apiKey = undefined,
-  userType = undefined,
-  cypherGateway = undefined,
-  matrixClient = getSyncMatrixClient({ baseUrl, user, password }),
-  cypherNodeClient = _cypherNodeClient({ apiKey, userType, cypherGateway })
+  matrixClient = getSyncMatrixClient(),
+  cypherNodeClient = _cypherNodeClient()
 } = {}): {
   startBridge: Function;
   getRoomId: Function;

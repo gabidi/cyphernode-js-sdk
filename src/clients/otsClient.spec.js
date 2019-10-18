@@ -72,17 +72,31 @@ test("Should be able to generate an OTS file", function (t) { return __awaiter(_
         }
     });
 }); });
-// FIXME this currently returns undefined, should return id of event to watch at least
+test("Should be able to Verify an OTS file hash", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var _a, verifyFileStamp, fileHash, _b, method, hash, result, message;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _a = t.context, verifyFileStamp = _a.verifyFileStamp, fileHash = _a.fileHash;
+                return [4 /*yield*/, verifyFileStamp(fileHash)];
+            case 1:
+                _b = _c.sent(), method = _b.method, hash = _b.hash, result = _b.result, message = _b.message;
+                t.is(hash, fileHash);
+                t.true(result === "pending" || result === "completed");
+                return [2 /*return*/];
+        }
+    });
+}); });
 test("Should be able to get OTS stamp", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var _a, getStamp, fileHash, poop;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = t.context, getStamp = _a.getStamp, fileHash = _a.fileHash;
-                return [4 /*yield*/, getStamp("7a96ac47d6a7ac28175a10e822d14def6e8958ae5680de32fbf08083648f831e")];
+                return [4 /*yield*/, getStamp(fileHash)];
             case 1:
                 poop = _b.sent();
-                console.log(poop);
+                t.pass(poop);
                 return [2 /*return*/];
         }
     });

@@ -56,6 +56,22 @@ exports.client = function (_a) {
                 });
             });
         },
+        verifyFileStamp: function (stamp, file) {
+            return __awaiter(this, void 0, void 0, function () {
+                var stampRct;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, post("ots_verify", {
+                                hash: stamp,
+                                base64otsfile: file || undefined
+                            })];
+                        case 1:
+                            stampRct = _a.sent();
+                            return [2 /*return*/, stampRct];
+                    }
+                });
+            });
+        },
         getStamp: function (fileHash) {
             return __awaiter(this, void 0, void 0, function () {
                 var poop;

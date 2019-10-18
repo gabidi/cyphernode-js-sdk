@@ -10,7 +10,14 @@ export interface OTSStampRcpt {
   result: string; //"success";
 }
 
+export interface OTSVerifyPayload {
+  method: "ots_verify";
+  hash: string;
+  result: "pending" | "completed";
+  message: string;
+}
 export interface CypherNodeOTSClient {
   stamp(fileHash: Hash): Promise<OTSStampRcpt>;
   getStamp(fileHash: Hash): Promise<any>;
+  verifyFileStamp(stamp: Hash, file: string): Promise<OTSVerifyPayload>;
 }

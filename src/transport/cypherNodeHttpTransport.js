@@ -55,7 +55,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var agent = __importStar(require("superagent"));
 var cryptoUtil_1 = require("../lib/cryptoUtil");
-var CypherNodeGatewayUrl = (process && process.env.CYPHERNODE_GATEWAY_URL) ||
+var CypherNodeGatewayUrl = (process && process.env.CYPHER_GATEWAY_URL) ||
     "https://localhost:2009/v0/";
 var CypherNodeApiKey = (process && process.env.CYPHERNODE_API_KEY) || "";
 var makeToken = cryptoUtil_1.crypto().makeToken;

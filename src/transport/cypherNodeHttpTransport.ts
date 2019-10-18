@@ -6,7 +6,7 @@ import {
   CypherNodeCommand
 } from "../lib/types/clients";
 const CypherNodeGatewayUrl =
-  (process && process.env.CYPHERNODE_GATEWAY_URL) ||
+  (process && process.env.CYPHER_GATEWAY_URL) ||
   "https://localhost:2009/v0/";
 const CypherNodeApiKey = (process && process.env.CYPHERNODE_API_KEY) || "";
 const { makeToken } = crypto();

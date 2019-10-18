@@ -25,13 +25,18 @@ test("Should be able to generate an OTS file", async t => {
   t.false(isNaN(hashRcpt.id));
   t.is(hashRcpt.result, "success");
 });
-// FIXME this currently returns undefined, should return id of event to watch at least
+test("Should be able to Verify an OTS file hash", async t => {
+  const {
+    context: { verifyFileStamp, fileHash }
+  } = t;
+  const { method, hash, result, message } = await verifyFileStamp(fileHash);
+  t.is(hash, fileHash);
+  t.true(result === "pending" || result === "completed");
+});
 test("Should be able to get OTS stamp", async t => {
   const {
     context: { getStamp, fileHash }
   } = t;
-  const poop = await getStamp(
-    "7a96ac47d6a7ac28175a10e822d14def6e8958ae5680de32fbf08083648f831e"
-  );
-  console.log(poop);
+  const poop = await getStamp(fileHash);
+  t.pass(poop);
 });

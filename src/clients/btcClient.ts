@@ -1,8 +1,5 @@
 import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
-import {
-  CypherNodeClient,
-  ClientConfig
-} from "../lib/types/clients";
+import { CypherNodeClient, ClientConfig } from "../lib/types/clients";
 import {
   CypherNodeBtcClient,
   Hash,

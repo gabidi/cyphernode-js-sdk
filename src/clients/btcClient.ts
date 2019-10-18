@@ -1,5 +1,5 @@
 import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
-import { CypherNodeClient, ClientConfig } from "../lib/types/clients";
+import { ClientConfig } from "../lib/types/clients";
 import {
   CypherNodeBtcClient,
   Hash,
@@ -11,7 +11,10 @@ import {
   AddressType,
   AddressWatchConfirmation,
   AddressWatchPayload,
-  AddressWatchOptions,
+  WatcherOptions,
+  Pub32WatcherOptions,
+  Pub32AddressWatchPayload,
+  WatchedPub32,
   BlockChainInfo,
   SpendConfirmation
 } from "../lib/types/btc.d";
@@ -40,6 +43,7 @@ export const client = ({
     }
   };
   const api = {
+    /** Core and Spending */
     getBlockChainInfo(): Promise<BlockChainInfo> {
       return get("getblockchaininfo");
     },
@@ -76,21 +80,7 @@ export const client = ({
       const result = await post("spend", { address, amount });
       return result;
     },
-    //  TODO Get watch list xpub , label, and tesssst
-    async watchAddress(
-      address: Address,
-      options?: AddressWatchOptions
-    ): Promise<AddressWatchConfirmation> {
-      const command =
-        parseBtcAddressType(address) == "expub" ? "watchxpub" : "watch";
-      if (command === "watchxpub" && (!options || !options.path))
-        throw "Must provide a derivation path for extended public addresss watches";
-      const result = await post(command, {
-        address,
-        ...options
-      });
-      return result;
-    },
+    /** Txn and Address watch & unwatch */
     async watchTxnId(
       txn: string,
       options: TxnWatchOptions
@@ -102,21 +92,67 @@ export const client = ({
       const result = await post("watchtxid", { txid: txn, ...param });
       return result;
     },
+    async watchAddress(
+      address: Address,
+      options?: WatcherOptions
+    ): Promise<AddressWatchConfirmation> {
+      const result = await post("watch", {
+        address,
+        ...options
+      });
+      return result;
+    },
     async getActiveAddressWatch(): Promise<[AddressWatchPayload]> {
       const { watches } = await get("getactivewatches");
       return watches;
     },
     async unwatchAddress(address: Address): Promise<AddressWatchConfirmation> {
-      const command =
-        parseBtcAddressType(address) === "expub"
-          ? "unwatchxpubbyxpub"
-          : "unwatch";
-      const result = await get(command, address);
+      const result = await get("unwatch", address);
       return result;
     },
-    async unwatchLabel(label: number): Promise<AddressWatchConfirmation> {
+    /** Pub32 watch & unwatch */
+    async watchPub32(
+      xpub: string,
+      options: Pub32WatcherOptions
+    ): Promise<AddressWatchConfirmation> {
+      const result = await post("watchxpub", {
+        xpub,
+        ...options
+      });
+      return result;
+    },
+    async getWatchedAddressesByPub32(
+      xpub: string
+    ): Promise<[Pub32AddressWatchPayload]> {
+      const { watches } = await get("getactivewatchesbyxpub", xpub);
+      return watches;
+    },
+    async getWatchedAddressesByPub32Label(
+      label: string
+    ): Promise<[Pub32AddressWatchPayload]> {
+      const { watches } = await get("getactivewatchesbylabel", label);
+      return watches;
+    },
+    async getWatchedPub32(): Promise<[WatchedPub32]> {
+      const { watches } = await get("getactivexpubwatches");
+      return watches;
+    },
+    async unwatchPub32(xpub: string): Promise<AddressWatchConfirmation> {
+      const result = await get("unwatchxpubbyxpub", xpub);
+      return result;
+    },
+    async unwatchPub32ByLabel(label: string): Promise<AddressWatchConfirmation> {
       const result = await get("unwatchxpubbylabel", label);
       return result;
+    },
+    /** Pub32 Balance */
+    async getBalanceByPub32(xpub: string): Promise<string> {
+      const { balance } = await get("getbalancebyxpub", xpub);
+      return balance;
+    },
+    async getBalanceByPub32Label(label: string): Promise<string> {
+      const { balance } = await get("getbalancebyxpublabel", label);
+      return balance;
     }
   };
   return api;

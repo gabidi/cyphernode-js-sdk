@@ -1,13 +1,16 @@
 {
   "name": "cyphernode-js-sdk",
+  "author": "@gabidi",
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test:client:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./clients/btcClient.spec.js",
-    "test:client:lnc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./clients/lncClient.spec.js",
-    "test:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./clients/otsClient.spec.js",
-    "test:clients": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./lib/*.spec*.js ./clients/*.spec.js"
+    "lint": "tslint --fix /src/*.ts",
+    "test:client:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/btcClient.spec.js",
+    "test:client:lnc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/lncClient.spec.js",
+    "test:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/otsClient.spec.js",
+    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/*.spec.js",
+    "test:integration": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/integrationTests/*.spec.js"
   },
   "dependencies": {
     "superagent": "^5.0.6"
@@ -15,7 +18,6 @@
   "optionalDependencies": {
     "async": "^3.1.0",
     "matrix-js-sdk": "^2.3.0",
-    "mqtt": "^3.0.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -23,9 +25,14 @@
     "@types/debug": "^4.1.5",
     "@types/sinon": "^7.0.13",
     "@types/uuid": "^3.4.5",
+    "@typescript-eslint/eslint-plugin": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
     "ava": "^2.1.0",
     "debug": "^4.1.1",
     "dotenv": "^8.1.0",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.18.2",
     "sinon": "^7.3.2",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.2"

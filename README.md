@@ -57,7 +57,6 @@ yarn test:clients
 ### Integration Tests
 Integration tests currently cover
 1. Matrix transport and Bridge: Ability to use Matrix.io to communicate with your Cyphernode in a disritbuted and e2e encrypted fashion.
-2. Mqtt Event Lsner: Subscribing and acting on Cyphernode watch events.
 
 #### Integration Test requirements and steps:
 
@@ -66,15 +65,12 @@ Integration tests currently cover
 Best way is to amend the previously mentioned .env file with the following variables:
 
 ```bash
-CYPHERNODE_MQTT_BROKER= 
-CYPHERNODE_MQTT_PORT=,
 CYPHERNODE_MATRIX_USER=
 CYPHERNODE_MATRIX_PASS=
 CYPHERNODE_MATRIX_TEST_CLIENT_USER=
 CYPHERNODE_MATRIX_TEST_CLIENT_PASS=
 CYPHERNODE_MATRIX_SERVER=
 ```
-3. Integration tests need to be run in a Docker container that is attached to thesame network overlay cyphernode is runnig on.
 
 #### Running Integration test steps:
 
@@ -89,7 +85,6 @@ docker run -it \
         --env-file .env \
         -e NODE_TLS_REJECT_UNAUTHORIZED=0 \
         -e CYPHERNODE_GATEWAY_URL="https://dist_gatekeeper_1:443/v0/" \
-        -e CYPHERNODE_MQTT_BROKER="dist_broker_1" \
         cyphernode-js-sdk:intergrationTests node /app/node_modules/ava/cli.js integrationTests/*.spec.js
 ```
 A helper script that runs the exact same commands as above is located in:

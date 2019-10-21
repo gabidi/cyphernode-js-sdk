@@ -74,6 +74,7 @@ exports.client = function (_a) {
         }
     };
     var api = {
+        /** Core and Spending */
         getBlockChainInfo: function () {
             return get("getblockchaininfo");
         },
@@ -182,24 +183,7 @@ exports.client = function (_a) {
                 });
             });
         },
-        //  TODO Get watch list xpub , label, and tesssst
-        watchAddress: function (address, options) {
-            return __awaiter(this, void 0, void 0, function () {
-                var command, result;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0:
-                            command = parseBtcAddressType(address) == "expub" ? "watchxpub" : "watch";
-                            if (command === "watchxpub" && (!options || !options.path))
-                                throw "Must provide a derivation path for extended public addresss watches";
-                            return [4 /*yield*/, post(command, __assign({ address: address }, options))];
-                        case 1:
-                            result = _a.sent();
-                            return [2 /*return*/, result];
-                    }
-                });
-            });
-        },
+        /** Txn and Address watch & unwatch */
         watchTxnId: function (txn, options) {
             return __awaiter(this, void 0, void 0, function () {
                 var param, result;
@@ -208,6 +192,19 @@ exports.client = function (_a) {
                         case 0:
                             param = __assign({ nbxconf: 6 }, options);
                             return [4 /*yield*/, post("watchtxid", __assign({ txid: txn }, param))];
+                        case 1:
+                            result = _a.sent();
+                            return [2 /*return*/, result];
+                    }
+                });
+            });
+        },
+        watchAddress: function (address, options) {
+            return __awaiter(this, void 0, void 0, function () {
+                var result;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, post("watch", __assign({ address: address }, options))];
                         case 1:
                             result = _a.sent();
                             return [2 /*return*/, result];
@@ -230,14 +227,10 @@ exports.client = function (_a) {
         },
         unwatchAddress: function (address) {
             return __awaiter(this, void 0, void 0, function () {
-                var command, result;
+                var result;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            command = parseBtcAddressType(address) === "expub"
-                                ? "unwatchxpubbyxpub"
-                                : "unwatch";
-                            return [4 /*yield*/, get(command, address)];
+                        case 0: return [4 /*yield*/, get("unwatch", address)];
                         case 1:
                             result = _a.sent();
                             return [2 /*return*/, result];
@@ -245,7 +238,76 @@ exports.client = function (_a) {
                 });
             });
         },
-        unwatchLabel: function (label) {
+        /** Pub32 watch & unwatch */
+        watchPub32: function (xpub, options) {
+            return __awaiter(this, void 0, void 0, function () {
+                var result;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (!options.label)
+                                throw "Label is required to for a pub32 watch";
+                            return [4 /*yield*/, post("watchxpub", __assign({ pub32: xpub }, options))];
+                        case 1:
+                            result = _a.sent();
+                            return [2 /*return*/, result];
+                    }
+                });
+            });
+        },
+        getWatchedAddressesByPub32: function (xpub) {
+            return __awaiter(this, void 0, void 0, function () {
+                var watches;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("getactivewatchesbyxpub", xpub)];
+                        case 1:
+                            watches = (_a.sent()).watches;
+                            return [2 /*return*/, watches];
+                    }
+                });
+            });
+        },
+        getWatchedAddressesByPub32Label: function (label) {
+            return __awaiter(this, void 0, void 0, function () {
+                var watches;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("getactivewatchesbylabel", label)];
+                        case 1:
+                            watches = (_a.sent()).watches;
+                            return [2 /*return*/, watches];
+                    }
+                });
+            });
+        },
+        getWatchedPub32: function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var watches;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("getactivexpubwatches")];
+                        case 1:
+                            watches = (_a.sent()).watches;
+                            return [2 /*return*/, watches];
+                    }
+                });
+            });
+        },
+        unwatchPub32: function (xpub) {
+            return __awaiter(this, void 0, void 0, function () {
+                var result;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("unwatchxpubbyxpub", xpub)];
+                        case 1:
+                            result = _a.sent();
+                            return [2 /*return*/, result];
+                    }
+                });
+            });
+        },
+        unwatchPub32ByLabel: function (label) {
             return __awaiter(this, void 0, void 0, function () {
                 var result;
                 return __generator(this, function (_a) {
@@ -254,6 +316,33 @@ exports.client = function (_a) {
                         case 1:
                             result = _a.sent();
                             return [2 /*return*/, result];
+                    }
+                });
+            });
+        },
+        /** Pub32 Balance */
+        getBalanceByPub32: function (xpub) {
+            return __awaiter(this, void 0, void 0, function () {
+                var balance;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("getbalancebyxpub", xpub)];
+                        case 1:
+                            balance = (_a.sent()).balance;
+                            return [2 /*return*/, balance];
+                    }
+                });
+            });
+        },
+        getBalanceByPub32Label: function (label) {
+            return __awaiter(this, void 0, void 0, function () {
+                var balance;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("getbalancebyxpublabel", label)];
+                        case 1:
+                            balance = (_a.sent()).balance;
+                            return [2 /*return*/, balance];
                     }
                 });
             });

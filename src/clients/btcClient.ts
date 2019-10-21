@@ -14,6 +14,7 @@ import {
   WatcherOptions,
   Pub32WatcherOptions,
   Pub32AddressWatchPayload,
+  Pub32WatchConfirmation,
   WatchedPub32,
   BlockChainInfo,
   SpendConfirmation
@@ -114,9 +115,10 @@ export const client = ({
     async watchPub32(
       xpub: string,
       options: Pub32WatcherOptions
-    ): Promise<AddressWatchConfirmation> {
+    ): Promise<Pub32WatchConfirmation> {
+      if (!options.label) throw "Label is required to for a pub32 watch";
       const result = await post("watchxpub", {
-        xpub,
+        pub32: xpub,
         ...options
       });
       return result;
@@ -141,7 +143,9 @@ export const client = ({
       const result = await get("unwatchxpubbyxpub", xpub);
       return result;
     },
-    async unwatchPub32ByLabel(label: string): Promise<AddressWatchConfirmation> {
+    async unwatchPub32ByLabel(
+      label: string
+    ): Promise<AddressWatchConfirmation> {
       const result = await get("unwatchxpubbylabel", label);
       return result;
     },

@@ -74,6 +74,12 @@ interface WatchConfirmation {
   unconfirmedCallbackURL: string; // "192.168.133.233:1111/callback0conf";
   confirmedCallbackURL: string; //"192.168.133.233:1111/callback1conf";
 }
+export interface Pub32WatchConfirmation extends WatchConfirmation {
+  pub32: string;
+  label: string;
+  path: string;
+  nstart: string;
+}
 export interface AddressWatchConfirmation extends WatchConfirmation {
   event: "watch"; //"watch";
   imported: number; //  "1";
@@ -134,9 +140,8 @@ interface WatcherOptions {
 }
 
 export interface Pub32WatcherOptions extends WatcherOptions {
-  pub32: string;
-  path: string;
-  label: string;
+  path: string; // Must end with /n to auto derive address
+  label: string; // Cannot include - or cyphernode goes ape shit
   nstart?: number;
 }
 export interface TxnWatchOptions extends WatcherOptions {
@@ -182,6 +187,14 @@ export interface CypherNodeBtcClient {
   watchPub32(
     xpub: string,
     options: Pub32WatcherOptions
-  ): Promise<AddressWatchConfirmation>;
-  unwatchLabel(label: number): Promise<AddressWatchConfirmation>;
+  ): Promise<Pub32WatchConfirmation>;
+  getWatchedAddressesByPub32(xpub: string): Promise<[Pub32AddressWatchPayload]>;
+  getWatchedAddressesByPub32Label(
+    label: string
+  ): Promise<[Pub32AddressWatchPayload]>;
+  getWatchedPub32(): Promise<[WatchedPub32]>;
+  unwatchPub32(xpub: string): Promise<AddressWatchConfirmation>;
+  unwatchPub32ByLabel(label: string): Promise<AddressWatchConfirmation>;
+  getBalanceByPub32(xpub: string): Promise<string>;
+  getBalanceByPub32Label(label: string): Promise<string>;
 }

@@ -11,11 +11,8 @@ This SDK aims to abstract complications and offer a clean and friendly way to ac
 
 ### Requirements
 1. You need to have Cyphernode running on an HTTP accessible PC
-2. You must have a valid Cyphernode admin api key to run the tests and you must pass the key to the SDK tests. The easiest way to do so is using environment variables. Simply create a 
-```
-.env
-``` 
-file in the root directory of this repo and add the following enviroment variables:
+2. You must have a valid Cyphernode admin api key to run the tests and you must pass the key to the SDK tests. The easiest way to do so is using environment variables. 
+Make sure the following enviroment variables are set when using the sdk:
 ```
 CYPHERNODE_API_KEY=
 CYPHER_GATEWAY_URL=https://localhost:2009/v0/
@@ -49,9 +46,10 @@ Futhermore the SDK is written in typescript which should help give a better unde
 
 ## Transport Stacks
 
-This SDK ships with a default HTTP transport stack, IE it will forward all your requests to the cyphernode endpoint via 'regular' GET and POST http requests and is in fact the only depedency this library has.
-The HTTP transport stack is automatically initilaized by default when a client is instantiated and uses the isomorphic superagent fetch package to send HTTP requests. This is in the name of ease of use for both node and browser users.
-You can easily drop that depedency from the library by modifiying ./transports/cypherNodeHTTPTransport.ts (or creating a new one as pull reuqest in our [transports repo](https://github.com/gabidi/cyphernode-js-sdk-transports) !) that uses an enviroments native 'request' implementation.
+This SDK ships with a default HTTP transport stack, IE it will forward all your requests to the cyphernode endpoint via 'regular' GET and POST http requests.
+The HTTP transport stack is automatically initilaized by default when a client is instantiated and uses the isomorphic package 'superagent' to send HTTP requests and is in fact the only depedency this sdk has. This is in the name of ease of use for both node and browser users.
+
+You can easily drop that dependancy from the sdk by modifiying `./transports/cypherNodeHTTPTransport.ts` (or creating a new one in our [transports repo](https://github.com/gabidi/cyphernode-js-sdk-transports) !).
 
 ### Distritbued and custom transports
 

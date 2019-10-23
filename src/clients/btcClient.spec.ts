@@ -1,6 +1,10 @@
 import { serial, TestInterface } from "ava";
 import { client as btcClient } from "./btcClient";
-import { CypherNodeBtcClient, AddressType } from "../lib/types/btc.d";
+import {
+  CypherNodeBtcClient,
+  AddressType,
+  Pub32WatcherOptions
+} from "../lib/types/btc.d";
 const test = serial as TestInterface<CypherNodeBtcClient & { chain: string }>;
 test.before(async t => {
   const client = btcClient();
@@ -104,7 +108,7 @@ test("Should be able to get a transactions info", async t => {
   t.true(txnInfo.blocktime > 1);
 });
 
-test("Should be able to get a wallets balance", async t => {
+test("Should be able to get the spending wallets balance", async t => {
   const {
     context: { getBalance }
   } = t;
@@ -128,3 +132,7 @@ test("Should be able to spend (will only run when testnet)", async t => {
   const { status, hash } = await spend(sendToAddress, balance / 1000);
   t.is(status, "accepted");
 });
+/* Watch Pub32 tests 
+Removed from this release pending CN fixes to Pub32 endpoints
+*/
+

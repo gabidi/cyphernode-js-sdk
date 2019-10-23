@@ -200,7 +200,7 @@ test("Should be able to get a transactions info", function (t) { return __awaite
         }
     });
 }); });
-test("Should be able to get a wallets balance", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test("Should be able to get the spending wallets balance", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getBalance, balance;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -240,3 +240,6 @@ test("Should be able to spend (will only run when testnet)", function (t) { retu
         }
     });
 }); });
+/* Watch Pub32 tests
+Removed from this release pending CN fixes to Pub32 endpoints
+*/

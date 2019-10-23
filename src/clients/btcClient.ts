@@ -117,6 +117,8 @@ export const client = ({
       options: Pub32WatcherOptions
     ): Promise<Pub32WatchConfirmation> {
       if (!options.label) throw "Label is required to for a pub32 watch";
+      if (/[^0-9a-zA-Z_i ]/.test(options.label))
+        throw "Labels must be alpha numeric or _";
       const result = await post("watchxpub", {
         pub32: xpub,
         ...options

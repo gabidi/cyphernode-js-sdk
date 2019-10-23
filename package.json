@@ -1,7 +1,7 @@
 {
   "name": "cyphernode-js-sdk",
   "author": "@gabidi",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -9,16 +9,10 @@
     "test:client:btc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/btcClient.spec.js",
     "test:client:lnc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/lncClient.spec.js",
     "test:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/otsClient.spec.js",
-    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/*.spec.js",
-    "test:integration": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/integrationTests/*.spec.js"
+    "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/*.spec.js"
   },
-  "dependencies": {
+  "OptionalDependencies": {
     "superagent": "^5.0.6"
-  },
-  "optionalDependencies": {
-    "async": "^3.1.0",
-    "matrix-js-sdk": "^2.3.0",
-    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/async": "^3.0.1",
@@ -35,6 +29,7 @@
     "prettier": "^1.18.2",
     "sinon": "^7.3.2",
     "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "uuid": "^3.3.2"
   }
 }

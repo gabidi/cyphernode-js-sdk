@@ -132,7 +132,75 @@ test("Should be able to spend (will only run when testnet)", async t => {
   const { status, hash } = await spend(sendToAddress, balance / 1000);
   t.is(status, "accepted");
 });
-/* Watch Pub32 tests 
-Removed from this release pending CN fixes to Pub32 endpoints
-*/
-
+/* Watch Pub32 tests */
+test("Should be able to get a list of watched Pub32 and their labels", async t => {
+  const {
+    context: { getWatchedPub32 }
+  } = t;
+  const watchedPub32 = await getWatchedPub32();
+  t.true(Array.isArray(watchedPub32));
+  if (watchedPub32.length < 1) t.pass();
+  else {
+    t.true(
+      watchedPub32.every(({ pub32, label }) => pub32.length && label.length)
+    );
+  }
+});
+test.skip("Should be able to watch a Ypub", async t => {
+  const {
+    context: { watchPub32 }
+  } = t;
+  // FIXME move this to env config and add check before commiting
+  const ypub =
+    "ypub6XTi8fouZbthcX1PD9uxRunjd69jKZaYJLbiPma1VtrcHZa73X7KzLeMV9GkT3UfyrDp6nAbe4PDiyaxKhN3aJPCTWVz9Fx9s11RDGawTMZ";
+  const pub32label = "bb_ai";
+  //const ypub =
+  // "xpub6CYUKP1jQr257nwDNuYy9htwuyaqr2HL6LFfYLFGkXKzWq3AFrocGLsUdvckSN1GMjfag4G8pFyWdz7wwyt6oJzsLTAbyv2Bd9en9gEenyH";
+  // const pub32label = "bb_personal"
+  const watchOptions: Pub32WatcherOptions = {
+    label: pub32label,
+    nstart: 0,
+    path: "0/n"
+  };
+  const { label, pub32, id } = await watchPub32(ypub, watchOptions);
+  t.false(isNaN(id));
+  t.is(pub32, ypub);
+  t.is(label, watchOptions.label);
+});
+test.skip("Should be able to get watched address for 32pub by labe", async t => {
+  const {
+    context: { getWatchedAddressesByPub32Label }
+  } = t;
+  const ypubLabel = "bbAI";
+  const watchedAddresses = await getWatchedAddressesByPub32Label(ypubLabel);
+  t.true(watchedAddresses.length > 0);
+  t.true(watchedAddresses.every(({ address }) => address.length === 34));
+});
+test("Should be able to get a watched 32pub's balance by label", async t => {
+  const {
+    context: { getBalanceByPub32Label }
+  } = t;
+  const ypubLabel = "bb_ai";
+  // to fix in cn:
+  // Sql lite schema with label as distinct ?
+  //
+  // line 162 proxy_docker/app/script/walletoperations.sh add quotes around xpub
+  // line 164 add .result to jq addresses=$(send_to_xpub_watcher_wallet ${data} | jq ".result | keys" | tr -d '\n ')
+  // line 168 remove spaced between 0,99999,address or bsah thinks they're seperate params and not one param (data)
+  // line 175  balance= $balance_resp |  jq "[.result[].amount] | add | . * 100000000 | trunc | . / 100000000"
+  // change importaddress to accept a rescan argument
+  // change xpub watch api end point to:
+  // 	-validate label + xpub
+  // 	- sanitize stuff (label names)
+  // 	- accept rescan param
+  const watchedAddresses = await getBalanceByPub32Label(ypubLabel); // FIXME cyphernode sends bad json if balance is non existant
+  console.log(watchedAddresses);
+});
+test.skip("Should be able to unwatch by label", async t => {
+  const {
+    context: { unwatchPub32ByLabel }
+  } = t;
+  const ypubLabel = "bb_personal"; // FIXME Cypher node does not sanitize this !
+  const watchedAddresses = await unwatchPub32ByLabel(ypubLabel);
+  console.log(watchedAddresses);
+});

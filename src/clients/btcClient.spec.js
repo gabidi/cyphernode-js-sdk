@@ -240,6 +240,98 @@ test("Should be able to spend (will only run when testnet)", function (t) { retu
         }
     });
 }); });
-/* Watch Pub32 tests
-Removed from this release pending CN fixes to Pub32 endpoints
-*/
+/* Watch Pub32 tests */
+test("Should be able to get a list of watched Pub32 and their labels", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var getWatchedPub32, watchedPub32;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                getWatchedPub32 = t.context.getWatchedPub32;
+                return [4 /*yield*/, getWatchedPub32()];
+            case 1:
+                watchedPub32 = _a.sent();
+                t.true(Array.isArray(watchedPub32));
+                if (watchedPub32.length < 1)
+                    t.pass();
+                else {
+                    t.true(watchedPub32.every(function (_a) {
+                        var pub32 = _a.pub32, label = _a.label;
+                        return pub32.length && label.length;
+                    }));
+                }
+                return [2 /*return*/];
+        }
+    });
+}); });
+test.skip("Should be able to watch a Ypub", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var watchPub32, ypub, pub32label, watchOptions, _a, label, pub32, id;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                watchPub32 = t.context.watchPub32;
+                ypub = "ypub6XTi8fouZbthcX1PD9uxRunjd69jKZaYJLbiPma1VtrcHZa73X7KzLeMV9GkT3UfyrDp6nAbe4PDiyaxKhN3aJPCTWVz9Fx9s11RDGawTMZ";
+                pub32label = "bb_ai";
+                watchOptions = {
+                    label: pub32label,
+                    nstart: 0,
+                    path: "0/n"
+                };
+                return [4 /*yield*/, watchPub32(ypub, watchOptions)];
+            case 1:
+                _a = _b.sent(), label = _a.label, pub32 = _a.pub32, id = _a.id;
+                t.false(isNaN(id));
+                t.is(pub32, ypub);
+                t.is(label, watchOptions.label);
+                return [2 /*return*/];
+        }
+    });
+}); });
+test.skip("Should be able to get watched address for 32pub by labe", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var getWatchedAddressesByPub32Label, ypubLabel, watchedAddresses;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                getWatchedAddressesByPub32Label = t.context.getWatchedAddressesByPub32Label;
+                ypubLabel = "bbAI";
+                return [4 /*yield*/, getWatchedAddressesByPub32Label(ypubLabel)];
+            case 1:
+                watchedAddresses = _a.sent();
+                t.true(watchedAddresses.length > 0);
+                t.true(watchedAddresses.every(function (_a) {
+                    var address = _a.address;
+                    return address.length === 34;
+                }));
+                return [2 /*return*/];
+        }
+    });
+}); });
+test("Should be able to get a watched 32pub's balance by label", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var getBalanceByPub32Label, ypubLabel, watchedAddresses;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                getBalanceByPub32Label = t.context.getBalanceByPub32Label;
+                ypubLabel = "bb_ai";
+                return [4 /*yield*/, getBalanceByPub32Label(ypubLabel)];
+            case 1:
+                watchedAddresses = _a.sent();
+                console.log(watchedAddresses);
+                return [2 /*return*/];
+        }
+    });
+}); });
+test.skip("Should be able to unwatch by label", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var unwatchPub32ByLabel, ypubLabel, watchedAddresses;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                unwatchPub32ByLabel = t.context.unwatchPub32ByLabel;
+                ypubLabel = "bb_personal";
+                return [4 /*yield*/, unwatchPub32ByLabel(ypubLabel)];
+            case 1:
+                watchedAddresses = _a.sent();
+                console.log(watchedAddresses);
+                return [2 /*return*/];
+        }
+    });
+}); });

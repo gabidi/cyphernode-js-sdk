@@ -1,7 +1,7 @@
 {
   "name": "cyphernode-js-sdk",
   "author": "@gabidi",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -11,7 +11,7 @@
     "test:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/otsClient.spec.js",
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/*.spec.js"
   },
-  "OptionalDependencies": {
+  "optionalDependencies": {
     "superagent": "^5.0.6"
   },
   "devDependencies": {

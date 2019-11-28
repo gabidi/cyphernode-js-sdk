@@ -55,12 +55,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var agent = __importStar(require("superagent"));
 var cryptoUtil_1 = require("../lib/cryptoUtil");
-var CypherNodeGatewayUrl = (process && process.env.CYPHER_GATEWAY_URL) ||
-    "https://localhost:2009/v0/";
+var CypherNodeGatewayUrl = (process && process.env.CYPHER_GATEWAY_URL) || "https://localhost:2009/v0/";
 var CypherNodeApiKey = (process && process.env.CYPHERNODE_API_KEY) || "";
+var CypherNodeApiKeyID = (process && process.env.CYPHERNODE_API_KEY_ID) || 3;
 var makeToken = cryptoUtil_1.crypto().makeToken;
 exports.default = (function (_a) {
-    var _b = _a === void 0 ? {} : _a, _c = _b.gatewayUrl, gatewayUrl = _c === void 0 ? CypherNodeGatewayUrl : _c, _d = _b.auth, auth = _d === void 0 ? function () { return makeToken(CypherNodeApiKey, 3); } : _d;
+    var _b = _a === void 0 ? {} : _a, _c = _b.gatewayUrl, gatewayUrl = _c === void 0 ? CypherNodeGatewayUrl : _c, _d = _b.auth, auth = _d === void 0 ? function () { return makeToken(CypherNodeApiKey, CypherNodeApiKeyID); } : _d;
     var transport = {
         get: function (command, payload) {
             return __awaiter(this, void 0, void 0, function () {

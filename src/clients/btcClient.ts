@@ -11,6 +11,7 @@ import {
   AddressType,
   AddressWatchConfirmation,
   AddressWatchPayload,
+  GenericWatchResponse,
   WatcherOptions,
   Pub32WatcherOptions,
   Pub32AddressWatchPayload,
@@ -145,9 +146,7 @@ export const client = ({
       const result = await get("unwatchxpubbyxpub", xpub);
       return result;
     },
-    async unwatchPub32ByLabel(
-      label: string
-    ): Promise<AddressWatchConfirmation> {
+    async unwatchPub32ByLabel(label: string): Promise<GenericWatchResponse> {
       const result = await get("unwatchxpubbylabel", label);
       return result;
     },

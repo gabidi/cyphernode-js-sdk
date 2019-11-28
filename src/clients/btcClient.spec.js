@@ -263,36 +263,38 @@ test("Should be able to get a list of watched Pub32 and their labels", function 
         }
     });
 }); });
-test.skip("Should be able to watch a Ypub", function (t) { return __awaiter(_this, void 0, void 0, function () {
-    var watchPub32, ypub, pub32label, watchOptions, _a, label, pub32, id;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+test("Should be able to watch a pub32", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var _a, watchPub32, chain, tpub, pub32label, watchOptions, _b, label, pub32, id;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
-                watchPub32 = t.context.watchPub32;
-                ypub = "ypub6XTi8fouZbthcX1PD9uxRunjd69jKZaYJLbiPma1VtrcHZa73X7KzLeMV9GkT3UfyrDp6nAbe4PDiyaxKhN3aJPCTWVz9Fx9s11RDGawTMZ";
-                pub32label = "bb_ai";
+                _a = t.context, watchPub32 = _a.watchPub32, chain = _a.chain;
+                tpub = chain === "test"
+                    ? "tpubDAenfwNu5GyCJWv8oqRAckdKMSUoZjgVF5p8WvQwHQeXjDhAHmGrPa4a4y2Fn7HF2nfCLefJanHV3ny1UY25MRVogizB2zRUdAo7Tr9XAjm"
+                    : "xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU";
+                pub32label = "js_sdkpub32_test";
                 watchOptions = {
                     label: pub32label,
                     nstart: 0,
                     path: "0/n"
                 };
-                return [4 /*yield*/, watchPub32(ypub, watchOptions)];
+                return [4 /*yield*/, watchPub32(tpub, watchOptions)];
             case 1:
-                _a = _b.sent(), label = _a.label, pub32 = _a.pub32, id = _a.id;
+                _b = _c.sent(), label = _b.label, pub32 = _b.pub32, id = _b.id;
                 t.false(isNaN(id));
-                t.is(pub32, ypub);
+                t.is(pub32, tpub);
                 t.is(label, watchOptions.label);
                 return [2 /*return*/];
         }
     });
 }); });
-test.skip("Should be able to get watched address for 32pub by labe", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test("Should be able to get watched address for 32pub by labe", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getWatchedAddressesByPub32Label, ypubLabel, watchedAddresses;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 getWatchedAddressesByPub32Label = t.context.getWatchedAddressesByPub32Label;
-                ypubLabel = "bbAI";
+                ypubLabel = "js_sdkpub32_test";
                 return [4 /*yield*/, getWatchedAddressesByPub32Label(ypubLabel)];
             case 1:
                 watchedAddresses = _a.sent();
@@ -306,31 +308,31 @@ test.skip("Should be able to get watched address for 32pub by labe", function (t
     });
 }); });
 test("Should be able to get a watched 32pub's balance by label", function (t) { return __awaiter(_this, void 0, void 0, function () {
-    var getBalanceByPub32Label, ypubLabel, watchedAddresses;
+    var getBalanceByPub32Label, ypubLabel, balance;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 getBalanceByPub32Label = t.context.getBalanceByPub32Label;
-                ypubLabel = "bb_ai";
+                ypubLabel = "js_sdkpub32_test";
                 return [4 /*yield*/, getBalanceByPub32Label(ypubLabel)];
             case 1:
-                watchedAddresses = _a.sent();
-                console.log(watchedAddresses);
+                balance = _a.sent();
+                t.true(!isNaN(balance));
                 return [2 /*return*/];
         }
     });
 }); });
-test.skip("Should be able to unwatch by label", function (t) { return __awaiter(_this, void 0, void 0, function () {
-    var unwatchPub32ByLabel, ypubLabel, watchedAddresses;
+test("Should be able to unwatch by label", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var unwatchPub32ByLabel, ypubLabel, label;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 unwatchPub32ByLabel = t.context.unwatchPub32ByLabel;
-                ypubLabel = "bb_personal";
+                ypubLabel = "js_sdkpub32_test";
                 return [4 /*yield*/, unwatchPub32ByLabel(ypubLabel)];
             case 1:
-                watchedAddresses = _a.sent();
-                console.log(watchedAddresses);
+                label = (_a.sent()).label;
+                t.is(label, ypubLabel);
                 return [2 /*return*/];
         }
     });

@@ -89,6 +89,10 @@ export interface AddressWatchConfirmation extends WatchConfirmation {
   estimatesmartfee36blocks: number; // "0.000010";
   estimatesmartfee144blocks: number; // "0.000010";
 }
+export interface GenericWatchResponse {
+  event: string;
+  label: string;
+}
 export interface TxnWatchConfimation extends WatchConfirmation {
   event: "watchtxid";
   txnId: string;
@@ -193,8 +197,8 @@ export interface CypherNodeBtcClient {
     label: string
   ): Promise<[Pub32AddressWatchPayload]>;
   getWatchedPub32(): Promise<[WatchedPub32]>;
-  unwatchPub32(xpub: string): Promise<AddressWatchConfirmation>;
-  unwatchPub32ByLabel(label: string): Promise<AddressWatchConfirmation>;
+  unwatchPub32(xpub: string): Promise<GenericWatchResponse>;
+  unwatchPub32ByLabel(label: string): Promise<GenericWatchResponse>;
   getBalanceByPub32(xpub: string): Promise<string>;
   getBalanceByPub32Label(label: string): Promise<string>;
 }

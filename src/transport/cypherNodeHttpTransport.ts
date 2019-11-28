@@ -6,13 +6,13 @@ import {
   CypherNodeCommand
 } from "../lib/types/clients";
 const CypherNodeGatewayUrl =
-  (process && process.env.CYPHER_GATEWAY_URL) ||
-  "https://localhost:2009/v0/";
+  (process && process.env.CYPHER_GATEWAY_URL) || "https://localhost:2009/v0/";
 const CypherNodeApiKey = (process && process.env.CYPHERNODE_API_KEY) || "";
+const CypherNodeApiKeyID = (process && process.env.CYPHERNODE_API_KEY_ID) || 3;
 const { makeToken } = crypto();
 export default ({
   gatewayUrl = CypherNodeGatewayUrl,
-  auth = () => makeToken(CypherNodeApiKey, 3)
+  auth = () => makeToken(CypherNodeApiKey, CypherNodeApiKeyID)
 }: CypherNodeHTTPTransportParam = {}): CypherNodeTransport => {
   const transport = {
     async get<T>(command: CypherNodeCommand, payload?: any): Promise<T> {

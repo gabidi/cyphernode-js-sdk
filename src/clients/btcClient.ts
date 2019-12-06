@@ -24,26 +24,6 @@ export const client = ({
   transport = cypherNodeHTTPTransport()
 }: ClientConfig = {}): CypherNodeBtcClient => {
   const { get, post } = transport;
-  const parseBtcAddressType = (address: Address): AddressType | null => {
-    const addressStart = address.substr(0, 4);
-    switch (addressStart) {
-      case "upub":
-      case "zpub":
-      case "xpub":
-        return "expub";
-      default:
-        switch (addressStart[0]) {
-          case "1":
-            return "legacy";
-          case "3":
-            return "p2sh-segwit";
-          case "b":
-            return "bech32";
-          default:
-            return null;
-        }
-    }
-  };
   const api = {
     /** Core and Spending */
     getBlockChainInfo(): Promise<BlockChainInfo> {

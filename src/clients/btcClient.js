@@ -53,26 +53,6 @@ var cypherNodeHttpTransport_1 = __importDefault(require("../transport/cypherNode
 exports.client = function (_a) {
     var _b = (_a === void 0 ? {} : _a).transport, transport = _b === void 0 ? cypherNodeHttpTransport_1.default() : _b;
     var get = transport.get, post = transport.post;
-    var parseBtcAddressType = function (address) {
-        var addressStart = address.substr(0, 4);
-        switch (addressStart) {
-            case "upub":
-            case "zpub":
-            case "xpub":
-                return "expub";
-            default:
-                switch (addressStart[0]) {
-                    case "1":
-                        return "legacy";
-                    case "3":
-                        return "p2sh-segwit";
-                    case "b":
-                        return "bech32";
-                    default:
-                        return null;
-                }
-        }
-    };
     var api = {
         /** Core and Spending */
         getBlockChainInfo: function () {

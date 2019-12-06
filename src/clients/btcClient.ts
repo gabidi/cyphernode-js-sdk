@@ -16,7 +16,9 @@ import {
   Pub32WatcherOptions,
   Pub32AddressWatchPayload,
   Pub32WatchConfirmation,
+  WatchPub32UnusedAddress,
   WatchedPub32,
+  WatchPub32Txn,
   BlockChainInfo,
   SpendConfirmation
 } from "../lib/types/btc.d";
@@ -158,6 +160,19 @@ export const client = ({
     async getBalanceByPub32Label(label: string): Promise<string> {
       const { balance } = await get("getbalancebyxpublabel", label);
       return balance;
+    },
+    async getUnusedAddressesByPub32Label(
+      label: string
+    ): Promise<[WatchPub32UnusedAddress]> {
+      const { label_unused_addresses } = await get(
+        "get_unused_addresses_by_watchlabel",
+        label
+      );
+      return label_unused_addresses;
+    },
+    async getTransactionsByPub32Label(label: string): Promise<[WatchPub32Txn]> {
+      const { label_txns } = await get("get_txns_by_watchlabel", label);
+      return label_txns;
     }
   };
   return api;

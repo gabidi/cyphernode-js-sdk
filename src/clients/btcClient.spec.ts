@@ -95,7 +95,7 @@ test("Should be able to get a transactions info", async t => {
   const {
     context: { getTxn, chain }
   } = t;
-  if (chain === "test") {
+  if (chain !== "main") {
     t.pass();
     return;
   }
@@ -151,9 +151,9 @@ test("Should be able to watch a pub32", async t => {
     context: { watchPub32, chain }
   } = t;
   const tpub =
-    chain === "test"
-      ? "tpubDAenfwNu5GyCJWv8oqRAckdKMSUoZjgVF5p8WvQwHQeXjDhAHmGrPa4a4y2Fn7HF2nfCLefJanHV3ny1UY25MRVogizB2zRUdAo7Tr9XAjm"
-      : "xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU";
+    chain === "main"
+      ? "xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU"
+      : "tpubDAenfwNu5GyCJWv8oqRAckdKMSUoZjgVF5p8WvQwHQeXjDhAHmGrPa4a4y2Fn7HF2nfCLefJanHV3ny1UY25MRVogizB2zRUdAo7Tr9XAjm";
   const pub32label = "js_sdkpub32_test";
   const watchOptions: Pub32WatcherOptions = {
     label: pub32label,
@@ -169,8 +169,8 @@ test("Should be able to get watched address for 32pub by labe", async t => {
   const {
     context: { getWatchedAddressesByPub32Label }
   } = t;
-  const ypubLabel = "js_sdkpub32_test";
-  const watchedAddresses = await getWatchedAddressesByPub32Label(ypubLabel);
+  const pub32Label = "js_sdkpub32_test";
+  const watchedAddresses = await getWatchedAddressesByPub32Label(pub32Label);
   t.true(watchedAddresses.length > 0);
   t.true(watchedAddresses.every(({ address }) => address.length === 34));
 });
@@ -178,15 +178,40 @@ test("Should be able to get a watched 32pub's balance by label", async t => {
   const {
     context: { getBalanceByPub32Label }
   } = t;
-  const ypubLabel = "js_sdkpub32_test";
-  const balance = await getBalanceByPub32Label(ypubLabel);
+  const pub32Label = "js_sdkpub32_test";
+  const balance = await getBalanceByPub32Label(pub32Label);
   t.true(!isNaN(balance));
+});
+test("Should be able to get a watched 32pub's unused addresses", async t => {
+  const {
+    context: { getUnusedAddressesByPub32Label }
+  } = t;
+  const pub32Label = "js_sdkpub32_test";
+  const unusedAddressList = await getUnusedAddressesByPub32Label(pub32Label);
+  t.true(Array.isArray(unusedAddressList));
+  t.true(
+    unusedAddressList.every(
+      ({ address, address_pub32_index }) =>
+        !!address.length && !isNaN(address_pub32_index)
+    )
+  );
+});
+test("Should be able to get transactions for watch label ", async t => {
+  const {
+    context: { getTransactionsByPub32Label }
+  } = t;
+  const pub32Label = "js_sdkpub32_test";
+  const pub32Txns = await getTransactionsByPub32Label(pub32Label);
+  t.true(Array.isArray(pub32Txns));
+  t.true(
+    pub32Txns.every(({ amount, txid }) => !!txid.length && !isNaN(amount))
+  );
 });
 test("Should be able to unwatch by label", async t => {
   const {
     context: { unwatchPub32ByLabel }
   } = t;
-  const ypubLabel = "js_sdkpub32_test";
-  const { label } = await unwatchPub32ByLabel(ypubLabel);
-  t.is(label, ypubLabel);
+  const pub32Label = "js_sdkpub32_test";
+  const { label } = await unwatchPub32ByLabel(pub32Label);
+  t.is(label, pub32Label);
 });

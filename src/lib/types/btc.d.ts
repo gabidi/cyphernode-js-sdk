@@ -171,6 +171,22 @@ export interface WatchedPub32 extends WatchPayload {
   derivation_path: string;
   last_imported_n: string;
 }
+export interface WatchPub32UnusedAddress {
+  pub32_watch_id: string;
+  pub32_label: string;
+  pub32: string;
+  address_pub32_index: number;
+  address: Address;
+}
+export interface WatchPub32Txn {
+  label: string;
+  address: Address;
+  txid: TxnId;
+  confirmations: number;
+  blockheight: number;
+  v_out: number;
+  amount: number;
+}
 export interface CypherNodeBtcClient {
   getBlockChainInfo(): Promise<BlockChainInfo>;
   getNewAddress(addressType: AddressType): Promise<Address>;
@@ -201,4 +217,8 @@ export interface CypherNodeBtcClient {
   unwatchPub32ByLabel(label: string): Promise<GenericWatchResponse>;
   getBalanceByPub32(xpub: string): Promise<string>;
   getBalanceByPub32Label(label: string): Promise<string>;
+  getUnusedAddressesByPub32Label(
+    label: string
+  ): Promise<[WatchPub32UnusedAddress]>;
+  getTransactionsByPub32Label(label: string): Promise<[WatchPub32Txn]>;
 }

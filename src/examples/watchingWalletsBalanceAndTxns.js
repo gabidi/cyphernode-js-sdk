@@ -51,7 +51,7 @@ var btcClient_1 = require("../clients/btcClient");
             case 1:
                 watchedPub32 = _b.sent();
                 console.log("You've got " + watchedPub32.length + " watched pub32s!");
-                return [4 /*yield*/, Promise.all(watchedPub32.slice(-1).map(function (_a) {
+                return [4 /*yield*/, Promise.all(watchedPub32.map(function (_a) {
                         var pub32 = _a.pub32, label = _a.label;
                         return __awaiter(_this, void 0, void 0, function () {
                             var _b, balance, txns, unused, err_1;

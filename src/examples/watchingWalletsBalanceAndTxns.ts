@@ -12,7 +12,7 @@ import { client as btcClient } from "../clients/btcClient";
   const watchedPub32 = await getWatchedPub32();
   console.log(`You've got ${watchedPub32.length} watched pub32s!`);
   await Promise.all(
-    watchedPub32.slice(-1).map(async ({ pub32, label }) => {
+    watchedPub32.map(async ({ pub32, label }) => {
       try {
         const [balance, txns, unused] = await Promise.all([
           getBalanceByPub32Label(label),

@@ -89,6 +89,10 @@ export interface AddressWatchConfirmation extends WatchConfirmation {
   estimatesmartfee36blocks: number; // "0.000010";
   estimatesmartfee144blocks: number; // "0.000010";
 }
+export interface GenericWatchResponse {
+  event: string;
+  label: string;
+}
 export interface TxnWatchConfimation extends WatchConfirmation {
   event: "watchtxid";
   txnId: string;
@@ -167,6 +171,22 @@ export interface WatchedPub32 extends WatchPayload {
   derivation_path: string;
   last_imported_n: string;
 }
+export interface WatchPub32UnusedAddress {
+  pub32_watch_id: string;
+  pub32_label: string;
+  pub32: string;
+  address_pub32_index: number;
+  address: Address;
+}
+export interface WatchPub32Txn {
+  label: string;
+  address: Address;
+  txid: TxnId;
+  confirmations: number;
+  blockheight: number;
+  v_out: number;
+  amount: number;
+}
 export interface CypherNodeBtcClient {
   getBlockChainInfo(): Promise<BlockChainInfo>;
   getNewAddress(addressType: AddressType): Promise<Address>;
@@ -193,8 +213,12 @@ export interface CypherNodeBtcClient {
     label: string
   ): Promise<[Pub32AddressWatchPayload]>;
   getWatchedPub32(): Promise<[WatchedPub32]>;
-  unwatchPub32(xpub: string): Promise<AddressWatchConfirmation>;
-  unwatchPub32ByLabel(label: string): Promise<AddressWatchConfirmation>;
+  unwatchPub32(xpub: string): Promise<GenericWatchResponse>;
+  unwatchPub32ByLabel(label: string): Promise<GenericWatchResponse>;
   getBalanceByPub32(xpub: string): Promise<string>;
   getBalanceByPub32Label(label: string): Promise<string>;
+  getUnusedAddressesByPub32Label(
+    label: string
+  ): Promise<[WatchPub32UnusedAddress]>;
+  getTransactionsByPub32Label(label: string): Promise<[WatchPub32Txn]>;
 }

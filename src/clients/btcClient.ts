@@ -11,11 +11,14 @@ import {
   AddressType,
   AddressWatchConfirmation,
   AddressWatchPayload,
+  GenericWatchResponse,
   WatcherOptions,
   Pub32WatcherOptions,
   Pub32AddressWatchPayload,
   Pub32WatchConfirmation,
+  WatchPub32UnusedAddress,
   WatchedPub32,
+  WatchPub32Txn,
   BlockChainInfo,
   SpendConfirmation
 } from "../lib/types/btc.d";
@@ -23,26 +26,6 @@ export const client = ({
   transport = cypherNodeHTTPTransport()
 }: ClientConfig = {}): CypherNodeBtcClient => {
   const { get, post } = transport;
-  const parseBtcAddressType = (address: Address): AddressType | null => {
-    const addressStart = address.substr(0, 4);
-    switch (addressStart) {
-      case "upub":
-      case "zpub":
-      case "xpub":
-        return "expub";
-      default:
-        switch (addressStart[0]) {
-          case "1":
-            return "legacy";
-          case "3":
-            return "p2sh-segwit";
-          case "b":
-            return "bech32";
-          default:
-            return null;
-        }
-    }
-  };
   const api = {
     /** Core and Spending */
     getBlockChainInfo(): Promise<BlockChainInfo> {
@@ -145,9 +128,7 @@ export const client = ({
       const result = await get("unwatchxpubbyxpub", xpub);
       return result;
     },
-    async unwatchPub32ByLabel(
-      label: string
-    ): Promise<AddressWatchConfirmation> {
+    async unwatchPub32ByLabel(label: string): Promise<GenericWatchResponse> {
       const result = await get("unwatchxpubbylabel", label);
       return result;
     },
@@ -159,6 +140,19 @@ export const client = ({
     async getBalanceByPub32Label(label: string): Promise<string> {
       const { balance } = await get("getbalancebyxpublabel", label);
       return balance;
+    },
+    async getUnusedAddressesByPub32Label(
+      label: string
+    ): Promise<[WatchPub32UnusedAddress]> {
+      const { label_unused_addresses } = await get(
+        "get_unused_addresses_by_watchlabel",
+        label
+      );
+      return label_unused_addresses;
+    },
+    async getTransactionsByPub32Label(label: string): Promise<[WatchPub32Txn]> {
+      const { label_txns } = await get("get_txns_by_watchlabel", label);
+      return label_txns;
     }
   };
   return api;

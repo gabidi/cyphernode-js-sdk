@@ -95,7 +95,7 @@ test("Should be able to get a transactions info", async t => {
   const {
     context: { getTxn, chain }
   } = t;
-  if (chain === "test") {
+  if (chain !== "main") {
     t.pass();
     return;
   }
@@ -132,7 +132,86 @@ test("Should be able to spend (will only run when testnet)", async t => {
   const { status, hash } = await spend(sendToAddress, balance / 1000);
   t.is(status, "accepted");
 });
-/* Watch Pub32 tests 
-Removed from this release pending CN fixes to Pub32 endpoints
-*/
-
+/* Watch Pub32 tests */
+test("Should be able to get a list of watched Pub32 and their labels", async t => {
+  const {
+    context: { getWatchedPub32 }
+  } = t;
+  const watchedPub32 = await getWatchedPub32();
+  t.true(Array.isArray(watchedPub32));
+  if (watchedPub32.length < 1) t.pass();
+  else {
+    t.true(
+      watchedPub32.every(({ pub32, label }) => pub32.length && label.length)
+    );
+  }
+});
+test("Should be able to watch a pub32", async t => {
+  const {
+    context: { watchPub32, chain }
+  } = t;
+  const tpub =
+    chain === "main"
+      ? "xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU"
+      : "tpubDAenfwNu5GyCJWv8oqRAckdKMSUoZjgVF5p8WvQwHQeXjDhAHmGrPa4a4y2Fn7HF2nfCLefJanHV3ny1UY25MRVogizB2zRUdAo7Tr9XAjm";
+  const pub32label = "js_sdkpub32_test";
+  const watchOptions: Pub32WatcherOptions = {
+    label: pub32label,
+    nstart: 0,
+    path: "0/n"
+  };
+  const { label, pub32, id } = await watchPub32(tpub, watchOptions);
+  t.false(isNaN(id));
+  t.is(pub32, tpub);
+  t.is(label, watchOptions.label);
+});
+test("Should be able to get watched address for 32pub by labe", async t => {
+  const {
+    context: { getWatchedAddressesByPub32Label }
+  } = t;
+  const pub32Label = "js_sdkpub32_test";
+  const watchedAddresses = await getWatchedAddressesByPub32Label(pub32Label);
+  t.true(watchedAddresses.length > 0);
+  t.true(watchedAddresses.every(({ address }) => address.length === 34));
+});
+test("Should be able to get a watched 32pub's balance by label", async t => {
+  const {
+    context: { getBalanceByPub32Label }
+  } = t;
+  const pub32Label = "js_sdkpub32_test";
+  const balance = await getBalanceByPub32Label(pub32Label);
+  t.true(!isNaN(balance));
+});
+test("Should be able to get a watched 32pub's unused addresses", async t => {
+  const {
+    context: { getUnusedAddressesByPub32Label }
+  } = t;
+  const pub32Label = "js_sdkpub32_test";
+  const unusedAddressList = await getUnusedAddressesByPub32Label(pub32Label);
+  t.true(Array.isArray(unusedAddressList));
+  t.true(
+    unusedAddressList.every(
+      ({ address, address_pub32_index }) =>
+        !!address.length && !isNaN(address_pub32_index)
+    )
+  );
+});
+test("Should be able to get transactions for watch label ", async t => {
+  const {
+    context: { getTransactionsByPub32Label }
+  } = t;
+  const pub32Label = "js_sdkpub32_test";
+  const pub32Txns = await getTransactionsByPub32Label(pub32Label);
+  t.true(Array.isArray(pub32Txns));
+  t.true(
+    pub32Txns.every(({ amount, txid }) => !!txid.length && !isNaN(amount))
+  );
+});
+test("Should be able to unwatch by label", async t => {
+  const {
+    context: { unwatchPub32ByLabel }
+  } = t;
+  const pub32Label = "js_sdkpub32_test";
+  const { label } = await unwatchPub32ByLabel(pub32Label);
+  t.is(label, pub32Label);
+});

@@ -53,26 +53,6 @@ var cypherNodeHttpTransport_1 = __importDefault(require("../transport/cypherNode
 exports.client = function (_a) {
     var _b = (_a === void 0 ? {} : _a).transport, transport = _b === void 0 ? cypherNodeHttpTransport_1.default() : _b;
     var get = transport.get, post = transport.post;
-    var parseBtcAddressType = function (address) {
-        var addressStart = address.substr(0, 4);
-        switch (addressStart) {
-            case "upub":
-            case "zpub":
-            case "xpub":
-                return "expub";
-            default:
-                switch (addressStart[0]) {
-                    case "1":
-                        return "legacy";
-                    case "3":
-                        return "p2sh-segwit";
-                    case "b":
-                        return "bech32";
-                    default:
-                        return null;
-                }
-        }
-    };
     var api = {
         /** Core and Spending */
         getBlockChainInfo: function () {
@@ -345,6 +325,32 @@ exports.client = function (_a) {
                         case 1:
                             balance = (_a.sent()).balance;
                             return [2 /*return*/, balance];
+                    }
+                });
+            });
+        },
+        getUnusedAddressesByPub32Label: function (label) {
+            return __awaiter(this, void 0, void 0, function () {
+                var label_unused_addresses;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("get_unused_addresses_by_watchlabel", label)];
+                        case 1:
+                            label_unused_addresses = (_a.sent()).label_unused_addresses;
+                            return [2 /*return*/, label_unused_addresses];
+                    }
+                });
+            });
+        },
+        getTransactionsByPub32Label: function (label) {
+            return __awaiter(this, void 0, void 0, function () {
+                var label_txns;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("get_txns_by_watchlabel", label)];
+                        case 1:
+                            label_txns = (_a.sent()).label_txns;
+                            return [2 /*return*/, label_txns];
                     }
                 });
             });

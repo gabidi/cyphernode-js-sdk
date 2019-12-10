@@ -184,7 +184,7 @@ test("Should be able to get a transactions info", function (t) { return __awaite
         switch (_b.label) {
             case 0:
                 _a = t.context, getTxn = _a.getTxn, chain = _a.chain;
-                if (chain === "test") {
+                if (chain !== "main") {
                     t.pass();
                     return [2 /*return*/];
                 }
@@ -269,9 +269,9 @@ test("Should be able to watch a pub32", function (t) { return __awaiter(_this, v
         switch (_c.label) {
             case 0:
                 _a = t.context, watchPub32 = _a.watchPub32, chain = _a.chain;
-                tpub = chain === "test"
-                    ? "tpubDAenfwNu5GyCJWv8oqRAckdKMSUoZjgVF5p8WvQwHQeXjDhAHmGrPa4a4y2Fn7HF2nfCLefJanHV3ny1UY25MRVogizB2zRUdAo7Tr9XAjm"
-                    : "xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU";
+                tpub = chain === "main"
+                    ? "xpub6AHA9hZDN11k2ijHMeS5QqHx2KP9aMBRhTDqANMnwVtdyw2TDYRmF8PjpvwUFcL1Et8Hj59S3gTSMcUQ5gAqTz3Wd8EsMTmF3DChhqPQBnU"
+                    : "tpubDAenfwNu5GyCJWv8oqRAckdKMSUoZjgVF5p8WvQwHQeXjDhAHmGrPa4a4y2Fn7HF2nfCLefJanHV3ny1UY25MRVogizB2zRUdAo7Tr9XAjm";
                 pub32label = "js_sdkpub32_test";
                 watchOptions = {
                     label: pub32label,
@@ -289,13 +289,13 @@ test("Should be able to watch a pub32", function (t) { return __awaiter(_this, v
     });
 }); });
 test("Should be able to get watched address for 32pub by labe", function (t) { return __awaiter(_this, void 0, void 0, function () {
-    var getWatchedAddressesByPub32Label, ypubLabel, watchedAddresses;
+    var getWatchedAddressesByPub32Label, pub32Label, watchedAddresses;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 getWatchedAddressesByPub32Label = t.context.getWatchedAddressesByPub32Label;
-                ypubLabel = "js_sdkpub32_test";
-                return [4 /*yield*/, getWatchedAddressesByPub32Label(ypubLabel)];
+                pub32Label = "js_sdkpub32_test";
+                return [4 /*yield*/, getWatchedAddressesByPub32Label(pub32Label)];
             case 1:
                 watchedAddresses = _a.sent();
                 t.true(watchedAddresses.length > 0);
@@ -308,13 +308,13 @@ test("Should be able to get watched address for 32pub by labe", function (t) { r
     });
 }); });
 test("Should be able to get a watched 32pub's balance by label", function (t) { return __awaiter(_this, void 0, void 0, function () {
-    var getBalanceByPub32Label, ypubLabel, balance;
+    var getBalanceByPub32Label, pub32Label, balance;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 getBalanceByPub32Label = t.context.getBalanceByPub32Label;
-                ypubLabel = "js_sdkpub32_test";
-                return [4 /*yield*/, getBalanceByPub32Label(ypubLabel)];
+                pub32Label = "js_sdkpub32_test";
+                return [4 /*yield*/, getBalanceByPub32Label(pub32Label)];
             case 1:
                 balance = _a.sent();
                 t.true(!isNaN(balance));
@@ -322,17 +322,55 @@ test("Should be able to get a watched 32pub's balance by label", function (t) { 
         }
     });
 }); });
+test("Should be able to get a watched 32pub's unused addresses", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var getUnusedAddressesByPub32Label, pub32Label, unusedAddressList;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                getUnusedAddressesByPub32Label = t.context.getUnusedAddressesByPub32Label;
+                pub32Label = "js_sdkpub32_test";
+                return [4 /*yield*/, getUnusedAddressesByPub32Label(pub32Label)];
+            case 1:
+                unusedAddressList = _a.sent();
+                t.true(Array.isArray(unusedAddressList));
+                t.true(unusedAddressList.every(function (_a) {
+                    var address = _a.address, address_pub32_index = _a.address_pub32_index;
+                    return !!address.length && !isNaN(address_pub32_index);
+                }));
+                return [2 /*return*/];
+        }
+    });
+}); });
+test("Should be able to get transactions for watch label ", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var getTransactionsByPub32Label, pub32Label, pub32Txns;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                getTransactionsByPub32Label = t.context.getTransactionsByPub32Label;
+                pub32Label = "js_sdkpub32_test";
+                return [4 /*yield*/, getTransactionsByPub32Label(pub32Label)];
+            case 1:
+                pub32Txns = _a.sent();
+                t.true(Array.isArray(pub32Txns));
+                t.true(pub32Txns.every(function (_a) {
+                    var amount = _a.amount, txid = _a.txid;
+                    return !!txid.length && !isNaN(amount);
+                }));
+                return [2 /*return*/];
+        }
+    });
+}); });
 test("Should be able to unwatch by label", function (t) { return __awaiter(_this, void 0, void 0, function () {
-    var unwatchPub32ByLabel, ypubLabel, label;
+    var unwatchPub32ByLabel, pub32Label, label;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 unwatchPub32ByLabel = t.context.unwatchPub32ByLabel;
-                ypubLabel = "js_sdkpub32_test";
-                return [4 /*yield*/, unwatchPub32ByLabel(ypubLabel)];
+                pub32Label = "js_sdkpub32_test";
+                return [4 /*yield*/, unwatchPub32ByLabel(pub32Label)];
             case 1:
                 label = (_a.sent()).label;
-                t.is(label, ypubLabel);
+                t.is(label, pub32Label);
                 return [2 /*return*/];
         }
     });

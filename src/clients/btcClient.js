@@ -328,6 +328,32 @@ exports.client = function (_a) {
                     }
                 });
             });
+        },
+        getUnusedAddressesByPub32Label: function (label) {
+            return __awaiter(this, void 0, void 0, function () {
+                var label_unused_addresses;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("get_unused_addresses_by_watchlabel", label)];
+                        case 1:
+                            label_unused_addresses = (_a.sent()).label_unused_addresses;
+                            return [2 /*return*/, label_unused_addresses];
+                    }
+                });
+            });
+        },
+        getTransactionsByPub32Label: function (label) {
+            return __awaiter(this, void 0, void 0, function () {
+                var label_txns;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("get_txns_by_watchlabel", label)];
+                        case 1:
+                            label_txns = (_a.sent()).label_txns;
+                            return [2 /*return*/, label_txns];
+                    }
+                });
+            });
         }
     };
     return api;

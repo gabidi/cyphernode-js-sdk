@@ -150,6 +150,21 @@ exports.client = function (_a) {
                 });
             });
         },
+        getTxns: function (count, skip) {
+            if (count === void 0) { count = 10; }
+            if (skip === void 0) { skip = 0; }
+            return __awaiter(this, void 0, void 0, function () {
+                var txns;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("gettxnslist", [count, skip].join("/"))];
+                        case 1:
+                            txns = (_a.sent()).txns;
+                            return [2 /*return*/, txns];
+                    }
+                });
+            });
+        },
         spend: function (address, amount) {
             return __awaiter(this, void 0, void 0, function () {
                 var result;

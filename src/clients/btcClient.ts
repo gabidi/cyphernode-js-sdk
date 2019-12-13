@@ -20,7 +20,8 @@ import {
   WatchedPub32,
   WatchPub32Txn,
   BlockChainInfo,
-  SpendConfirmation
+  SpendConfirmation,
+  SpenderGetTxnResult
 } from "../lib/types/btc.d";
 export const client = ({
   transport = cypherNodeHTTPTransport()
@@ -59,6 +60,10 @@ export const client = ({
     async getBalance(): Promise<number> {
       const { balance } = await get("getbalance");
       return balance;
+    },
+    async getTxns(count = 10, skip = 0): Promise<[SpenderGetTxnResult]> {
+      const { txns } = await get("gettxnslist", [count, skip].join("/"));
+      return txns;
     },
     async spend(address: Address, amount: number): Promise<SpendConfirmation> {
       const result = await post("spend", { address, amount });

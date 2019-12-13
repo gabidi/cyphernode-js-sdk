@@ -187,6 +187,22 @@ export interface WatchPub32Txn {
   v_out: number;
   amount: number;
 }
+export interface SpenderGetTxnResult {
+  address: Address;
+  category: "send" | "receive";
+  amount: number;
+  label: string;
+  vout: number;
+  confirmations: number;
+  blockhash: Hash;
+  blockindex: number;
+  blocktime: number;
+  txid: TxnId;
+  walletconflicts: [];
+  time: number;
+  timereceived: number;
+  "bip125-replaceable": "yes" | "no";
+}
 export interface CypherNodeBtcClient {
   getBlockChainInfo(): Promise<BlockChainInfo>;
   getNewAddress(addressType: AddressType): Promise<Address>;
@@ -196,6 +212,7 @@ export interface CypherNodeBtcClient {
   getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
   getBestBlockInfo(): Promise<BlockInfo>;
   getTxn(txnHash: Hash): Promise<TxnInfo>;
+  getTxns(count: number, skip: number): Promise<[SpenderGetTxnResult]>;
   getBalance(): Promise<number>;
   spend(address: Address, amount: number): Promise<SpendConfirmation>;
   watchTxnId(

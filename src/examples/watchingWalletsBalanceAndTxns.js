@@ -41,20 +41,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var btcClient_1 = require("../clients/btcClient");
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var _a, getWatchedPub32, getBalanceByPub32Label, getTransactionsByPub32Label, getUnusedAddressesByPub32Label, watchedPub32;
+    var _a, getWatchedPub32, getBalanceByPub32Label, getTransactionsByPub32Label, getUnusedAddressesByPub32Label, unwatchPub32ByLabel, getNewAddress, getBalance, watchedPub32, _b, address, balance;
     var _this = this;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+    return __generator(this, function (_c) {
+        switch (_c.label) {
             case 0:
-                _a = btcClient_1.client(), getWatchedPub32 = _a.getWatchedPub32, getBalanceByPub32Label = _a.getBalanceByPub32Label, getTransactionsByPub32Label = _a.getTransactionsByPub32Label, getUnusedAddressesByPub32Label = _a.getUnusedAddressesByPub32Label;
+                _a = btcClient_1.client(), getWatchedPub32 = _a.getWatchedPub32, getBalanceByPub32Label = _a.getBalanceByPub32Label, getTransactionsByPub32Label = _a.getTransactionsByPub32Label, getUnusedAddressesByPub32Label = _a.getUnusedAddressesByPub32Label, unwatchPub32ByLabel = _a.unwatchPub32ByLabel, getNewAddress = _a.getNewAddress, getBalance = _a.getBalance;
                 return [4 /*yield*/, getWatchedPub32()];
             case 1:
-                watchedPub32 = _b.sent();
+                watchedPub32 = _c.sent();
                 console.log("You've got " + watchedPub32.length + " watched pub32s!");
                 return [4 /*yield*/, Promise.all(watchedPub32.map(function (_a) {
                         var pub32 = _a.pub32, label = _a.label;
                         return __awaiter(_this, void 0, void 0, function () {
-                            var _b, balance, txns, unused, err_1;
+                            var _b, balance_1, txns, unused, err_1;
                             return __generator(this, function (_c) {
                                 switch (_c.label) {
                                     case 0:
@@ -65,10 +65,12 @@ var btcClient_1 = require("../clients/btcClient");
                                                 getUnusedAddressesByPub32Label(label)
                                             ])];
                                     case 1:
-                                        _b = _c.sent(), balance = _b[0], txns = _b[1], unused = _b[2];
-                                        console.log("Label: " + label + "\n\t   Pub32 " + pub32 + "\n\t   balance: " + balance + ", \n           last unused address: " + unused[2].address + "\n\t   devrivation index " + unused[2].address_pub32_index + "\n\t");
-                                        if (txns && txns.length)
+                                        _b = _c.sent(), balance_1 = _b[0], txns = _b[1], unused = _b[2];
+                                        console.log("Label: " + label + "\n\t   Pub32 " + pub32 + "\n\t   balance: " + balance_1 + ", \n           last unused address: " + unused[0].address + "\n\t   devrivation index " + unused[0].address_pub32_index + "\n\t");
+                                        if (txns && txns.length) {
                                             console.log(label + " has " + txns.length + " txns");
+                                            txns.forEach(function (txn) { return console.log(txn); });
+                                        }
                                         return [3 /*break*/, 3];
                                     case 2:
                                         err_1 = _c.sent();
@@ -80,7 +82,14 @@ var btcClient_1 = require("../clients/btcClient");
                         });
                     }))];
             case 2:
-                _b.sent();
+                _c.sent();
+                return [4 /*yield*/, Promise.all([
+                        getNewAddress("bech32"),
+                        getBalance()
+                    ])];
+            case 3:
+                _b = _c.sent(), address = _b[0], balance = _b[1];
+                console.log("\n\t    Your spending wallet has a balance " + balance + "\n\t    send BTC to : " + address + "\n\t    ");
                 return [2 /*return*/];
         }
     });

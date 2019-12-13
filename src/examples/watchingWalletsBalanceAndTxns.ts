@@ -7,7 +7,10 @@ import { client as btcClient } from "../clients/btcClient";
     getWatchedPub32,
     getBalanceByPub32Label,
     getTransactionsByPub32Label,
-    getUnusedAddressesByPub32Label
+    getUnusedAddressesByPub32Label,
+    unwatchPub32ByLabel,
+    getNewAddress,
+    getBalance
   } = btcClient();
   const watchedPub32 = await getWatchedPub32();
   console.log(`You've got ${watchedPub32.length} watched pub32s!`);
@@ -23,15 +26,26 @@ import { client as btcClient } from "../clients/btcClient";
           `Label: ${label}
 	   Pub32 ${pub32}
 	   balance: ${balance}, 
-           last unused address: ${unused[2].address}
-	   devrivation index ${unused[2].address_pub32_index}
+           last unused address: ${unused[0].address}
+	   devrivation index ${unused[0].address_pub32_index}
 	`
         );
-        if (txns && txns.length)
+        if (txns && txns.length) {
           console.log(`${label} has ${txns.length} txns`);
+          txns.forEach(txn => console.log(txn));
+        }
       } catch (err) {
         console.error("Poop", err);
       }
     })
   );
+  // Get spending wallet balnce and next address
+  const [address, balance] = await Promise.all([
+    getNewAddress("bech32"),
+    getBalance()
+  ]);
+  console.log(`
+	    Your spending wallet has a balance ${balance}
+	    send BTC to : ${address}
+	    `);
 })();

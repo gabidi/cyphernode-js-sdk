@@ -17,8 +17,15 @@ Make sure the following enviroment variables are set when using the sdk:
 CYPHERNODE_API_KEY=
 CYPHER_GATEWAY_URL=https://localhost:2009/v0/
 ```
-
-
+### A quick note on Cyphernode's gatekeeper SSL certifcate
+Cyphernode's gatekeeper has a self signed SSL certificate. The SDK's tests use the node global to ignore invalid tickets. * THIS SHOULD NOT BE DONE IN PRODUCTION *
+The SDK also accepts an enviroment variable CYPHERNODE_GATEKEEPER_CERT_CA which can be used to passed the contents of the cyphernode's certificate CA.  This is usaully located in:
+`~/path/to/your/cyphernode/dist/cyphernode/gatekeeper/certs`
+An Example of providing the contents of the cert would be:
+```bash
+CYPHERNODE_GATEKEEPER_CERT_CA=$(cat ~/cyphernode/dist/cyphernode/gatekeeper/certs.pem) node yourapp.js
+```
+or by any other method like docker-compose, etc..
 ### Example using the BTC client:
 ```js 
 const {btcClient} = require('cyphernode-js-sdk');
@@ -63,7 +70,7 @@ Contains the individual clients that can be instaniated to access each of Cypher
 
 - btcClient.js : All things bitcoin
 - lncClient.js : All things lighting
-- otsClient.js : (WIP) All this opentimestamp
+- otsClient.js : All this opentimestamp
 
 Test files for each client are included that showcase the usage of functionality
 

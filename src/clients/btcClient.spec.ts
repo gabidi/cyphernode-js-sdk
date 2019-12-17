@@ -129,8 +129,17 @@ test("Should be able to spend (will only run when testnet)", async t => {
     getNewAddress()
   ]);
   if (balance <= 0) t.fail("Not enough funds to run spend test");
-  const { status, hash } = await spend(sendToAddress, balance / 1000);
+  const { status, hash } = await spend(sendToAddress, 0.0001);
   t.is(status, "accepted");
+});
+test("Should be able to get a spending wallets txns", async t => {
+  const {
+    context: { getTxnsSpending }
+  } = t;
+
+  const txns = await getTxnsSpending();
+  t.true(Array.isArray(txns));
+  t.true(txns.every(txn => !!txn.txid.length));
 });
 /* Watch Pub32 tests */
 test("Should be able to get a list of watched Pub32 and their labels", async t => {
@@ -146,7 +155,7 @@ test("Should be able to get a list of watched Pub32 and their labels", async t =
     );
   }
 });
-test("Should be able to watch a pub32", async t => {
+test.skip("Should be able to watch a pub32", async t => {
   const {
     context: { watchPub32, chain }
   } = t;

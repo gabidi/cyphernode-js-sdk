@@ -150,14 +150,14 @@ exports.client = function (_a) {
                 });
             });
         },
-        getTxns: function (count, skip) {
+        getTxnsSpending: function (count, skip) {
             if (count === void 0) { count = 10; }
             if (skip === void 0) { skip = 0; }
             return __awaiter(this, void 0, void 0, function () {
                 var txns;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, get("gettxnslist", [count, skip].join("/"))];
+                        case 0: return [4 /*yield*/, get("get_txns_spending", [count, skip].join("/"))];
                         case 1:
                             txns = (_a.sent()).txns;
                             return [2 /*return*/, txns];
@@ -344,12 +344,13 @@ exports.client = function (_a) {
                 });
             });
         },
-        getUnusedAddressesByPub32Label: function (label) {
+        getUnusedAddressesByPub32Label: function (label, count) {
+            if (count === void 0) { count = 10; }
             return __awaiter(this, void 0, void 0, function () {
                 var label_unused_addresses;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, get("get_unused_addresses_by_watchlabel", label)];
+                        case 0: return [4 /*yield*/, get("get_unused_addresses_by_watchlabel", [label, count].join("/"))];
                         case 1:
                             label_unused_addresses = (_a.sent()).label_unused_addresses;
                             return [2 /*return*/, label_unused_addresses];
@@ -357,12 +358,13 @@ exports.client = function (_a) {
                 });
             });
         },
-        getTransactionsByPub32Label: function (label) {
+        getTransactionsByPub32Label: function (label, count) {
+            if (count === void 0) { count = 10; }
             return __awaiter(this, void 0, void 0, function () {
                 var label_txns;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, get("get_txns_by_watchlabel", label)];
+                        case 0: return [4 /*yield*/, get("get_txns_by_watchlabel", [label, count].join("/"))];
                         case 1:
                             label_txns = (_a.sent()).label_txns;
                             return [2 /*return*/, label_txns];

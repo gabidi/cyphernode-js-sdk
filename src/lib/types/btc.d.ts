@@ -212,7 +212,7 @@ export interface CypherNodeBtcClient {
   getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
   getBestBlockInfo(): Promise<BlockInfo>;
   getTxn(txnHash: Hash): Promise<TxnInfo>;
-  getTxns(count: number, skip: number): Promise<[SpenderGetTxnResult]>;
+  getTxnsSpending(count?: number, skip?: number): Promise<[SpenderGetTxnResult]>;
   getBalance(): Promise<number>;
   spend(address: Address, amount: number): Promise<SpendConfirmation>;
   watchTxnId(
@@ -235,7 +235,11 @@ export interface CypherNodeBtcClient {
   getBalanceByPub32(xpub: string): Promise<string>;
   getBalanceByPub32Label(label: string): Promise<string>;
   getUnusedAddressesByPub32Label(
-    label: string
+    label: string,
+    count?: number
   ): Promise<[WatchPub32UnusedAddress]>;
-  getTransactionsByPub32Label(label: string): Promise<[WatchPub32Txn]>;
+  getTransactionsByPub32Label(
+    label: string,
+    count?: number
+  ): Promise<[WatchPub32Txn]>;
 }

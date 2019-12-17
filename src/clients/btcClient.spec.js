@@ -232,10 +232,25 @@ test("Should be able to spend (will only run when testnet)", function (t) { retu
                 _b = _d.sent(), balance = _b[0], sendToAddress = _b[1];
                 if (balance <= 0)
                     t.fail("Not enough funds to run spend test");
-                return [4 /*yield*/, spend(sendToAddress, balance / 1000)];
+                return [4 /*yield*/, spend(sendToAddress, 0.0001)];
             case 2:
                 _c = _d.sent(), status = _c.status, hash = _c.hash;
                 t.is(status, "accepted");
+                return [2 /*return*/];
+        }
+    });
+}); });
+test("Should be able to get a spending wallets txns", function (t) { return __awaiter(_this, void 0, void 0, function () {
+    var getTxnsSpending, txns;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                getTxnsSpending = t.context.getTxnsSpending;
+                return [4 /*yield*/, getTxnsSpending()];
+            case 1:
+                txns = _a.sent();
+                t.true(Array.isArray(txns));
+                t.true(txns.every(function (txn) { return !!txn.txid.length; }));
                 return [2 /*return*/];
         }
     });
@@ -263,7 +278,7 @@ test("Should be able to get a list of watched Pub32 and their labels", function 
         }
     });
 }); });
-test("Should be able to watch a pub32", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test.skip("Should be able to watch a pub32", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var _a, watchPub32, chain, tpub, pub32label, watchOptions, _b, label, pub32, id;
     return __generator(this, function (_c) {
         switch (_c.label) {

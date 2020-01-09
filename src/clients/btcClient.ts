@@ -61,8 +61,11 @@ export const client = ({
       const { balance } = await get("getbalance");
       return balance;
     },
-    async getTxns(count = 10, skip = 0): Promise<[SpenderGetTxnResult]> {
-      const { txns } = await get("gettxnslist", [count, skip].join("/"));
+    async getTxnsSpending(
+      count = 10,
+      skip = 0
+    ): Promise<[SpenderGetTxnResult]> {
+      const { txns } = await get("get_txns_spending", [count, skip].join("/"));
       return txns;
     },
     async spend(address: Address, amount: number): Promise<SpendConfirmation> {
@@ -147,16 +150,23 @@ export const client = ({
       return balance;
     },
     async getUnusedAddressesByPub32Label(
-      label: string
+      label: string,
+      count = 10
     ): Promise<[WatchPub32UnusedAddress]> {
       const { label_unused_addresses } = await get(
         "get_unused_addresses_by_watchlabel",
-        label
+        [label, count].join("/")
       );
       return label_unused_addresses;
     },
-    async getTransactionsByPub32Label(label: string): Promise<[WatchPub32Txn]> {
-      const { label_txns } = await get("get_txns_by_watchlabel", label);
+    async getTransactionsByPub32Label(
+      label: string,
+      count = 10
+    ): Promise<[WatchPub32Txn]> {
+      const { label_txns } = await get(
+        "get_txns_by_watchlabel",
+        [label, count].join("/")
+      );
       return label_txns;
     }
   };

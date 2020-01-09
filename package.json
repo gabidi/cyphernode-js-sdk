@@ -2,6 +2,14 @@
   "name": "cyphernode-js-sdk",
   "author": "@gabidi",
   "version": "0.1.0",
+  "keywords": [
+    "cyphernode",
+    "bitcoin",
+    "lightning network",
+    "ots",
+    "js",
+    "sdk"
+  ],
   "main": "index.js",
   "license": "MIT",
   "scripts": {

@@ -1,7 +1,7 @@
 {
   "name": "cyphernode-js-sdk",
   "author": "@gabidi",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "keywords": [
     "cyphernode",
     "bitcoin",
@@ -39,5 +39,9 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.2",
     "uuid": "^3.3.2"
+  },
+  "dependencies": {
+    "socks-proxy-agent": "^4.0.2",
+    "superagent-proxy": "^2.0.0"
   }
 }

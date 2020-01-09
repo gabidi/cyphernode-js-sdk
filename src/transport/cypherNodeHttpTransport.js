@@ -52,8 +52,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var agent = __importStar(require("superagent"));
+var superagent_proxy_1 = __importDefault(require("superagent-proxy"));
 var cryptoUtil_1 = require("../lib/cryptoUtil");
 var CypherNodeGatewayUrl = (process && process.env.CYPHER_GATEWAY_URL) || "https://localhost:2009/v0/";
 var CypherNodeApiKey = (process && process.env.CYPHERNODE_API_KEY) || "";
@@ -61,7 +65,9 @@ var CypherNodeApiKeyID = (process && process.env.CYPHERNODE_API_KEY_ID) || 3;
 var CypherNodeCertCAPem = (process && process.env.CYPHERNODE_GATEKEEPER_CERT_CA) || "";
 var makeToken = cryptoUtil_1.crypto().makeToken;
 exports.default = (function (_a) {
-    var _b = _a === void 0 ? {} : _a, _c = _b.gatewayUrl, gatewayUrl = _c === void 0 ? CypherNodeGatewayUrl : _c, _d = _b.auth, auth = _d === void 0 ? function () { return makeToken(CypherNodeApiKey, CypherNodeApiKeyID); } : _d;
+    var _b = _a === void 0 ? {} : _a, _c = _b.gatewayUrl, gatewayUrl = _c === void 0 ? CypherNodeGatewayUrl : _c, _d = _b.proxyUrl, proxyUrl = _d === void 0 ? process.env.CYPHERNODE_HTTP_TRANSPORT_PROXY : _d, _e = _b.auth, auth = _e === void 0 ? function () { return makeToken(CypherNodeApiKey, CypherNodeApiKeyID); } : _e;
+    // Extend superagent with proxyUrl
+    superagent_proxy_1.default(agent);
     var transport = {
         get: function (command, payload) {
             return __awaiter(this, void 0, void 0, function () {
@@ -73,6 +79,7 @@ exports.default = (function (_a) {
                             token = _a.sent();
                             return [4 /*yield*/, agent
                                     .get("" + gatewayUrl + command + "/" + (payload ? payload : ""))
+                                    .proxy(proxyUrl)
                                     .ca(CypherNodeCertCAPem)
                                     .set("Authorization", "Bearer " + token)];
                         case 2:
@@ -92,6 +99,7 @@ exports.default = (function (_a) {
                             token = _a.sent();
                             return [4 /*yield*/, agent
                                     .post("" + gatewayUrl + command)
+                                    .proxy(proxyUrl)
                                     .ca(CypherNodeCertCAPem)
                                     .set("Authorization", "Bearer " + token)
                                     .send(payload)];

@@ -58,6 +58,16 @@ The HTTP transport stack is automatically initilaized by default when a client i
 
 You can easily drop that dependancy from the sdk by modifiying `./transports/cypherNodeHTTPTransport.ts` (or creating a new one in our [transports repo](https://github.com/gabidi/cyphernode-js-sdk-transports) !).
 
+### Connecting Using a proxy (ex: TOR)
+The included HTTP transport supports connecting to your Cyphernode using an HTTP, HTTPS or Socks proxy !
+You can simply set the enviroment variable below with your proxy's url:
+```bash
+CYPHERNODE_HTTP_TRANSPORT_PROXY=socks://localhost:9050
+CYPHER_GATEWAY_URL=cyphernode.onion or cleanet url/ip
+```
+and the SDK will automatically route all requests through the proxy.
+Alternativley you can also setup the proxy programmatically, please reference the example located in the `./src/examples/` folder.
+
 ### Distritbued and custom transports
 
 A big part of this SDK seeks to help integrate Bitcoin into other communication protocols via the notion of transport architecture. Please check the [Cyphernode transport repo](https://github.com/gabidi/cyphernode-js-sdk-transports) for more information on how to reach your Cyphernode via different communication protocols
@@ -96,3 +106,16 @@ yarn test:clients
 3. _Fix OTS functions_
 4. Add remaining LN functions
 5. Add link to MVP app
+
+--- 
+License
+
+(The MIT License)
+
+Copyright (c) 2020 gabidi <gabidi@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.i

@@ -1,4 +1,6 @@
 import * as agent from "superagent";
+import superproxy from "superagent-proxy";
+
 import { crypto } from "../lib/cryptoUtil";
 import {
   CypherNodeHTTPTransportParam,
@@ -14,13 +16,17 @@ const CypherNodeCertCAPem =
 const { makeToken } = crypto();
 export default ({
   gatewayUrl = CypherNodeGatewayUrl,
+  proxyUrl = process.env.CYPHERNODE_HTTP_TRANSPORT_PROXY,
   auth = () => makeToken(CypherNodeApiKey, CypherNodeApiKeyID)
 }: CypherNodeHTTPTransportParam = {}): CypherNodeTransport => {
+  // Extend superagent with proxyUrl
+  superproxy(agent);
   const transport = {
     async get<T>(command: CypherNodeCommand, payload?: any): Promise<T> {
       const token = await auth();
       const { body } = await agent
         .get(`${gatewayUrl}${command}/${payload ? payload : ""}`)
+        .proxy(proxyUrl)
         .ca(CypherNodeCertCAPem)
         .set("Authorization", `Bearer ${token}`);
       return body;
@@ -29,6 +35,7 @@ export default ({
       const token = await auth();
       const { body } = await agent
         .post(`${gatewayUrl}${command}`)
+        .proxy(proxyUrl)
         .ca(CypherNodeCertCAPem)
         .set("Authorization", `Bearer ${token}`)
         .send(payload);

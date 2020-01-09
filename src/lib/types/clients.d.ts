@@ -7,13 +7,14 @@ export interface CypherNodeHttpTransport extends CypherNodeTransport {
   token: Promise<string>;
 }
 export interface CypherNodeMatrixTransportParam {
-	roomId:string;
-  client? : any; // TOOD matrixClient
-  emitter? : any;
+  roomId: string;
+  client?: any; // TOOD matrixClient
+  emitter?: any;
 }
 export interface CypherNodeHTTPTransportParam {
   gatewayUrl?: string;
-  auth?: Function
+  proxyUrl?: string;
+  auth?: Function;
 }
 export interface ClientConfig {
   transport?: CypherNodeTransport;

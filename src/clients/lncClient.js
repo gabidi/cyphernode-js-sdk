@@ -72,6 +72,9 @@ exports.client = function (_a) {
                 });
             });
         },
+        openAndFundPeerChannel: function (payload) {
+            return post("ln_connectfund", payload);
+        },
         createInvoice: function (invoice) {
             return post("ln_create_invoice", invoice);
         },

@@ -55,6 +55,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var agent = __importStar(require("superagent"));
 var superagent_proxy_1 = __importDefault(require("superagent-proxy"));
@@ -65,25 +66,54 @@ var CypherNodeApiKeyID = (process && process.env.CYPHERNODE_API_KEY_ID) || 3;
 var CypherNodeCertCAPem = (process && process.env.CYPHERNODE_GATEKEEPER_CERT_CA) || "";
 var makeToken = cryptoUtil_1.crypto().makeToken;
 exports.default = (function (_a) {
-    var _b = _a === void 0 ? {} : _a, _c = _b.gatewayUrl, gatewayUrl = _c === void 0 ? CypherNodeGatewayUrl : _c, _d = _b.proxyUrl, proxyUrl = _d === void 0 ? process.env.CYPHERNODE_HTTP_TRANSPORT_PROXY : _d, _e = _b.auth, auth = _e === void 0 ? function () { return makeToken(CypherNodeApiKey, CypherNodeApiKeyID); } : _e;
+    var _b = _a === void 0 ? {} : _a, _c = _b.gatewayUrl, gatewayUrl = _c === void 0 ? CypherNodeGatewayUrl : _c, _d = _b.proxyUrl, proxyUrl = _d === void 0 ? process.env.CYPHERNODE_HTTP_TRANSPORT_PROXY : _d, _e = _b.auth, auth = _e === void 0 ? function () { return makeToken(CypherNodeApiKey, CypherNodeApiKeyID); } : _e, _f = _b.customHeaders, customHeaders = _f === void 0 ? function (_a) {
+        var command = _a.command, payload = _a.payload;
+        return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_b) {
+            return [2 /*return*/, ({})];
+        }); });
+    } : _f;
     // Extend superagent with proxyUrl
     superagent_proxy_1.default(agent);
+    var _makeHeaders = function (_a) {
+        var command = _a.command, payload = _a.payload;
+        return __awaiter(_this, void 0, void 0, function () {
+            var token, headers, headersObj;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, auth()];
+                    case 1:
+                        token = _b.sent();
+                        headers = {
+                            Authorization: "Bearer " + token
+                        };
+                        if (!(typeof customHeaders === "function")) return [3 /*break*/, 3];
+                        return [4 /*yield*/, customHeaders({ command: command, payload: payload })];
+                    case 2:
+                        headersObj = _b.sent();
+                        if (headersObj) {
+                            headers = __assign({}, headers, headersObj);
+                        }
+                        _b.label = 3;
+                    case 3: return [2 /*return*/, headers];
+                }
+            });
+        });
+    };
     var transport = {
         get: function (command, payload) {
             return __awaiter(this, void 0, void 0, function () {
-                var token, body;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, auth()];
-                        case 1:
-                            token = _a.sent();
-                            return [4 /*yield*/, agent
-                                    .get("" + gatewayUrl + command + "/" + (payload ? payload : ""))
-                                    .proxy(proxyUrl)
-                                    .ca(CypherNodeCertCAPem)
-                                    .set("Authorization", "Bearer " + token)];
+                var body, _a, _b;
+                return __generator(this, function (_c) {
+                    switch (_c.label) {
+                        case 0:
+                            _b = (_a = agent
+                                .get("" + gatewayUrl + command + "/" + (payload ? payload : ""))
+                                .proxy(proxyUrl)
+                                .ca(CypherNodeCertCAPem)).set;
+                            return [4 /*yield*/, _makeHeaders({ command: command, payload: payload })];
+                        case 1: return [4 /*yield*/, _b.apply(_a, [_c.sent()])];
                         case 2:
-                            body = (_a.sent()).body;
+                            body = (_c.sent()).body;
                             return [2 /*return*/, body];
                     }
                 });
@@ -91,20 +121,21 @@ exports.default = (function (_a) {
         },
         post: function (command, payload) {
             return __awaiter(this, void 0, void 0, function () {
-                var token, body;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
+                var token, body, _a, _b;
+                return __generator(this, function (_c) {
+                    switch (_c.label) {
                         case 0: return [4 /*yield*/, auth()];
                         case 1:
-                            token = _a.sent();
-                            return [4 /*yield*/, agent
-                                    .post("" + gatewayUrl + command)
-                                    .proxy(proxyUrl)
-                                    .ca(CypherNodeCertCAPem)
-                                    .set("Authorization", "Bearer " + token)
-                                    .send(payload)];
-                        case 2:
-                            body = (_a.sent()).body;
+                            token = _c.sent();
+                            _b = (_a = agent
+                                .post("" + gatewayUrl + command)
+                                .proxy(proxyUrl)
+                                .ca(CypherNodeCertCAPem)).set;
+                            return [4 /*yield*/, _makeHeaders({ command: command, payload: payload })];
+                        case 2: return [4 /*yield*/, _b.apply(_a, [_c.sent()])
+                                .send(payload)];
+                        case 3:
+                            body = (_c.sent()).body;
                             return [2 /*return*/, body];
                     }
                 });

@@ -17,18 +17,31 @@ const { makeToken } = crypto();
 export default ({
   gatewayUrl = CypherNodeGatewayUrl,
   proxyUrl = process.env.CYPHERNODE_HTTP_TRANSPORT_PROXY,
-  auth = () => makeToken(CypherNodeApiKey, CypherNodeApiKeyID)
+  auth = () => makeToken(CypherNodeApiKey, CypherNodeApiKeyID),
+  customHeaders = async ({ command, payload }) => ({})
 }: CypherNodeHTTPTransportParam = {}): CypherNodeTransport => {
   // Extend superagent with proxyUrl
   superproxy(agent);
+  const _makeHeaders = async ({ command, payload }) => {
+    const token = await auth();
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    if (typeof customHeaders === "function") {
+      const headersObj = await customHeaders({ command, payload });
+      if (headersObj) {
+        headers = { ...headers, ...headersObj };
+      }
+    }
+    return headers;
+  };
   const transport = {
     async get<T>(command: CypherNodeCommand, payload?: any): Promise<T> {
-      const token = await auth();
       const { body } = await agent
         .get(`${gatewayUrl}${command}/${payload ? payload : ""}`)
         .proxy(proxyUrl)
         .ca(CypherNodeCertCAPem)
-        .set("Authorization", `Bearer ${token}`);
+        .set(await _makeHeaders({ command, payload }));
       return body;
     },
     async post<T>(command: CypherNodeCommand, payload: any): Promise<T> {
@@ -37,7 +50,7 @@ export default ({
         .post(`${gatewayUrl}${command}`)
         .proxy(proxyUrl)
         .ca(CypherNodeCertCAPem)
-        .set("Authorization", `Bearer ${token}`)
+        .set(await _makeHeaders({ command, payload }))
         .send(payload);
       return body;
     }

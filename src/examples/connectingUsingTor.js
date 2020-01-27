@@ -46,16 +46,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var btcClient_1 = require("../clients/btcClient");
 var cypherNodeHttpTransport_1 = __importDefault(require("../transport/cypherNodeHttpTransport"));
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var transport, client, bestBlockInfo, err_1;
+    var cnOnionUrl, transport, client, bestBlockInfo, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
+                cnOnionUrl = process.env.CYPHER_ONION_URL || "change.me.onion";
                 transport = cypherNodeHttpTransport_1.default({
                     proxyUrl: "socks://127.0.0.1:9050",
-                    gatewayUrl: 
-                    // Change this to match your cyphernode onion
-                    "https://CHANGE_ME.onion:2010/v0/"
+                    gatewayUrl: cnOnionUrl
                 });
                 client = btcClient_1.client({ transport: transport });
                 return [4 /*yield*/, client.getBestBlockInfo()];

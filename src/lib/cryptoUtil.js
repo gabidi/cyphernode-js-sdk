@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -34,7 +35,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var _this = this;
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var crypto_1 = require("crypto");
 /**
@@ -45,14 +52,14 @@ exports.crypto = function () {
     if (typeof window !== "undefined" && window.crypto) {
         var hexString_1 = function (buffer) {
             var byteArray = new Uint8Array(buffer);
-            var hexCodes = byteArray.slice().map(function (value) {
+            var hexCodes = __spreadArrays(byteArray).map(function (value) {
                 var hexCode = value.toString(16);
                 var paddedHexCode = hexCode.padStart(2, "0");
                 return paddedHexCode;
             });
             return hexCodes.join("");
         };
-        hmacSHA256Hex = function (text, key) { return __awaiter(_this, void 0, void 0, function () {
+        hmacSHA256Hex = function (text, key) { return __awaiter(void 0, void 0, void 0, function () {
             var encoder, hmacKey, digestBuffer;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -73,7 +80,7 @@ exports.crypto = function () {
         }); };
     }
     else {
-        hmacSHA256Hex = function (text, key) { return __awaiter(_this, void 0, void 0, function () {
+        hmacSHA256Hex = function (text, key) { return __awaiter(void 0, void 0, void 0, function () {
             var hmac, hash;
             return __generator(this, function (_a) {
                 hmac = crypto_1.createHmac("sha256", key);
@@ -85,7 +92,7 @@ exports.crypto = function () {
     }
     var makeToken = function (api_key, perm, expiryInSeconds) {
         if (expiryInSeconds === void 0) { expiryInSeconds = 3600; }
-        return __awaiter(_this, void 0, void 0, function () {
+        return __awaiter(void 0, void 0, void 0, function () {
             var id, exp, h64, p64, msg, hash;
             return __generator(this, function (_a) {
                 switch (_a.label) {

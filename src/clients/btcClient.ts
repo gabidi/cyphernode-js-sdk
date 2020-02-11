@@ -21,7 +21,8 @@ import {
   WatchPub32Txn,
   BlockChainInfo,
   SpendConfirmation,
-  SpenderGetTxnResult
+  SpenderGetTxnResult,
+  BumpfeeResp
 } from "../lib/types/btc.d";
 export const client = ({
   transport = cypherNodeHTTPTransport()
@@ -168,6 +169,16 @@ export const client = ({
         [label, count].join("/")
       );
       return label_txns;
+    },
+    async bumpTxnFee(
+      txnId: string,
+      confTarget: number = 0
+    ): Promise<BumpfeeResp> {
+      const { result } = await post("bumpfee", {
+        txid: txnId,
+        confTarget: confTarget > 0 ? confTarget : undefined
+      });
+      return resp;
     }
   };
   return api;

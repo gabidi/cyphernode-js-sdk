@@ -11,11 +11,10 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -46,11 +45,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var ava_1 = require("ava");
 var btcClient_1 = require("./btcClient");
 var test = ava_1.serial;
-test.before(function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test.before(function (t) { return __awaiter(_this, void 0, void 0, function () {
     var client, chain;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -63,7 +63,7 @@ test.before(function (t) { return __awaiter(void 0, void 0, void 0, function () 
                     throw "Could not get blockChainInfo or undefined chain type";
                 if (chain === "main")
                     console.warn("**** WARNING: RUNNING TESTS ON MAINNET!!! *****");
-                t.context = __assign(__assign({}, client), { chain: chain });
+                t.context = __assign({}, client, { chain: chain });
                 return [2 /*return*/];
         }
     });
@@ -71,8 +71,9 @@ test.before(function (t) { return __awaiter(void 0, void 0, void 0, function () 
 /**
 BTC tests
 */
-test("Should be able to get a new legacy, p2sh or bech32 bitcoin address ", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get a new legacy, p2sh or bech32 bitcoin address ", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var _a, getNewAddress, chain, addressTypes;
+    var _this = this;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
@@ -84,7 +85,7 @@ test("Should be able to get a new legacy, p2sh or bech32 bitcoin address ", func
                 };
                 return [4 /*yield*/, Promise.all(Object.entries(addressTypes).map(function (_a) {
                         var addressType = _a[0], addressFirstChar = _a[1];
-                        return __awaiter(void 0, void 0, void 0, function () {
+                        return __awaiter(_this, void 0, void 0, function () {
                             var address;
                             return __generator(this, function (_b) {
                                 switch (_b.label) {
@@ -106,7 +107,7 @@ test("Should be able to get a new legacy, p2sh or bech32 bitcoin address ", func
         }
     });
 }); });
-test("Should be able to get the latest block's hash", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get the latest block's hash", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getBestBlockHash, blockHash;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -120,7 +121,7 @@ test("Should be able to get the latest block's hash", function (t) { return __aw
         }
     });
 }); });
-test("Should be able to get the a block's hash from its height", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get the a block's hash from its height", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var _a, getBlockHash, chain, blockHash;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -138,7 +139,7 @@ test("Should be able to get the a block's hash from its height", function (t) { 
         }
     });
 }); });
-test("Should be able to get the lastest block's info", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get the lastest block's info", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getBestBlockInfo, blockInfo;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -155,7 +156,7 @@ test("Should be able to get the lastest block's info", function (t) { return __a
         }
     });
 }); });
-test("Should be able to get the any block's info", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get the any block's info", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var _a, getBlockInfo, chain, blockHash, blockInfo;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -177,7 +178,7 @@ test("Should be able to get the any block's info", function (t) { return __await
         }
     });
 }); });
-test("Should be able to get a transactions info", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get a transactions info", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var _a, getTxn, chain, txnId, txnInfo;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -199,7 +200,7 @@ test("Should be able to get a transactions info", function (t) { return __awaite
         }
     });
 }); });
-test("Should be able to get the spending wallets balance", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get the spending wallets balance", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getBalance, balance;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -213,7 +214,7 @@ test("Should be able to get the spending wallets balance", function (t) { return
         }
     });
 }); });
-test("Should be able to spend (will only run when testnet)", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to spend (will only run when testnet)", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var _a, getBalance, getNewAddress, spend, chain, _b, balance, sendToAddress, _c, status, hash;
     return __generator(this, function (_d) {
         switch (_d.label) {
@@ -239,7 +240,7 @@ test("Should be able to spend (will only run when testnet)", function (t) { retu
         }
     });
 }); });
-test("Should be able to get a spending wallets txns", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get a spending wallets txns", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getTxnsSpending, txns;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -255,7 +256,7 @@ test("Should be able to get a spending wallets txns", function (t) { return __aw
     });
 }); });
 /* Watch Pub32 tests */
-test("Should be able to get a list of watched Pub32 and their labels", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get a list of watched Pub32 and their labels", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getWatchedPub32, watchedPub32;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -277,7 +278,7 @@ test("Should be able to get a list of watched Pub32 and their labels", function 
         }
     });
 }); });
-test.skip("Should be able to watch a pub32", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test.skip("Should be able to watch a pub32", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var _a, watchPub32, chain, tpub, pub32label, watchOptions, _b, label, pub32, id;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -302,7 +303,7 @@ test.skip("Should be able to watch a pub32", function (t) { return __awaiter(voi
         }
     });
 }); });
-test("Should be able to get watched address for 32pub by labe", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get watched address for 32pub by labe", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getWatchedAddressesByPub32Label, pub32Label, watchedAddresses;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -321,7 +322,7 @@ test("Should be able to get watched address for 32pub by labe", function (t) { r
         }
     });
 }); });
-test("Should be able to get a watched 32pub's balance by label", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get a watched 32pub's balance by label", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getBalanceByPub32Label, pub32Label, balance;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -336,7 +337,7 @@ test("Should be able to get a watched 32pub's balance by label", function (t) { 
         }
     });
 }); });
-test("Should be able to get a watched 32pub's unused addresses", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get a watched 32pub's unused addresses", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getUnusedAddressesByPub32Label, pub32Label, unusedAddressList;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -355,7 +356,7 @@ test("Should be able to get a watched 32pub's unused addresses", function (t) { 
         }
     });
 }); });
-test("Should be able to get transactions for watch label ", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to get transactions for watch label ", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var getTransactionsByPub32Label, pub32Label, pub32Txns;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -374,7 +375,7 @@ test("Should be able to get transactions for watch label ", function (t) { retur
         }
     });
 }); });
-test("Should be able to unwatch by label", function (t) { return __awaiter(void 0, void 0, void 0, function () {
+test("Should be able to unwatch by label", function (t) { return __awaiter(_this, void 0, void 0, function () {
     var unwatchPub32ByLabel, pub32Label, label;
     return __generator(this, function (_a) {
         switch (_a.label) {

@@ -4,4 +4,3 @@ export { client as otsClient } from "./src/clients/otsClient";
 export {
   default as cypherNodeHttpTransport
 } from "./src/transport/cypherNodeHttpTransport";
-export { crypto as cryptoUtils } from "./src/lib/cryptoUtil";

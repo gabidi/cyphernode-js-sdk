@@ -1,7 +1,3 @@
-import * as agent from "superagent";
-import superproxy from "superagent-proxy";
-
-import { crypto } from "../lib/cryptoUtil";
 import {
   CypherNodeHTTPTransportParam,
   CypherNodeTransport,
@@ -13,14 +9,14 @@ const CypherNodeApiKey = (process && process.env.CYPHERNODE_API_KEY) || "";
 const CypherNodeApiKeyID = (process && process.env.CYPHERNODE_API_KEY_ID) || 3;
 const CypherNodeCertCAPem =
   (process && process.env.CYPHERNODE_GATEKEEPER_CERT_CA) || "";
-const { makeToken } = crypto();
 export default ({
   gatewayUrl = CypherNodeGatewayUrl,
   proxyUrl = process.env.CYPHERNODE_HTTP_TRANSPORT_PROXY,
-  auth = () => makeToken(CypherNodeApiKey, CypherNodeApiKeyID)
+  auth,
+  agent
 }: CypherNodeHTTPTransportParam = {}): CypherNodeTransport => {
+  if (!auth || !agent) throw "Missing authentication and or agent";
   // Extend superagent with proxyUrl
-  superproxy(agent);
   const transport = {
     async get<T>(command: CypherNodeCommand, payload?: any): Promise<T> {
       const token = await auth();

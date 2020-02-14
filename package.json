@@ -19,9 +19,6 @@
     "test:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/otsClient.spec.js",
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/*.spec.js"
   },
-  "optionalDependencies": {
-    "superagent": "^5.0.6"
-  },
   "devDependencies": {
     "@types/async": "^3.0.1",
     "@types/debug": "^4.1.5",
@@ -40,8 +37,5 @@
     "typescript": "^3.5.2",
     "uuid": "^3.3.2"
   },
-  "dependencies": {
-    "socks-proxy-agent": "^4.0.2",
-    "superagent-proxy": "^2.0.0"
-  }
+  "dependencies": {}
 }

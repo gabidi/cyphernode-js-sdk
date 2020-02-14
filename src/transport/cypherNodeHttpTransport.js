@@ -45,29 +45,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var agent = __importStar(require("superagent"));
-var superagent_proxy_1 = __importDefault(require("superagent-proxy"));
-var cryptoUtil_1 = require("../lib/cryptoUtil");
 var CypherNodeGatewayUrl = (process && process.env.CYPHER_GATEWAY_URL) || "https://localhost:2009/v0/";
 var CypherNodeApiKey = (process && process.env.CYPHERNODE_API_KEY) || "";
 var CypherNodeApiKeyID = (process && process.env.CYPHERNODE_API_KEY_ID) || 3;
 var CypherNodeCertCAPem = (process && process.env.CYPHERNODE_GATEKEEPER_CERT_CA) || "";
-var makeToken = cryptoUtil_1.crypto().makeToken;
 exports.default = (function (_a) {
-    var _b = _a === void 0 ? {} : _a, _c = _b.gatewayUrl, gatewayUrl = _c === void 0 ? CypherNodeGatewayUrl : _c, _d = _b.proxyUrl, proxyUrl = _d === void 0 ? process.env.CYPHERNODE_HTTP_TRANSPORT_PROXY : _d, _e = _b.auth, auth = _e === void 0 ? function () { return makeToken(CypherNodeApiKey, CypherNodeApiKeyID); } : _e;
+    var _b = _a === void 0 ? {} : _a, _c = _b.gatewayUrl, gatewayUrl = _c === void 0 ? CypherNodeGatewayUrl : _c, _d = _b.proxyUrl, proxyUrl = _d === void 0 ? process.env.CYPHERNODE_HTTP_TRANSPORT_PROXY : _d, auth = _b.auth, agent = _b.agent;
+    if (!auth || !agent)
+        throw "Missing authentication and or agent";
     // Extend superagent with proxyUrl
-    superagent_proxy_1.default(agent);
     var transport = {
         get: function (command, payload) {
             return __awaiter(this, void 0, void 0, function () {

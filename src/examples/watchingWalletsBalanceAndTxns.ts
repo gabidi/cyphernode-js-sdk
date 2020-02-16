@@ -11,7 +11,7 @@ import { client as btcClient } from "../clients/btcClient";
     unwatchPub32ByLabel,
     getNewAddress,
     getBalance,
-    getTxns
+    getTxnsSpending
   } = btcClient();
   const watchedPub32 = await getWatchedPub32();
   console.log(`You've got ${watchedPub32.length} watched pub32s!`);
@@ -45,7 +45,7 @@ import { client as btcClient } from "../clients/btcClient";
   const [address, balance, txns] = await Promise.all([
     getNewAddress("bech32"),
     getBalance(),
-    getTxns()
+    getTxnsSpending()
   ]);
   console.log(`
 	    Your spending wallet has a balance ${balance}

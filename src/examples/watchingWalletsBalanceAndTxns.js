@@ -41,12 +41,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var btcClient_1 = require("../clients/btcClient");
 (function () { return __awaiter(_this, void 0, void 0, function () {
-    var _a, getWatchedPub32, getBalanceByPub32Label, getTransactionsByPub32Label, getUnusedAddressesByPub32Label, unwatchPub32ByLabel, getNewAddress, getBalance, getTxns, watchedPub32, _b, address, balance, txns;
+    var _a, getWatchedPub32, getBalanceByPub32Label, getTransactionsByPub32Label, getUnusedAddressesByPub32Label, unwatchPub32ByLabel, getNewAddress, getBalance, getTxnsSpending, watchedPub32, _b, address, balance, txns;
     var _this = this;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                _a = btcClient_1.client(), getWatchedPub32 = _a.getWatchedPub32, getBalanceByPub32Label = _a.getBalanceByPub32Label, getTransactionsByPub32Label = _a.getTransactionsByPub32Label, getUnusedAddressesByPub32Label = _a.getUnusedAddressesByPub32Label, unwatchPub32ByLabel = _a.unwatchPub32ByLabel, getNewAddress = _a.getNewAddress, getBalance = _a.getBalance, getTxns = _a.getTxns;
+                _a = btcClient_1.client(), getWatchedPub32 = _a.getWatchedPub32, getBalanceByPub32Label = _a.getBalanceByPub32Label, getTransactionsByPub32Label = _a.getTransactionsByPub32Label, getUnusedAddressesByPub32Label = _a.getUnusedAddressesByPub32Label, unwatchPub32ByLabel = _a.unwatchPub32ByLabel, getNewAddress = _a.getNewAddress, getBalance = _a.getBalance, getTxnsSpending = _a.getTxnsSpending;
                 return [4 /*yield*/, getWatchedPub32()];
             case 1:
                 watchedPub32 = _c.sent();
@@ -86,7 +86,7 @@ var btcClient_1 = require("../clients/btcClient");
                 return [4 /*yield*/, Promise.all([
                         getNewAddress("bech32"),
                         getBalance(),
-                        getTxns()
+                        getTxnsSpending()
                     ])];
             case 3:
                 _b = _c.sent(), address = _b[0], balance = _b[1], txns = _b[2];

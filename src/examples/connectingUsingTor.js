@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -37,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * A simple example showing how easy it is to connect to your Cyphernode behind a proxy (Ex. Tor) using the SDK
@@ -45,17 +45,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
  */
 var btcClient_1 = require("../clients/btcClient");
 var cypherNodeHttpTransport_1 = __importDefault(require("../transport/cypherNodeHttpTransport"));
-(function () { return __awaiter(_this, void 0, void 0, function () {
-    var transport, client, bestBlockInfo, err_1;
+(function () { return __awaiter(void 0, void 0, void 0, function () {
+    var cnOnionUrl, transport, client, bestBlockInfo, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
+                cnOnionUrl = process.env.CYPHER_ONION_URL || "change.me.onion";
                 transport = cypherNodeHttpTransport_1.default({
                     proxyUrl: "socks://127.0.0.1:9050",
-                    gatewayUrl: 
-                    // Change this to match your cyphernode onion
-                    "https://CHANGE_ME.onion:2010/v0/"
+                    gatewayUrl: cnOnionUrl
                 });
                 client = btcClient_1.client({ transport: transport });
                 return [4 /*yield*/, client.getBestBlockInfo()];

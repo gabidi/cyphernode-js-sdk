@@ -1,7 +1,5 @@
 import cypherNodeHTTPTransport from "../transport/cypherNodeHttpTransport";
-import {
-  ClientConfig
-} from "../lib/types/clients";
+import { ClientConfig } from "../lib/types/clients";
 import {
   ConnectionString,
   LnNodeInfo,
@@ -10,7 +8,9 @@ import {
   LnAddress,
   Bolt11String,
   DecodedBolt11,
-  CypherNodeLncClient
+  CypherNodeLncClient,
+  LnConnectAndFundPayload,
+  LnConnectAndFundResult
 } from "../lib/types/lightning-c";
 export const client = ({
   transport = cypherNodeHTTPTransport()
@@ -28,6 +28,12 @@ export const client = ({
       const { address } = await get("ln_newaddr");
       return address;
     },
+    openAndFundPeerChannel(
+      payload: LnConnectAndFundPayload
+    ): Promise<LnConnectAndFundResult> {
+      return post("ln_connectfund", payload);
+    },
+
     createInvoice(invoice: CreateInvoicePayload): Promise<CreatedInvoice> {
       return post("ln_create_invoice", invoice);
     },

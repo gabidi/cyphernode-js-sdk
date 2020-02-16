@@ -11,10 +11,11 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -48,7 +49,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var ava_1 = require("ava");
 var lncClient_1 = require("./lncClient");
@@ -60,7 +60,7 @@ test.before(function (t) {
 /**
 LN tests
 */
-test("Should be able to get the lightning nodes info", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test("Should be able to get the lightning nodes info", function (t) { return __awaiter(void 0, void 0, void 0, function () {
     var getNodeInfo, nodeInfo;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -76,7 +76,7 @@ test("Should be able to get the lightning nodes info", function (t) { return __a
         }
     });
 }); });
-test("Should be able to a connection string", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test("Should be able to a connection string", function (t) { return __awaiter(void 0, void 0, void 0, function () {
     var getConnectionString, connString;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -90,7 +90,7 @@ test("Should be able to a connection string", function (t) { return __awaiter(_t
         }
     });
 }); });
-test("Should be able to a new LN address", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test("Should be able to a new LN address", function (t) { return __awaiter(void 0, void 0, void 0, function () {
     var getNewAddress, addrs;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -104,7 +104,7 @@ test("Should be able to a new LN address", function (t) { return __awaiter(_this
         }
     });
 }); });
-test("Should be able to create an invoice", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test("Should be able to create an invoice", function (t) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, createInvoice, lightingInvoiceLabel, makeInvoicePayload, body, invoice;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -130,7 +130,7 @@ test("Should be able to create an invoice", function (t) { return __awaiter(_thi
     });
 }); });
 /** FAILS 403 */
-test.skip("Should be able to delete an invoice", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test.skip("Should be able to delete an invoice", function (t) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, deleteInvoice, lightingInvoiceLabel, makeInvoicePayload, deletedInvoice;
     return __generator(this, function (_b) {
         switch (_b.label) {
@@ -152,7 +152,7 @@ test.skip("Should be able to delete an invoice", function (t) { return __awaiter
         }
     });
 }); });
-test("Should be able to decode a bolt", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test("Should be able to decode a bolt", function (t) { return __awaiter(void 0, void 0, void 0, function () {
     var decodeBolt, bolt11, decodedBolt;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -171,7 +171,7 @@ test("Should be able to decode a bolt", function (t) { return __awaiter(_this, v
         }
     });
 }); });
-test("Should be able to get invoices and created invoice should be included", function (t) { return __awaiter(_this, void 0, void 0, function () {
+test("Should be able to get invoices and created invoice should be included", function (t) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, getInvoice, lightingInvoiceLabel, invoices;
     return __generator(this, function (_b) {
         switch (_b.label) {

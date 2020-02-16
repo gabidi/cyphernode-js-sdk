@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -47,57 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var crypto_1 = require("crypto");
-var ava_1 = require("ava");
-var otsClient_1 = require("./otsClient");
-var test = ava_1.serial;
-test.before(function (t) {
-    t.context = __assign({ fileHash: crypto_1.createHash("sha256")
-            .update(Date.now + ":" + parseInt(Math.random() * 100))
-            .digest("hex") }, otsClient_1.client());
-});
-test("Should be able to generate an OTS file", function (t) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, stamp, fileHash, hashRcpt;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
+/**
+ * This example will fetch all your watched Pub32 from Cyphernode and their balances , and then print them out in a simple console output
+ */
+var lncClient_1 = require("../clients/lncClient");
+(function () { return __awaiter(void 0, void 0, void 0, function () {
+    var createInvoice, invoice, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
             case 0:
-                _a = t.context, stamp = _a.stamp, fileHash = _a.fileHash;
-                return [4 /*yield*/, stamp(fileHash)];
+                _a.trys.push([0, 2, , 3]);
+                createInvoice = lncClient_1.client().createInvoice;
+                return [4 /*yield*/, createInvoice({
+                        label: "My CN inovice",
+                        description: "An invoice",
+                        expiry: Date.now() + 60 * 60 * 1000,
+                        callback_url: null,
+                        msatoshi: 0
+                    })];
             case 1:
-                hashRcpt = _b.sent();
-                t.true(hashRcpt.hash === fileHash);
-                t.false(isNaN(hashRcpt.id));
-                t.is(hashRcpt.result, "success");
+                invoice = _a.sent();
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                console.error(err_1);
+                process.exit();
+                return [3 /*break*/, 3];
+            case 3:
+                console.log("invoice", invoice);
                 return [2 /*return*/];
         }
     });
-}); });
-test("Should be able to Verify an OTS file hash", function (t) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, verifyFileStamp, fileHash, _b, method, hash, result, message;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
-            case 0:
-                _a = t.context, verifyFileStamp = _a.verifyFileStamp, fileHash = _a.fileHash;
-                return [4 /*yield*/, verifyFileStamp(fileHash)];
-            case 1:
-                _b = _c.sent(), method = _b.method, hash = _b.hash, result = _b.result, message = _b.message;
-                t.is(hash, fileHash);
-                t.true(result === "pending" || result === "completed");
-                return [2 /*return*/];
-        }
-    });
-}); });
-test("Should be able to get OTS stamp", function (t) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, getStamp, fileHash, poop;
-    return __generator(this, function (_b) {
-        switch (_b.label) {
-            case 0:
-                _a = t.context, getStamp = _a.getStamp, fileHash = _a.fileHash;
-                return [4 /*yield*/, getStamp(fileHash)];
-            case 1:
-                poop = _b.sent();
-                t.pass(poop);
-                return [2 /*return*/];
-        }
-    });
-}); });
+}); })();

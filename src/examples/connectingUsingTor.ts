@@ -8,12 +8,11 @@ import https from "https";
 import url from "url";
 (async () => {
   try {
+    const cnOnionUrl = process.env.CYPHER_ONION_URL || "change.me.onion";
     // Setup the transport proxyUrl
     const transport = httpTransport({
       proxyUrl: "socks://127.0.0.1:9050",
-      gatewayUrl:
-        // Change this to match your cyphernode onion
-        "https://CHANGE_ME.onion:2010/v0/"
+      gatewayUrl: cnOnionUrl
     });
     // Inject the transport the btcclient (or whatever client you want to instantiate)
     const client = btcClient({ transport });

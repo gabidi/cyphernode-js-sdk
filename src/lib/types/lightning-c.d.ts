@@ -62,7 +62,16 @@ export interface DecodedBolt11 {
   payment_hash: string; //"c6ca9e52649c58079caa0d47d27a810332bb0b4ea9e3c2fd8e9fa16c99407edf";
   signature: string; // "3045022100c32b5bfc445313971035cd4797e08ee0d73c041c2cacc69a4771d8d828112bc202202078bdf35f64b164f056aa8da7e0111";
 }
-
+export interface LnConnectAndFundPayload {
+  peer: string;
+  msatoshi: number; // satoshis "100000";
+  callbackUrl: string;
+}
+export interface LnConnectAndFundResult {
+  result: "success";
+  txid: string;
+  channel_id: string;
+}
 export interface CypherNodeLncClient {
   getNodeInfo(): Promise<LnNodeInfo>;
   getConnectionString(): Promise<ConnectionString>;
@@ -71,4 +80,7 @@ export interface CypherNodeLncClient {
   getInvoice(invoiceLabel?: string): Promise<CreatedInvoice[]>;
   deleteInvoice(invoiceLabel?: string): Promise<CreatedInvoice>;
   decodeBolt(bolt11: Bolt11String): Promise<DecodedBolt11>;
+  openAndFundPeerChannel(
+    payload: LnConnectAndFundPayload
+  ): Promise<LnConnectAndFundResult>;
 }

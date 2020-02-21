@@ -104,9 +104,10 @@ yarn test:clients
 1. JSDoc this puppy
 2. Test coverage for all functions
 3. _Fix OTS functions_
-4. Add remaining LN functions
-5. Add link to MVP app
+4. _Add remaining LN functions_
 
+# Example Real life usage
+- Sifir's [Private Bitcoin mobile wallet](https://sifir.io/bitcoin/cyphernode)
 --- 
 License
 

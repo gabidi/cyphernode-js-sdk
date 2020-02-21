@@ -72,6 +72,127 @@ export interface LnConnectAndFundResult {
   txid: string;
   channel_id: string;
 }
+
+export interface LnListFundsPayload {
+  outputs: [
+    {
+      txid: string;
+      output: number;
+      value: number;
+      amount_msat: string;
+      address: string;
+      status: "unconfirmed" | "confirmed" | "spent";
+    }
+  ];
+  channels: [
+    {
+      peer_id: string;
+      connected: boolean;
+      state: "CHANNELD_NORMAL";
+      short_channel_id: string;
+      channel_sat: number;
+      our_amount_msat: string; //"89096000msat";
+      channel_total_sat: number; //100000;
+      amount_msat: string; // "100000000msat";
+      funding_txid: string; //"ecd9e49835fa7e447257f00c2248479c697c54b7bb736c7356d92eb33d9e8234";
+      funding_output: number;
+    }
+  ];
+}
+export interface LnListPeersPayload {
+  id: string;
+  connected: boolean;
+  netaddr: [string];
+  features: any;
+  channels: [LnChannelDetails];
+  log: any;
+}
+export interface LnChannelDetails {
+  state: "CHANNELD_NORMAL";
+  scratch_txid: string;
+  owner: "channeld";
+  short_channel_id: string;
+  direction: 1;
+  channel_id: string;
+  funding_txid: string;
+  close_to_addr: string;
+  close_to: string;
+  private: boolean;
+  funding_allocation_msat: any;
+  funding_msat: any;
+  msatoshi_to_us: number;
+  to_us_msat: string; //"89096359msat";
+  msatoshi_to_us_min: number;
+  min_to_us_msat: string; // "9096359msat";
+  msatoshi_to_us_max: number;
+  max_to_us_msat: string; // "100000000msat";
+  msatoshi_total: number;
+  total_msat: string; // "100000000msat";
+  dust_limit_satoshis: number;
+  dust_limit_msat: string; //"546000msat";
+  max_htlc_value_in_flight_msat: number;
+  max_total_htlc_in_msat: string; //"18446744073709551615msat";
+  their_channel_reserve_satoshis: number;
+  their_reserve_msat: string; //"1000000msat";
+  our_channel_reserve_satoshis: number;
+  our_reserve_msat: string; //"1000000msat";
+  spendable_msatoshi: number;
+  spendable_msat: string; // "83358359msat";
+  htlc_minimum_msat: number;
+  minimum_htlc_in_msat: string; // "0msat";
+  their_to_self_delay: number;
+  our_to_self_delay: number;
+  max_accepted_htlcs: number;
+  status: [
+    "CHANNELD_NORMAL:Reconnected, and reestablished.",
+    "CHANNELD_NORMAL:Funding transaction locked. Channel announced."
+  ];
+  in_payments_offered: number;
+  in_msatoshi_offered: number;
+  in_offered_msat: string; // "80099101msat";
+  in_payments_fulfilled: number;
+  in_msatoshi_fulfilled: number;
+  in_fulfilled_msat: string; //"80000000msat";
+  out_payments_offered: number;
+  out_msatoshi_offered: number;
+  out_offered_msat: string; // "90903641msat";
+  out_payments_fulfilled: number;
+  out_msatoshi_fulfilled: number;
+  out_fulfilled_msat: string; //"90903641msat";
+  htlcs: [];
+}
+
+export interface LnRouteDetails {
+  id: string;
+  channel: string; // "617139x1971x0";
+  direction: 1 | 0;
+  msatoshi: number;
+  amount_msat: string;
+  delay: number;
+  style: any;
+}
+export interface LnPayBolt11Payload {
+  id: number;
+  payment_hash: string;
+  msatoshi: number;
+  msatoshi_sent: number;
+  created_at: number;
+  status: string;
+  payment_preimage: string;
+  description: string;
+  getroute_tries: number;
+  sendpay_tries: number;
+  route: [
+    {
+      id: string;
+      channel: string;
+      msatoshi: number;
+      delay: number;
+    }
+  ];
+  failures: [any];
+}
+
 export interface CypherNodeLncClient {
   getNodeInfo(): Promise<LnNodeInfo>;
   getConnectionString(): Promise<ConnectionString>;
@@ -83,4 +204,15 @@ export interface CypherNodeLncClient {
   openAndFundPeerChannel(
     payload: LnConnectAndFundPayload
   ): Promise<LnConnectAndFundResult>;
+  listPeers(nodeId?: string): Promise<[LnListPeersPayload]>;
+  listFunds(): Promise<LnListFundsPayload>;
+  payBolt11(bolt11: string, route?: string): Promise<LnPayBolt11Payload>;
+  getRoute(
+    nodeId: string,
+    amount: number,
+    riskFactor?: number | 0
+  ): Promise<[LnRouteDetails]>;
+  listPeers(nodeId?: string): Promise<[LnListPeersPayload]>;
+  listFunds(): Promise<LnListFundsPayload>;
+  payBolt11(bolt11: string): Promise<LnPayBolt11Payload>;
 }

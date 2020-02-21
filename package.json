@@ -1,7 +1,7 @@
 {
   "name": "cyphernode-js-sdk",
   "author": "@gabidi",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "keywords": [
     "cyphernode",
     "bitcoin",
@@ -20,7 +20,7 @@
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/*.spec.js"
   },
   "optionalDependencies": {
-    "superagent": "^5.0.6"
+    "superagent": "^5.2.2"
   },
   "devDependencies": {
     "@types/async": "^3.0.1",

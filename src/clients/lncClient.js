@@ -1,10 +1,9 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -108,6 +107,59 @@ exports.client = function (_a) {
         },
         decodeBolt: function (bolt11) {
             return get("ln_decodebolt11", bolt11);
+        },
+        getRoute: function (nodeId, amount, riskFactor) {
+            if (riskFactor === void 0) { riskFactor = 0; }
+            return __awaiter(this, void 0, void 0, function () {
+                var route;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("ln_getroute", [nodeId, amount, riskFactor].join("/"))];
+                        case 1:
+                            route = (_a.sent()).route;
+                            return [2 /*return*/, route];
+                    }
+                });
+            });
+        },
+        listPeers: function (nodeId) {
+            return __awaiter(this, void 0, void 0, function () {
+                var peers;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("ln_listpeers", nodeId)];
+                        case 1:
+                            peers = (_a.sent()).peers;
+                            return [2 /*return*/, peers];
+                    }
+                });
+            });
+        },
+        listFunds: function () {
+            return get("ln_listfunds");
+        },
+        payBolt11: function (bolt11) {
+            return __awaiter(this, void 0, void 0, function () {
+                var payresult;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, post("ln_pay", {
+                                bolt11: bolt11
+                            })];
+                        case 1:
+                            payresult = _a.sent();
+                            return [2 /*return*/, payresult];
+                    }
+                });
+            });
+        },
+        withdrawFunds: function (destination, satoshi, feerate) {
+            if (feerate === void 0) { feerate = "normal"; }
+            return post("ln_withdraw", {
+                destination: destination,
+                satoshi: satoshi,
+                feerate: feerate
+            });
         }
     };
     return api;

@@ -11,11 +11,10 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -56,6 +55,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var agent = __importStar(require("superagent"));
 var superagent_proxy_1 = __importDefault(require("superagent-proxy"));
@@ -68,7 +68,7 @@ var makeToken = cryptoUtil_1.crypto().makeToken;
 exports.default = (function (_a) {
     var _b = _a === void 0 ? {} : _a, _c = _b.gatewayUrl, gatewayUrl = _c === void 0 ? CypherNodeGatewayUrl : _c, _d = _b.proxyUrl, proxyUrl = _d === void 0 ? process.env.CYPHERNODE_HTTP_TRANSPORT_PROXY : _d, _e = _b.auth, auth = _e === void 0 ? function () { return makeToken(CypherNodeApiKey, CypherNodeApiKeyID); } : _e, _f = _b.customHeaders, customHeaders = _f === void 0 ? function (_a) {
         var command = _a.command, payload = _a.payload;
-        return __awaiter(void 0, void 0, void 0, function () { return __generator(this, function (_b) {
+        return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_b) {
             return [2 /*return*/, ({})];
         }); });
     } : _f;
@@ -76,7 +76,7 @@ exports.default = (function (_a) {
     superagent_proxy_1.default(agent);
     var _makeHeaders = function (_a) {
         var command = _a.command, payload = _a.payload;
-        return __awaiter(void 0, void 0, void 0, function () {
+        return __awaiter(_this, void 0, void 0, function () {
             var token, headers, headersObj;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -91,7 +91,7 @@ exports.default = (function (_a) {
                     case 2:
                         headersObj = _b.sent();
                         if (headersObj) {
-                            headers = __assign(__assign({}, headers), headersObj);
+                            headers = __assign({}, headers, headersObj);
                         }
                         _b.label = 3;
                     case 3: return [2 /*return*/, headers];

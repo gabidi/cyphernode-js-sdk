@@ -58,7 +58,7 @@ test("Should be able to create an invoice", async t => {
   t.true(!!invoice.payment_hash.length);
 });
 /** FAILS 403 */
-test.skip("Should be able to delete an invoice", async t => {
+test("Should be able to delete an invoice", async t => {
   const {
     context: { deleteInvoice, lightingInvoiceLabel }
   } = t;
@@ -93,4 +93,24 @@ test("Should be able to get invoices and created invoice should be included", as
   } = t;
   const invoices = await getInvoice();
   t.true(invoices.some(({ label }) => label === lightingInvoiceLabel));
+});
+test("Should be able to get our nodes peers", async t => {
+  const {
+    context: { listPeers }
+  } = t;
+  const peers = await listPeers();
+  // no peers yet
+  t.is(peers.length, 0);
+});
+test("Should be able no route yet between node and an arbitrary node", async t => {
+  const {
+    context: { getRoute }
+  } = t;
+  t.throwsAsync(
+    getRoute(
+      "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f", // ACINQ
+      100000,
+      20
+    )
+  );
 });

@@ -14,8 +14,8 @@ export interface CypherNodeMatrixTransportParam {
 export interface CypherNodeHTTPTransportParam {
   gatewayUrl?: string;
   proxyUrl?: string;
-  auth: Function;
-  agent: Function;
+  auth?: Function;
+  customHeaders?: ({ payload, command }) => Promise<object> | null;
 }
 export interface ClientConfig {
   transport?: CypherNodeTransport;

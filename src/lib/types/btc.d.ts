@@ -187,6 +187,12 @@ export interface WatchPub32Txn {
   v_out: number;
   amount: number;
 }
+export interface BumpfeeResp {
+  txid: string;
+  origfee: number;
+  fee: number;
+  errors?: string[];
+}
 export interface SpenderGetTxnResult {
   address: Address;
   category: "send" | "receive";
@@ -212,7 +218,10 @@ export interface CypherNodeBtcClient {
   getBlockInfo(blockHash: Hash): Promise<BlockInfo>;
   getBestBlockInfo(): Promise<BlockInfo>;
   getTxn(txnHash: Hash): Promise<TxnInfo>;
-  getTxnsSpending(count?: number, skip?: number): Promise<[SpenderGetTxnResult]>;
+  getTxnsSpending(
+    count?: number,
+    skip?: number
+  ): Promise<[SpenderGetTxnResult]>;
   getBalance(): Promise<number>;
   spend(address: Address, amount: number): Promise<SpendConfirmation>;
   watchTxnId(
@@ -242,4 +251,5 @@ export interface CypherNodeBtcClient {
     label: string,
     count?: number
   ): Promise<[WatchPub32Txn]>;
+  bumpTxnFee(txnId: string, confTarget: number): Promise<BumpfeeResp>;
 }

@@ -139,7 +139,7 @@ exports.client = function (_a) {
         listFunds: function () {
             return get("ln_listfunds");
         },
-        listPays: function () {
+        listPays: function (bolt11) {
             return __awaiter(this, void 0, void 0, function () {
                 var pays;
                 return __generator(this, function (_a) {

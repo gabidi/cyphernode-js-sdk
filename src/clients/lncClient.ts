@@ -14,7 +14,8 @@ import {
   LnListPeersPayload,
   LnPayBolt11Payload,
   LnRouteDetails,
-  LnListFundsPayload
+  LnListFundsPayload,
+  LnListPaysPayload
 } from "../lib/types/lightning-c";
 export const client = ({
   transport = cypherNodeHTTPTransport()
@@ -71,9 +72,19 @@ export const client = ({
     listFunds(): Promise<LnListFundsPayload> {
       return get("ln_listfunds");
     },
-    async payBolt11(bolt11: string): Promise<LnPayBolt11Payload> {
+    async listPays(): Promise<[LnListPaysPayload]> {
+      const { pays } = await get("ln_listpays");
+      return pays;
+    },
+    async payBolt11(
+      bolt11: string,
+      expectedMsatoshi?: number,
+      expectedDesc?: string
+    ): Promise<LnPayBolt11Payload> {
       const payresult = await post("ln_pay", {
-        bolt11
+        bolt11,
+        expected_msatoshi: expectedMsatoshi ? expectedMsatoshi : undefined,
+        expected_description: expectedDesc ? expectedDesc : undefined
       });
       return payresult;
     },

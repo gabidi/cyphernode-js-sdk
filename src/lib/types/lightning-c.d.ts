@@ -192,7 +192,12 @@ export interface LnPayBolt11Payload {
   ];
   failures: [any];
 }
-
+export interface LnListPaysPayload {
+  bolt11: Bolt11String;
+  status: "failed" | "complete";
+  amount_sent_msat: string; // "0msat";
+  preimage?: string;
+}
 export interface CypherNodeLncClient {
   getNodeInfo(): Promise<LnNodeInfo>;
   getConnectionString(): Promise<ConnectionString>;
@@ -204,9 +209,6 @@ export interface CypherNodeLncClient {
   openAndFundPeerChannel(
     payload: LnConnectAndFundPayload
   ): Promise<LnConnectAndFundResult>;
-  listPeers(nodeId?: string): Promise<[LnListPeersPayload]>;
-  listFunds(): Promise<LnListFundsPayload>;
-  payBolt11(bolt11: string, route?: string): Promise<LnPayBolt11Payload>;
   getRoute(
     nodeId: string,
     amount: number,
@@ -214,5 +216,10 @@ export interface CypherNodeLncClient {
   ): Promise<[LnRouteDetails]>;
   listPeers(nodeId?: string): Promise<[LnListPeersPayload]>;
   listFunds(): Promise<LnListFundsPayload>;
-  payBolt11(bolt11: string): Promise<LnPayBolt11Payload>;
+  listPays(): Promise<[LnListPaysPayload]>;
+  payBolt11(
+    bolt11: string,
+    expectedMsatoshi?: number,
+    expectedDesc?: string
+  ): Promise<LnPayBolt11Payload>;
 }

@@ -106,7 +106,8 @@ yarn test:clients
 3. _Fix OTS functions_
 4. _Add remaining LN functions_
 
-# Example Real life usage
+## Example Real life usage
+
 - Sifir's [Private Bitcoin mobile wallet](https://sifir.io/bitcoin/cyphernode)
 --- 
 License

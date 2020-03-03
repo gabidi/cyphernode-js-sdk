@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -138,13 +139,28 @@ exports.client = function (_a) {
         listFunds: function () {
             return get("ln_listfunds");
         },
-        payBolt11: function (bolt11) {
+        listPays: function () {
+            return __awaiter(this, void 0, void 0, function () {
+                var pays;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("ln_listpays")];
+                        case 1:
+                            pays = (_a.sent()).pays;
+                            return [2 /*return*/, pays];
+                    }
+                });
+            });
+        },
+        payBolt11: function (bolt11, expectedMsatoshi, expectedDesc) {
             return __awaiter(this, void 0, void 0, function () {
                 var payresult;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0: return [4 /*yield*/, post("ln_pay", {
-                                bolt11: bolt11
+                                bolt11: bolt11,
+                                expected_msatoshi: expectedMsatoshi ? expectedMsatoshi : undefined,
+                                expected_description: expectedDesc ? expectedDesc : undefined
                             })];
                         case 1:
                             payresult = _a.sent();

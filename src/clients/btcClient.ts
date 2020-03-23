@@ -111,6 +111,8 @@ export const client = ({
       if (!options.label) throw "Label is required to for a pub32 watch";
       if (/[^0-9a-zA-Z_i ]/.test(options.label))
         throw "Labels must be alpha numeric or _";
+      if (!options.nstart || isNaN(options.nstart))
+        throw "nstart must be provided and must be a number";
       const result = await post("watchxpub", {
         pub32: xpub,
         ...options

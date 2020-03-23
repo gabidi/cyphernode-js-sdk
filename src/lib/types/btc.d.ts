@@ -146,7 +146,7 @@ interface WatcherOptions {
 export interface Pub32WatcherOptions extends WatcherOptions {
   path: string; // Must end with /n to auto derive address
   label: string; // Cannot include - or cyphernode goes ape shit
-  nstart?: number;
+  nstart: number; // must be provided of CN passes null to pycoin derive
 }
 export interface TxnWatchOptions extends WatcherOptions {
   nbxconf: number;

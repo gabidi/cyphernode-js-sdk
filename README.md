@@ -103,8 +103,8 @@ yarn test:clients
 
 1. JSDoc this puppy
 2. Test coverage for all functions
-3. _Fix OTS functions_
-4. _Add remaining LN functions_
+3. ~Fix OTS functions~
+4. ~Add remaining LN functions~
 
 ## Example Real life usage
 

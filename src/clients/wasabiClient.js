@@ -50,6 +50,9 @@ exports.client = function (_a) {
         getBalances: function () {
             return get("wasabi_getbalances");
         },
+        getUnspentCoins: function (instanceId) {
+            return get("wasabi_getunspentcoins", instanceId);
+        },
         getTxns: function (instanceId) {
             return get("wasabi_gettransactions", instanceId);
         },

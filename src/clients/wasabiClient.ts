@@ -6,8 +6,10 @@ import {
   WasabiGetBalancesPayload,
   WasabiGetTxnsPayload,
   WasabiNewAddressPayload,
-  WasabiSpendPayload
+  WasabiSpendPayload,
+  WasabiGetUnspentCoinsPayload
 } from "../lib/types/wasabi.d";
+
 export const client = ({
   transport = cypherNodeHTTPTransport()
 }: ClientConfig = {}): WasabiClient => {
@@ -19,7 +21,12 @@ export const client = ({
     getBalances(): Promise<WasabiGetBalancesPayload> {
       return get("wasabi_getbalances");
     },
-    getTxns(instanceId: number): Promise<WasabiGetTxnsPayload> {
+    getUnspentCoins(
+      instanceId?: number
+    ): Promise<WasabiGetUnspentCoinsPayload> {
+      return get("wasabi_getunspentcoins", instanceId);
+    },
+    getTxns(instanceId?: number): Promise<WasabiGetTxnsPayload> {
       return get("wasabi_gettransactions", instanceId);
     },
     async spend(param: {

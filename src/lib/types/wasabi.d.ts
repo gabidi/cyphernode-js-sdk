@@ -27,6 +27,20 @@ export interface WasabiGetTxnsPayload {
   instanceId: number | null;
   transactions: [WasabiTxn];
 }
+export interface WasabiUnspentCoint {
+  txid: string; //"d914f27248354d5f1886ebf393f2a2ba9fd56a0c67e864cf5e549cdade8b351f";
+  index: number; // 0;
+  amount: number; //15815;
+  anonymitySet: number; // 9;
+  confirmed: boolean; // true;
+  label: string; // "";
+  keyPath: string; // "84'/0'/0'/1/1892";
+  address: string; //  "tb1qlvxadhum3k5nthv8g9nkhze43sk9v727jnhkxj";
+}
+export interface WasabiGetUnspentCoinsPayload {
+  instanceId: number | null;
+  transactions: [WasabiUnspentCoint];
+}
 export interface WasabiSpendPayload {
   txid: string;
   tx: string;
@@ -36,6 +50,7 @@ export interface WasabiClient {
   getNewAddress(label: string): Promise<WasabiNewAddressPayload>;
   getBalances(): Promise<WasabiGetBalancesPayload>;
   getTxns(instanceId: number): Promise<WasabiGetTxnsPayload>;
+  getUnspentCoins(instanceId?: number): Promise<WasabiGetUnspentCoinsPayload>;
   spend(param: {
     instanceId?: number;
     private?: boolean;

@@ -18,8 +18,8 @@ export const client = ({
     getNewAddress(label: string): Promise<WasabiNewAddressPayload> {
       return post("wasabi_getnewaddress", { label });
     },
-    getBalances(): Promise<WasabiGetBalancesPayload> {
-      return get("wasabi_getbalances");
+    getBalances(anonset?: number): Promise<WasabiGetBalancesPayload> {
+      return get("wasabi_getbalances", anonset);
     },
     getUnspentCoins(
       instanceId?: number
@@ -30,10 +30,11 @@ export const client = ({
       return get("wasabi_gettransactions", instanceId);
     },
     async spend(param: {
-      instanceId?: number;
-      private?: boolean;
       address: Address;
       amount: number;
+      instanceId?: number;
+      private?: boolean;
+      minanonset?: number;
     }): Promise<WasabiSpendPayload> {
       return post("wasabi_spend", param);
     }

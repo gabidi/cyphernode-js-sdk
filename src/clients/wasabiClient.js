@@ -47,8 +47,8 @@ exports.client = function (_a) {
         getNewAddress: function (label) {
             return post("wasabi_getnewaddress", { label: label });
         },
-        getBalances: function () {
-            return get("wasabi_getbalances");
+        getBalances: function (anonset) {
+            return get("wasabi_getbalances", anonset);
         },
         getUnspentCoins: function (instanceId) {
             return get("wasabi_getunspentcoins", instanceId);

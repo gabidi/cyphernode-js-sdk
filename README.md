@@ -1,4 +1,4 @@
-# An Isomorphic Javascript SDK for Bitcoin, C-lightning and Opentimestamp Vis-à-vis CypherNode.
+# An Isomorphic Javascript SDK for Bitcoin, C-lightning, Wasabi and Opentimestamp Vis-à-vis CypherNode.
 
 # Why ?
 
@@ -80,7 +80,8 @@ Contains the individual clients that can be instaniated to access each of Cypher
 
 - btcClient.js : All things bitcoin
 - lncClient.js : All things lighting
-- otsClient.js : All this opentimestamp
+- otsClient.js : All things opentimestamp
+- wasabi.js : All things Wasabi
 
 Test files for each client are included that showcase the usage of functionality
 

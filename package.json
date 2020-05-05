@@ -1,16 +1,20 @@
 {
   "name": "cyphernode-js-sdk",
   "author": "@gabidi",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "keywords": [
     "cyphernode",
     "bitcoin",
     "lightning network",
     "ots",
     "js",
-    "sdk"
+    "sdk",
+    "wasabi"
   ],
-  "homepage": "https://github.com/gabidi/cyphernode-js-sdk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gabidi/cyphernode-js-sdk"
+  },
   "main": "index.js",
   "license": "MIT",
   "scripts": {

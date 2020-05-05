@@ -1,3 +1,6 @@
+/// FIXME this should be refactored and blended with normal http
+// Added this temp for reac native before we fixed crypto. Now crypto is fixed we can blend them with
+// check for proxy's existance
 import {
   CypherNodeHTTPTransportParam,
   CypherNodeTransport,

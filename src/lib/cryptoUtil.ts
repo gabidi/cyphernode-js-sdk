@@ -41,9 +41,6 @@ export const crypto = () => {
       hmac.update(text);
       const hash = hmac.finalize();
       return CryptoJS.enc.Hex.stringify(hash);
-      // const hmac = createHmac("sha256", <BinaryType>key);
-      // const hash = hmac.digest("hex");
-      // return hash;
     };
   }
   const makeToken = async (

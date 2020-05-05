@@ -18,8 +18,7 @@
   "main": "index.js",
   "react-native": {
     "cypherNodeHttpTransport": "./src/transport/cypherNodeHttpTransportNoAgent",
-    "./src/transport/cypherNodeHttpTransport": "./src/transport/cypherNodeHttpTransportNoAgent",
-    "./src/lib/cryptoUtil": false
+    "./src/transport/cypherNodeHttpTransport": "./src/transport/cypherNodeHttpTransportNoAgent"
   },
   "license": "MIT",
   "scripts": {
@@ -51,5 +50,8 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.2",
     "uuid": "^3.3.2"
+  },
+  "dependencies": {
+    "crypto-js": "^4.0.0"
   }
 }

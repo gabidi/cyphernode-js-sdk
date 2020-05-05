@@ -42,8 +42,12 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var crypto_1 = require("crypto");
+var crypto_js_1 = __importDefault(require("crypto-js"));
+// import { createHmac } from "crypto";
 /**
  * Construct crypto functions needed dependig on env (Browser vs Nodde)
  * */
@@ -83,10 +87,10 @@ exports.crypto = function () {
         hmacSHA256Hex = function (text, key) { return __awaiter(void 0, void 0, void 0, function () {
             var hmac, hash;
             return __generator(this, function (_a) {
-                hmac = crypto_1.createHmac("sha256", key);
+                hmac = crypto_js_1.default.algo.HMAC.create(crypto_js_1.default.algo.SHA256, key);
                 hmac.update(text);
-                hash = hmac.digest("hex");
-                return [2 /*return*/, hash];
+                hash = hmac.finalize();
+                return [2 /*return*/, crypto_js_1.default.enc.Hex.stringify(hash)];
             });
         }); };
     }

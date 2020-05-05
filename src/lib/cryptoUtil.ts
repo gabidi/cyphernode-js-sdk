@@ -1,4 +1,5 @@
-import { createHmac } from "crypto";
+import CryptoJS from "crypto-js";
+// import { createHmac } from "crypto";
 /**
  * Construct crypto functions needed dependig on env (Browser vs Nodde)
  * */
@@ -35,10 +36,14 @@ export const crypto = () => {
     };
   } else {
     hmacSHA256Hex = async (text: string, key: string) => {
-      const hmac = createHmac("sha256", <BinaryType>key);
+      // TODO replace most of code here with this new isomorphic
+      const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, key);
       hmac.update(text);
-      const hash = hmac.digest("hex");
-      return hash;
+      const hash = hmac.finalize();
+      return CryptoJS.enc.Hex.stringify(hash);
+      // const hmac = createHmac("sha256", <BinaryType>key);
+      // const hash = hmac.digest("hex");
+      // return hash;
     };
   }
   const makeToken = async (

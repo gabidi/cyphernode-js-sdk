@@ -16,6 +16,10 @@
     "url": "https://github.com/gabidi/cyphernode-js-sdk"
   },
   "main": "index.js",
+  "react-native": {
+    "cypherNodeHttpTransport": "./transport/cypherNodeHttpTransportNoAgent",
+    "transports/cypherNodeHttpTransport": "./transport/cypherNodeHttpTransportNoAgent"
+  },
   "license": "MIT",
   "scripts": {
     "lint": "tslint --fix /src/*.ts",
@@ -26,7 +30,8 @@
     "cli": "CYPHERNODE_GATEKEEPER_CERT_CA=$(cat test.pem) node -r dotenv/config cli.js"
   },
   "optionalDependencies": {
-    "superagent": "^5.2.2"
+    "superagent": "^5.2.2",
+    "superagent-proxy": "^2.0.0"
   },
   "devDependencies": {
     "@types/async": "^3.0.1",
@@ -45,9 +50,5 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.5.2",
     "uuid": "^3.3.2"
-  },
-  "dependencies": {
-    "socks-proxy-agent": "^4.0.2",
-    "superagent-proxy": "^2.0.0"
   }
 }

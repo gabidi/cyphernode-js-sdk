@@ -18,7 +18,8 @@
   "main": "index.js",
   "react-native": {
     "cypherNodeHttpTransport": "./src/transport/cypherNodeHttpTransportNoAgent",
-    "./src/transport/cypherNodeHttpTransport": "./src/transport/cypherNodeHttpTransportNoAgent"
+    "./src/transport/cypherNodeHttpTransport": "./src/transport/cypherNodeHttpTransportNoAgent",
+    "./src/lib/cryptoUtil": false
   },
   "license": "MIT",
   "scripts": {

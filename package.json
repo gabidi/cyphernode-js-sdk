@@ -19,7 +19,7 @@
     "test:client:lnc": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/lncClient.spec.js",
     "test:client:ots": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/clients/otsClient.spec.js",
     "test": "NODE_TLS_REJECT_UNAUTHORIZED=0 node -r dotenv/config ./node_modules/ava/cli.js ./src/lib/*.spec*.js ./src/clients/*.spec.js",
-    "cli": "CYPHERNODE_GATEKEEPER_CERT_CA=$(cat test.pem) node -r dotenv/config -i -e \"$(<cli.js)\""
+    "cli": "CYPHERNODE_GATEKEEPER_CERT_CA=$(cat test.pem) node -r dotenv/config cli.js"
   },
   "optionalDependencies": {
     "superagent": "^5.2.2"

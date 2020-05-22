@@ -229,7 +229,10 @@ export interface CypherNodeBtcClient {
     options: TxnWatchOptions
   ): Promise<TxnWatchConfimation>;
   getActiveAddressWatch(): Promise<[AddressWatchPayload]>;
-  watchAddress(address: Address): Promise<AddressWatchConfirmation>;
+  watchAddress(
+    address: Address,
+    options?: WatcherOptions
+  ): Promise<AddressWatchConfirmation>;
   unwatchAddress(address: Address): Promise<AddressWatchConfirmation>;
   watchPub32(
     xpub: string,

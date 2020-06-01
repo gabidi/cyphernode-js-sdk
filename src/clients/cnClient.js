@@ -44,30 +44,26 @@ exports.client = function (_a) {
     var _b = (_a === void 0 ? {} : _a).transport, transport = _b === void 0 ? cypherNodeHttpTransport_1.default() : _b;
     var get = transport.get, post = transport.post;
     var api = {
-        getNewAddress: function (label) {
-            return post("wasabi_getnewaddress", { label: label });
-        },
-        getBalances: function (anonset) {
-            return get("wasabi_getbalances", anonset);
-        },
-        getUnspentCoins: function (instanceId) {
-            return get("wasabi_getunspentcoins", instanceId);
-        },
-        getTxns: function (_a) {
-            var _b = _a === void 0 ? {} : _a, instanceId = _b.instanceId, txnFilterInternal = _b.txnFilterInternal;
-            return post("wasabi_gettransactions", { instanceId: instanceId, txnFilterInternal: txnFilterInternal });
-        },
-        spend: function (param) {
+        getConfigProps: function () {
             return __awaiter(this, void 0, void 0, function () {
+                var cyphernode_props;
                 return __generator(this, function (_a) {
-                    return [2 /*return*/, post("wasabi_spend", param)];
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, get("config_props")];
+                        case 1:
+                            cyphernode_props = (_a.sent()).cyphernode_props;
+                            return [2 /*return*/, cyphernode_props];
+                    }
                 });
             });
         },
-        autoSpendReadyCoins: function () {
+        setConfigProp: function (property, value) {
             return __awaiter(this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
-                    return [2 /*return*/, get("wasabi_spendprivate")];
+                    switch (_a.label) {
+                        case 0: return [4 /*yield*/, post("config_props", { property: property, value: value })];
+                        case 1: return [2 /*return*/, _a.sent()];
+                    }
                 });
             });
         }

@@ -222,4 +222,9 @@ export interface CypherNodeLncClient {
     expectedMsatoshi?: number,
     expectedDesc?: string
   ): Promise<LnPayBolt11Payload>;
+  withdrawFunds(
+    destination: string,
+    satoshi: number,
+    feerate: "urgent" | "normal" | "slow"
+  ): Promise<any>;
 }

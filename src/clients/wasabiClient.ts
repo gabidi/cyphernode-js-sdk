@@ -26,8 +26,14 @@ export const client = ({
     ): Promise<WasabiGetUnspentCoinsPayload> {
       return get("wasabi_getunspentcoins", instanceId);
     },
-    getTxns(instanceId?: number): Promise<WasabiGetTxnsPayload> {
-      return get("wasabi_gettransactions", instanceId);
+    getTxns({
+      instanceId,
+      txnFilterInternal
+    }: {
+      instanceId?: number;
+      txnFilterInternal?: boolean;
+    } = {}): Promise<WasabiGetTxnsPayload> {
+      return post("wasabi_gettransactions", { instanceId, txnFilterInternal });
     },
     async spend(param: {
       address: Address;
@@ -37,6 +43,9 @@ export const client = ({
       minanonset?: number;
     }): Promise<WasabiSpendPayload> {
       return post("wasabi_spend", param);
+    },
+    async autoSpendReadyCoins(): Promise<WasabiSpendPayload> {
+      return get("wasabi_spendprivate");
     }
   };
   return api;

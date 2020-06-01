@@ -64,4 +64,5 @@ export interface WasabiClient {
     private?: boolean;
     minanonset?: number;
   }): Promise<WasabiSpendPayload>;
+  autoSpendReadyCoinautoSpendReadyCoins(): Promise<any>;
 }

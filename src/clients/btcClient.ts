@@ -22,10 +22,10 @@ import {
   BlockChainInfo,
   SpendConfirmation,
   SpenderGetTxnResult,
-  BumpfeeResp
+  BumpfeeResp,
 } from "../lib/types/btc.d";
 export const client = ({
-  transport = cypherNodeHTTPTransport()
+  transport = cypherNodeHTTPTransport(),
 }: ClientConfig = {}): CypherNodeBtcClient => {
   const { get, post } = transport;
   const api = {
@@ -83,7 +83,7 @@ export const client = ({
     ): Promise<TxnWatchConfimation> {
       let param = {
         nbxconf: 6,
-        ...options
+        ...options,
       };
       const result = await post("watchtxid", { txid: txn, ...param });
       return result;
@@ -94,7 +94,7 @@ export const client = ({
     ): Promise<AddressWatchConfirmation> {
       const result = await post("watch", {
         address,
-        ...options
+        ...options,
       });
       return result;
     },
@@ -118,7 +118,7 @@ export const client = ({
         throw "nstart must be provided and must be a number";
       const result = await post("watchxpub", {
         pub32: xpub,
-        ...options
+        ...options,
       });
       return result;
     },
@@ -181,10 +181,10 @@ export const client = ({
     ): Promise<BumpfeeResp> {
       const { result } = await post("bumpfee", {
         txid: txnId,
-        confTarget: confTarget > 0 ? confTarget : undefined
+        confTarget: confTarget > 0 ? confTarget : undefined,
       });
       return resp;
-    }
+    },
   };
   return api;
 };

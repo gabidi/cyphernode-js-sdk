@@ -62,6 +62,9 @@ export const client = ({
       const { balance } = await get("getbalance");
       return balance;
     },
+    getMemPool(): Promise<number> {
+      return get("getmempoolinfo");
+    },
     async getTxnsSpending(
       count = 10,
       skip = 0

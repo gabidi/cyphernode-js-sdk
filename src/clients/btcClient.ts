@@ -22,10 +22,10 @@ import {
   BlockChainInfo,
   SpendConfirmation,
   SpenderGetTxnResult,
-  BumpfeeResp
+  BumpfeeResp,
 } from "../lib/types/btc.d";
 export const client = ({
-  transport = cypherNodeHTTPTransport()
+  transport = cypherNodeHTTPTransport(),
 }: ClientConfig = {}): CypherNodeBtcClient => {
   const { get, post } = transport;
   const api = {
@@ -62,6 +62,9 @@ export const client = ({
       const { balance } = await get("getbalance");
       return balance;
     },
+    getMemPool(): Promise<number> {
+      return get("getmempoolinfo");
+    },
     async getTxnsSpending(
       count = 10,
       skip = 0
@@ -80,7 +83,7 @@ export const client = ({
     ): Promise<TxnWatchConfimation> {
       let param = {
         nbxconf: 6,
-        ...options
+        ...options,
       };
       const result: TxnWatchConfimation = await post("watchtxid", { txid: txn, ...param });
       return result;
@@ -91,7 +94,7 @@ export const client = ({
     ): Promise<AddressWatchConfirmation> {
       const result: AddressWatchConfirmation = await post("watch", {
         address,
-        ...options
+        ...options,
       });
       return result;
     },
@@ -115,7 +118,7 @@ export const client = ({
         throw "nstart must be provided and must be a number";
       const result: Pub32WatchConfirmation = await post("watchxpub", {
         pub32: xpub,
-        ...options
+        ...options,
       });
       return result;
     },
@@ -178,7 +181,7 @@ export const client = ({
     ): Promise<BumpfeeResp> {
       const { result } = await post("bumpfee", {
         txid: txnId,
-        confTarget: confTarget > 0 ? confTarget : undefined
+        confTarget: confTarget > 0 ? confTarget : undefined,
       });
       return result;
     }

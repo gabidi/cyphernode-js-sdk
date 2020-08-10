@@ -151,6 +151,9 @@ exports.client = function (_a) {
                 });
             });
         },
+        getMemPool: function () {
+            return get("getmempoolinfo");
+        },
         getTxnsSpending: function (count, skip) {
             if (count === void 0) { count = 10; }
             if (skip === void 0) { skip = 0; }

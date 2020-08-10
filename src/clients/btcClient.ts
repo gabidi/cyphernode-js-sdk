@@ -38,7 +38,7 @@ export const client = ({
       return address;
     },
     async getBlockHash(height: number): Promise<Hash> {
-      const blockHash = await get("getblockhash", height);
+      const blockHash: string = await get("getblockhash", height);
       return blockHash;
     },
 
@@ -70,7 +70,7 @@ export const client = ({
       return txns;
     },
     async spend(address: Address, amount: number): Promise<SpendConfirmation> {
-      const result = await post("spend", { address, amount });
+      const result: SpendConfirmation = await post("spend", { address, amount });
       return result;
     },
     /** Txn and Address watch & unwatch */
@@ -82,14 +82,14 @@ export const client = ({
         nbxconf: 6,
         ...options
       };
-      const result = await post("watchtxid", { txid: txn, ...param });
+      const result: TxnWatchConfimation = await post("watchtxid", { txid: txn, ...param });
       return result;
     },
     async watchAddress(
       address: Address,
       options?: WatcherOptions
     ): Promise<AddressWatchConfirmation> {
-      const result = await post("watch", {
+      const result: AddressWatchConfirmation = await post("watch", {
         address,
         ...options
       });
@@ -100,7 +100,7 @@ export const client = ({
       return watches;
     },
     async unwatchAddress(address: Address): Promise<AddressWatchConfirmation> {
-      const result = await get("unwatch", address);
+      const result: AddressWatchConfirmation = await get("unwatch", address);
       return result;
     },
     /** Pub32 watch & unwatch */
@@ -113,7 +113,7 @@ export const client = ({
         throw "Labels must be alpha numeric or _";
       if (!options.nstart || isNaN(options.nstart))
         throw "nstart must be provided and must be a number";
-      const result = await post("watchxpub", {
+      const result: Pub32WatchConfirmation = await post("watchxpub", {
         pub32: xpub,
         ...options
       });
@@ -135,12 +135,12 @@ export const client = ({
       const { watches } = await get("getactivexpubwatches");
       return watches;
     },
-    async unwatchPub32(xpub: string): Promise<AddressWatchConfirmation> {
-      const result = await get("unwatchxpubbyxpub", xpub);
+    async unwatchPub32(xpub: string): Promise<GenericWatchResponse> {
+      const result: GenericWatchResponse = await get("unwatchxpubbyxpub", xpub);
       return result;
     },
     async unwatchPub32ByLabel(label: string): Promise<GenericWatchResponse> {
-      const result = await get("unwatchxpubbylabel", label);
+      const result: GenericWatchResponse = await get("unwatchxpubbylabel", label);
       return result;
     },
     /** Pub32 Balance */
@@ -180,7 +180,7 @@ export const client = ({
         txid: txnId,
         confTarget: confTarget > 0 ? confTarget : undefined
       });
-      return resp;
+      return result;
     }
   };
   return api;

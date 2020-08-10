@@ -72,7 +72,7 @@ export const client = ({
     listFunds(): Promise<LnListFundsPayload> {
       return get("ln_listfunds");
     },
-    async listPays(bolt11?: string): Promise<[LnListPaysPayload]> {
+    async listPays(_bolt11?: string): Promise<[LnListPaysPayload]> {
       const { pays } = await get("ln_listpays");
       return pays;
     },

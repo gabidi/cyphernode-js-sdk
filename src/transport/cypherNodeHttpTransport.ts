@@ -1,3 +1,4 @@
+//@ts-ignore
 import * as agent from "superagent";
 //@ts-ignore
 import superproxy from "superagent-proxy";

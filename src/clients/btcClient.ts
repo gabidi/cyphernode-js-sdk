@@ -72,8 +72,22 @@ export const client = ({
       const { txns } = await get("get_txns_spending", [count, skip].join("/"));
       return txns;
     },
-    async spend(address: Address, amount: number): Promise<SpendConfirmation> {
-      const result: SpendConfirmation = await post("spend", { address, amount });
+    async spend(
+      address: Address,
+      amount: number,
+      eventMessage: string,
+      confTarget: number,
+      replaceable: boolean,
+      subtractfeefromamount: boolean
+    ): Promise<SpendConfirmation> {
+      const result: SpendConfirmation = await post("spend", {
+        address,
+        amount,
+        eventMessage,
+        confTarget,
+        replaceable,
+        subtractfeefromamount,
+      });
       return result;
     },
     /** Txn and Address watch & unwatch */
@@ -82,10 +96,13 @@ export const client = ({
       options: TxnWatchOptions
     ): Promise<TxnWatchConfimation> {
       let param = {
-        nbxconf: 6,
+        // nbxconf: 6,
         ...options,
       };
-      const result: TxnWatchConfimation = await post("watchtxid", { txid: txn, ...param });
+      const result: TxnWatchConfimation = await post("watchtxid", {
+        txid: txn,
+        ...param,
+      });
       return result;
     },
     async watchAddress(
@@ -143,7 +160,10 @@ export const client = ({
       return result;
     },
     async unwatchPub32ByLabel(label: string): Promise<GenericWatchResponse> {
-      const result: GenericWatchResponse = await get("unwatchxpubbylabel", label);
+      const result: GenericWatchResponse = await get(
+        "unwatchxpubbylabel",
+        label
+      );
       return result;
     },
     /** Pub32 Balance */
@@ -184,7 +204,7 @@ export const client = ({
         confTarget: confTarget > 0 ? confTarget : undefined,
       });
       return result;
-    }
+    },
   };
   return api;
 };

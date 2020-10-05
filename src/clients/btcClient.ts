@@ -75,10 +75,10 @@ export const client = ({
     async spend(
       address: Address,
       amount: number,
-      eventMessage: string,
-      confTarget: number,
-      replaceable: boolean,
-      subtractfeefromamount: boolean
+      eventMessage?: string,
+      confTarget?: number,
+      replaceable?: boolean,
+      subtractfeefromamount?: boolean
     ): Promise<SpendConfirmation> {
       const result: SpendConfirmation = await post("spend", {
         address,

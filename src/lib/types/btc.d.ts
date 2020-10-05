@@ -226,10 +226,10 @@ export interface CypherNodeBtcClient {
   spend(
     address: Address,
     amount: number,
-    eventMessage: string,
-    confTarget: number,
-    replaceable: boolean,
-    subtractfeefromamount: boolean
+    eventMessage?: string,
+    confTarget?: number,
+    replaceable?: boolean,
+    subtractfeefromamount?: boolean
   ): Promise<SpendConfirmation>;
   watchTxnId(
     txnId: string,

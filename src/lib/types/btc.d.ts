@@ -98,9 +98,20 @@ export interface TxnWatchConfimation extends WatchConfirmation {
   txnId: string;
   nbxconf: number;
 }
+export interface SpendConfirmationDetails {
+  address: string;
+  amount: number;
+  firstseen: string;
+  size: number;
+  vsize: number;
+  replaceable: boolean;
+  fee: number;
+  subtractfeefromamount: boolean;
+}
 export interface SpendConfirmation {
   status: string;
   hash: Hash;
+  details: SpendConfirmationDetails;
 }
 export interface BlockChainSoftFork {
   id: "bip34";

@@ -23,6 +23,7 @@ import {
   SpendConfirmation,
   SpenderGetTxnResult,
   BumpfeeResp,
+  AddToBatchConfirmation,
 } from "../lib/types/btc.d";
 export const client = ({
   transport = cypherNodeHTTPTransport(),
@@ -87,6 +88,18 @@ export const client = ({
         confTarget,
         replaceable,
         subtractfeefromamount,
+      });
+      return result;
+    },
+    async addToBatch(
+      batcherId: number,
+      address: Address,
+      amount: number
+    ): Promise<AddToBatchConfirmation> {
+      const result: AddToBatchConfirmation = await post("addtobatch", {
+        batcherId,
+        address,
+        amount,
       });
       return result;
     },

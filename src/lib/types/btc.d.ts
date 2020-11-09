@@ -124,7 +124,7 @@ export interface AddToBatchConfirmation {
 }
 export interface AddToBatchSuccess {
   batcherId: number;
-  outPutId: number;
+  outputId: number;
   nbOutputs: number;
   oldest: string;
   total: number;

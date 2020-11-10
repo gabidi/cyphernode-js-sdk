@@ -360,7 +360,7 @@ exports.client = function(_a) {
               return [
                 4 /*yield*/,
                 post("removefrombatch", {
-                  batcherId: outputId,
+                  outputId: outputId,
                 }),
               ];
             case 1:

@@ -134,6 +134,10 @@ export interface AddToBatchError {
   message: string;
   data: AddToBatchInput;
 }
+export interface BatchSpendResponse {
+  status: string;
+  hash: string;
+}
 
 // success result {"result":{"batcherId":2,"outputId":227,"nbOutputs":1,"oldest":"2020-11-09 13:23:09","total":0.00021},"error":null}
 // error result {"result":null,"error":{"code":-32700,"message":"Duplicated address","data":{"batcherId":2,"address":"bc1qsjgnpmv8t99nrpc0rtjwlhdgyu02ux9vv6nz90","amount":"0.00021"}}}
@@ -271,6 +275,7 @@ export interface CypherNodeBtcClient {
     address: Address,
     amount: number
   ): Promise<AddToBatchConfirmation>;
+  batchSpend(batcherId: number): Promise<BatchSpendResponse>;
   watchTxnId(
     txnId: string,
     options: TxnWatchOptions

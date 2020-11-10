@@ -24,6 +24,7 @@ import {
   SpenderGetTxnResult,
   BumpfeeResp,
   AddToBatchConfirmation,
+  BatchSpendResponse,
 } from "../lib/types/btc.d";
 export const client = ({
   transport = cypherNodeHTTPTransport(),
@@ -100,6 +101,12 @@ export const client = ({
         batcherId,
         address,
         amount,
+      });
+      return result;
+    },
+    async batchSpend(batcherId: number): Promise<BatchSpendResponse> {
+      const result: BatchSpendResponse = await post("batchspend", {
+        batcherId: batcherId,
       });
       return result;
     },

@@ -349,6 +349,20 @@ exports.client = function(_a) {
         });
       });
     },
+    batchSpend: function(batcherId) {
+      return __awaiter(this, void 0, void 0, function() {
+        var result;
+        return __generator(this, function(_a) {
+          switch (_a.label) {
+            case 0:
+              return [4 /*yield*/, post("batchspend", {batcherId: batcherId})];
+            case 1:
+              result = _a.sent();
+              return [2 /*return*/, result];
+          }
+        });
+      });
+    },
     /** Txn and Address watch & unwatch */
     watchTxnId: function(txn, options) {
       return __awaiter(this, void 0, void 0, function() {

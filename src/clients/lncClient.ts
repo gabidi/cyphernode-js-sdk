@@ -15,10 +15,10 @@ import {
   LnPayBolt11Payload,
   LnRouteDetails,
   LnListFundsPayload,
-  LnListPaysPayload
+  LnListPaysPayload,
 } from "../lib/types/lightning-c";
 export const client = ({
-  transport = cypherNodeHTTPTransport()
+  transport = cypherNodeHTTPTransport(),
 }: ClientConfig = {}): CypherNodeLncClient => {
   const { get, post } = transport;
   const api = {
@@ -48,7 +48,7 @@ export const client = ({
     },
     /** FAILS 403 */
     async deleteInvoice(invoiceLabel?: string): Promise<CreatedInvoice> {
-      const invoice = await get("ln_delinvoice", invoiceLabel);
+      const invoice: CreatedInvoice = await get("ln_delinvoice", invoiceLabel);
       return invoice;
     },
     decodeBolt(bolt11: Bolt11String): Promise<DecodedBolt11> {
@@ -72,7 +72,7 @@ export const client = ({
     listFunds(): Promise<LnListFundsPayload> {
       return get("ln_listfunds");
     },
-    async listPays(bolt11?: string): Promise<[LnListPaysPayload]> {
+    async listPays(_bolt11?: string): Promise<[LnListPaysPayload]> {
       const { pays } = await get("ln_listpays");
       return pays;
     },
@@ -81,10 +81,10 @@ export const client = ({
       expectedMsatoshi?: number,
       expectedDesc?: string
     ): Promise<LnPayBolt11Payload> {
-      const payresult = await post("ln_pay", {
+      const payresult: LnPayBolt11Payload = await post("ln_pay", {
         bolt11,
         expected_msatoshi: expectedMsatoshi ? expectedMsatoshi : undefined,
-        expected_description: expectedDesc ? expectedDesc : undefined
+        expected_description: expectedDesc ? expectedDesc : undefined,
       });
       return payresult;
     },
@@ -96,9 +96,9 @@ export const client = ({
       return post("ln_withdraw", {
         destination,
         satoshi,
-        feerate
+        feerate,
       });
-    }
+    },
   };
   return api;
 };

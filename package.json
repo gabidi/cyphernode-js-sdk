@@ -35,8 +35,11 @@
   },
   "devDependencies": {
     "@types/async": "^3.0.1",
+    "@types/crypto-js": "^3.1.47",
     "@types/debug": "^4.1.5",
     "@types/sinon": "^7.0.13",
+    "@types/superagent": "^4.1.9",
+    "@types/superagent-proxy": "^2.0.0",
     "@types/uuid": "^3.4.5",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",

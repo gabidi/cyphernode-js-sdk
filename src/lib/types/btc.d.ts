@@ -223,7 +223,14 @@ export interface CypherNodeBtcClient {
     skip?: number
   ): Promise<[SpenderGetTxnResult]>;
   getBalance(): Promise<number>;
-  spend(address: Address, amount: number): Promise<SpendConfirmation>;
+  spend(
+    address: Address,
+    amount: number,
+    eventMessage?: string,
+    confTarget?: number,
+    replaceable?: boolean,
+    subtractfeefromamount?: boolean
+  ): Promise<SpendConfirmation>;
   watchTxnId(
     txnId: string,
     options: TxnWatchOptions

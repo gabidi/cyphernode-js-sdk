@@ -349,6 +349,27 @@ exports.client = function(_a) {
         });
       });
     },
+    addToBatch: function(
+      outputId,
+    ) {
+      return __awaiter(this, void 0, void 0, function() {
+        var result;
+        return __generator(this, function(_a) {
+          switch (_a.label) {
+            case 0:
+              return [
+                4 /*yield*/,
+                post("removefrombatch", {
+                  batcherId: outputId,
+                }),
+              ];
+            case 1:
+              result = _a.sent();
+              return [2 /*return*/, result];
+          }
+        });
+      });
+    },
     batchSpend: function(batcherId) {
       return __awaiter(this, void 0, void 0, function() {
         var result;

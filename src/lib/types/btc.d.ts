@@ -172,6 +172,25 @@ export interface BatchOutput {
   addedTimestamp: string;
   outputLabel: string;
 }
+export interface RemoveFromBatchInput {
+  outputId: number;
+}
+export interface RemoveFromBatchResponse {
+  result: RemoveFromBatchResult | null;
+  error: RemoveFromBatchError | null;
+}
+export interface RemoveFromBatchResult {
+  total: number;
+  outputId: number;
+  nbOutputs: number;
+  oldest: string;
+  batcherId: number;
+}
+export interface RemoveFromBatchError {
+  code: number;
+  message: string;
+  data: RemoveFromBatchInput;
+}
 export interface BlockChainSoftFork {
   id: "bip34";
   version: 2;
@@ -306,6 +325,7 @@ export interface CypherNodeBtcClient {
     address: Address,
     amount: number
   ): Promise<AddToBatchConfirmation>;
+  removeFromBatch(outputId: number): Promise<RemoveFromBatchResponse>;
   batchSpend(batcherId: number): Promise<BatchSpendResponse>;
   getBatchDetails(batcherId: number): Promise<BatchDetails>;
   watchTxnId(

@@ -26,6 +26,7 @@ import {
   AddToBatchConfirmation,
   BatchSpendResponse,
   BatchDetails,
+  RemoveFromBatchResponse,
 } from "../lib/types/btc.d";
 export const client = ({
   transport = cypherNodeHTTPTransport(),
@@ -102,6 +103,12 @@ export const client = ({
         batcherId,
         address,
         amount,
+      });
+      return result;
+    },
+    async removeFromBatch(outputId: number): Promise<RemoveFromBatchResponse> {
+      const result: RemoveFromBatchResponse = await post("removefrombatch", {
+        outputId,
       });
       return result;
     },

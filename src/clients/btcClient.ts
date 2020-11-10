@@ -104,8 +104,10 @@ export const client = ({
       });
       return result;
     },
-    async batchSpend(): Promise<BatchSpendResponse> {
-      const result: BatchSpendResponse = await get("batchspend");
+    async batchSpend(batcherId: number): Promise<BatchSpendResponse> {
+      const result: BatchSpendResponse = await post("batchspend", {
+        batcherId: batcherId,
+      });
       return result;
     },
     /** Txn and Address watch & unwatch */

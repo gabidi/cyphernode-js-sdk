@@ -349,13 +349,13 @@ exports.client = function(_a) {
         });
       });
     },
-    batchSpend: function() {
+    batchSpend: function(batcherId) {
       return __awaiter(this, void 0, void 0, function() {
         var result;
         return __generator(this, function(_a) {
           switch (_a.label) {
             case 0:
-              return [4 /*yield*/, get("batchspend")];
+              return [4 /*yield*/, post("batchspend", {batcherId: batcherId})];
             case 1:
               result = _a.sent();
               return [2 /*return*/, result];

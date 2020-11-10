@@ -135,12 +135,21 @@ export interface AddToBatchError {
   data: AddToBatchInput;
 }
 export interface BatchSpendResponse {
+  result: BatchSpendSuccess | null;
+  error: BatchSpendError | null;
+}
+export interface BatchSpendSuccess {
   status: string;
   hash: string;
 }
-
-// success result {"result":{"batcherId":2,"outputId":227,"nbOutputs":1,"oldest":"2020-11-09 13:23:09","total":0.00021},"error":null}
-// error result {"result":null,"error":{"code":-32700,"message":"Duplicated address","data":{"batcherId":2,"address":"bc1qsjgnpmv8t99nrpc0rtjwlhdgyu02ux9vv6nz90","amount":"0.00021"}}}
+export interface BatchSpendError {
+  code: number;
+  message: string;
+  data: BatchSpendInput;
+}
+export interface BatchSpendInput {
+  batcherId: number;
+}
 export interface BlockChainSoftFork {
   id: "bip34";
   version: 2;

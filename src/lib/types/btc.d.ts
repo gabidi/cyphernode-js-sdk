@@ -275,7 +275,7 @@ export interface CypherNodeBtcClient {
     address: Address,
     amount: number
   ): Promise<AddToBatchConfirmation>;
-  batchSpend(batcherId: number): Promise<BatchSpendResponse>;
+  batchSpend(): Promise<BatchSpendResponse>;
   watchTxnId(
     txnId: string,
     options: TxnWatchOptions

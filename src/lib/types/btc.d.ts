@@ -118,11 +118,11 @@ export interface AddToBatchInput {
   address: Address;
   amount: number;
 }
-export interface AddToBatchConfirmation {
-  result: AddToBatchSuccess | null;
+export interface AddToBatchResponse {
+  result: AddToBatchResult | null;
   error: AddToBatchError | null;
 }
-export interface AddToBatchSuccess {
+export interface AddToBatchResult {
   batcherId: number;
   outputId: number;
   nbOutputs: number;
@@ -324,7 +324,7 @@ export interface CypherNodeBtcClient {
     batcherId: number,
     address: Address,
     amount: number
-  ): Promise<AddToBatchConfirmation>;
+  ): Promise<AddToBatchResponse>;
   removeFromBatch(outputId: number): Promise<RemoveFromBatchResponse>;
   batchSpend(batcherId: number): Promise<BatchSpendResponse>;
   getBatchDetails(batcherId: number): Promise<BatchDetails>;

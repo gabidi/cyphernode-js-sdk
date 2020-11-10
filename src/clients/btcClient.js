@@ -349,7 +349,7 @@ exports.client = function(_a) {
         });
       });
     },
-    addToBatch: function(
+    removeFromBatch: function(
       outputId,
     ) {
       return __awaiter(this, void 0, void 0, function() {

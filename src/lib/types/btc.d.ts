@@ -150,6 +150,28 @@ export interface BatchSpendError {
 export interface BatchSpendInput {
   batcherId: number;
 }
+export interface BatchDetails {
+  result: BatchDetailsResult;
+  error: BatchSpendError;
+}
+export interface BatchDetailsResult {
+  batcherId: number;
+  batcherLabel: string;
+  txid: string | null;
+  outputs: [BatchOutput];
+  hash: string;
+  nbOutputs: number;
+  total: number;
+  confTarget: number;
+  oldest: string;
+}
+export interface BatchOutput {
+  outputId: number;
+  amount: number;
+  address: string;
+  addedTimestamp: string;
+  outputLabel: string;
+}
 export interface BlockChainSoftFork {
   id: "bip34";
   version: 2;
@@ -285,6 +307,7 @@ export interface CypherNodeBtcClient {
     amount: number
   ): Promise<AddToBatchConfirmation>;
   batchSpend(batcherId: number): Promise<BatchSpendResponse>;
+  getBatchDetails(batcherId: number): Promise<BatchDetails>;
   watchTxnId(
     txnId: string,
     options: TxnWatchOptions

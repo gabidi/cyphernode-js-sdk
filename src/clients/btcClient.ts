@@ -27,6 +27,7 @@ import {
   BatchDetails,
   RemoveFromBatchResponse,
   AddToBatchResponse,
+  BumpFeeResponse,
 } from "../lib/types/btc.d";
 export const client = ({
   transport = cypherNodeHTTPTransport(),
@@ -91,6 +92,13 @@ export const client = ({
         confTarget,
         replaceable,
         subtractfeefromamount,
+      });
+      return result;
+    },
+    async bumpFee(txid: string, confTarget: number): Promise<BumpFeeResponse> {
+      const result: BumpFeeResponse = await post("bumpfee", {
+        txid,
+        confTarget,
       });
       return result;
     },
@@ -228,16 +236,6 @@ export const client = ({
         [label, count].join("/")
       );
       return label_txns;
-    },
-    async bumpTxnFee(
-      txnId: string,
-      confTarget: number = 0
-    ): Promise<BumpfeeResp> {
-      const { result } = await post("bumpfee", {
-        txid: txnId,
-        confTarget: confTarget > 0 ? confTarget : undefined,
-      });
-      return result;
     },
   };
   return api;

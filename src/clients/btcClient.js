@@ -324,6 +324,29 @@ exports.client = function(_a) {
         });
       });
     },
+    bumpFee: function(
+      txid,
+      confTarget,
+    ) {
+      return __awaiter(this, void 0, void 0, function() {
+        var result;
+        return __generator(this, function(_a) {
+          switch (_a.label) {
+            case 0:
+              return [
+                4 /*yield*/,
+                post("bumpfee", {
+                  txid: txid,
+                  confTarget,
+                }),
+              ];
+            case 1:
+              result = _a.sent();
+              return [2 /*return*/, result];
+          }
+        });
+      });
+    },
     addToBatch: function(
       batcherId,
       address,
@@ -624,29 +647,6 @@ exports.client = function(_a) {
             case 1:
               label_txns = _a.sent().label_txns;
               return [2 /*return*/, label_txns];
-          }
-        });
-      });
-    },
-    bumpTxnFee: function(txnId, confTarget) {
-      if (confTarget === void 0) {
-        confTarget = 0;
-      }
-      return __awaiter(this, void 0, void 0, function() {
-        var result;
-        return __generator(this, function(_a) {
-          switch (_a.label) {
-            case 0:
-              return [
-                4 /*yield*/,
-                post("bumpfee", {
-                  txid: txnId,
-                  confTarget: confTarget > 0 ? confTarget : undefined,
-                }),
-              ];
-            case 1:
-              result = _a.sent().result;
-              return [2 /*return*/, resp];
           }
         });
       });

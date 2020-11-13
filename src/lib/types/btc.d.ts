@@ -108,6 +108,24 @@ export interface SpendConfirmationDetails {
   fee: number;
   subtractfeefromamount: boolean;
 }
+export interface BumpFeeInput {
+  txid: string;
+  confTarget: number;
+}
+export interface BumpFeeResponse {
+  id: string | null;
+  result: BumpFeeResult | null;
+  errors: BumpFeeError | null;
+}
+export interface BumpFeeResult {
+  txid: string;
+  origfee: number;
+  fee: number;
+}
+export interface BumpFeeError {
+  code: number;
+  message: string;
+}
 export interface SpendConfirmation {
   status: string;
   hash: Hash;
@@ -320,6 +338,7 @@ export interface CypherNodeBtcClient {
     replaceable?: boolean,
     subtractfeefromamount?: boolean
   ): Promise<SpendConfirmation>;
+  bumpFee(txid: string, confTarget: number): Promise<BumpFeeResponse>;
   addToBatch(
     batcherId: number,
     address: Address,
@@ -359,5 +378,4 @@ export interface CypherNodeBtcClient {
     label: string,
     count?: number
   ): Promise<[WatchPub32Txn]>;
-  bumpTxnFee(txnId: string, confTarget: number): Promise<BumpfeeResp>;
 }

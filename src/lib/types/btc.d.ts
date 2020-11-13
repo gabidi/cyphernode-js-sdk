@@ -129,6 +129,7 @@ export interface BumpFeeError {
 export interface SpendConfirmation {
   status: string;
   hash: Hash;
+  txid: TxnId;
   details: SpendConfirmationDetails;
 }
 export interface AddToBatchInput {

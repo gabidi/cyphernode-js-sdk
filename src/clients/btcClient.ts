@@ -22,7 +22,6 @@ import {
   BlockChainInfo,
   SpendConfirmation,
   SpenderGetTxnResult,
-  BumpfeeResp,
   BatchSpendResponse,
   BatchDetails,
   RemoveFromBatchResponse,

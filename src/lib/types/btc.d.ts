@@ -295,12 +295,6 @@ export interface WatchPub32Txn {
   v_out: number;
   amount: number;
 }
-export interface BumpfeeResp {
-  txid: string;
-  origfee: number;
-  fee: number;
-  errors?: string[];
-}
 export interface SpenderGetTxnResult {
   address: Address;
   category: "send" | "receive";

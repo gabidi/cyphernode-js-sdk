@@ -158,7 +158,7 @@ export interface BatchSpendResponse {
   error: BatchSpendError | null;
 }
 export interface BatchSpendResult {
-  batcherId: string;
+  batcherId: number;
   confTarget: number;
   nbOutputs: number;
   oldest: string;

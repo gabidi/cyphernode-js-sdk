@@ -154,12 +154,33 @@ export interface AddToBatchError {
   data: AddToBatchInput;
 }
 export interface BatchSpendResponse {
-  result: BatchSpendSuccess | null;
+  result: BatchSpendResult | null;
   error: BatchSpendError | null;
 }
-export interface BatchSpendSuccess {
+export interface BatchSpendResult {
+  batcherId: string;
+  confTarget: number;
+  nbOutputs: number;
+  oldest: string;
+  total: number;
   status: string;
-  hash: string;
+  txid: TxnId;
+  hash: TxnHash;
+  details: BatchSpendDetails;
+  outputs: [BatchSpendOutput];
+}
+export interface BatchSpendDetails {
+  firstseen: number;
+  size: number;
+  vsize: number;
+  replaceable: boolean;
+  fee: number;
+}
+export interface BatchSpendOutput {
+  outputId: number;
+  address: Address;
+  amount: number;
+  webhookUrl: string;
 }
 export interface BatchSpendError {
   code: number;

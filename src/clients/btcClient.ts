@@ -119,9 +119,13 @@ export const client = ({
       });
       return result;
     },
-    async batchSpend(batcherId: number): Promise<BatchSpendResponse> {
+    async batchSpend(
+      batcherId: number,
+      confTarget?: number
+    ): Promise<BatchSpendResponse> {
       const result: BatchSpendResponse = await post("batchspend", {
         batcherId: batcherId,
+        confTarget: confTarget,
       });
       return result;
     },

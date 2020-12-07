@@ -361,7 +361,10 @@ export interface CypherNodeBtcClient {
     amount: number
   ): Promise<AddToBatchResponse>;
   removeFromBatch(outputId: number): Promise<RemoveFromBatchResponse>;
-  batchSpend(batcherId: number): Promise<BatchSpendResponse>;
+  batchSpend(
+    batcherId: number,
+    confTarget?: number
+  ): Promise<BatchSpendResponse>;
   getBatchDetails(batcherId: number): Promise<BatchDetails>;
   watchTxnId(
     txnId: string,

@@ -182,6 +182,9 @@ export interface LnPayBolt11Payload {
   payment_preimage: string;
   destination: string;
   parts: number;
+  invoice_msatoshi: number;
+  expected_msatoshi: string;
+  result: string;
 }
 export interface LnListPaysPayload {
   bolt11: Bolt11String;

@@ -172,25 +172,19 @@ export interface LnRouteDetails {
   style: any;
 }
 export interface LnPayBolt11Payload {
-  id: number;
   payment_hash: string;
   msatoshi: number;
   msatoshi_sent: number;
+  amount_sent_msat: string;
+  amount_msat: string;
   created_at: number;
   status: string;
   payment_preimage: string;
-  description: string;
-  getroute_tries: number;
-  sendpay_tries: number;
-  route: [
-    {
-      id: string;
-      channel: string;
-      msatoshi: number;
-      delay: number;
-    }
-  ];
-  failures: [any];
+  destination: string;
+  parts: number;
+  invoice_msatoshi: number;
+  expected_msatoshi: string;
+  result: string;
 }
 export interface LnListPaysPayload {
   bolt11: Bolt11String;

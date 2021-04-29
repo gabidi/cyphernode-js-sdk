@@ -12,14 +12,14 @@ export const client = ({
   const { get, post } = transport;
   const api = {
     async stamp(fileHash: Hash): Promise<OTSStampRcpt> {
-      const stampRct = await post("ots_stamp", { hash: fileHash });
+      const stampRct: OTSStampRcpt = await post("ots_stamp", { hash: fileHash });
       return stampRct;
     },
     async verifyFileStamp(
       stamp: Hash,
       file?: string
     ): Promise<OTSVerifyPayload> {
-      const stampRct = await post("ots_verify", {
+      const stampRct: OTSVerifyPayload = await post("ots_verify", {
         hash: stamp,
         base64otsfile: file || undefined
       });

@@ -5,3 +5,4 @@ scripts/
 .swp
 *.swp
 *.pem
+yarn.lock

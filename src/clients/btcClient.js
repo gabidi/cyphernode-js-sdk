@@ -275,7 +275,7 @@ exports.client = function(_a) {
             case 0:
               return [4 /*yield*/, get("getbalances")];
             case 1:
-              balances = _a.sent().balances;
+              balances = _a.sent().balances.mine;
               return [2 /*return*/, balances];
           }
         });

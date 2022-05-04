@@ -20,6 +20,7 @@ import {
   WatchedPub32,
   WatchPub32Txn,
   BlockChainInfo,
+  BalancesInfo,
   SpendConfirmation,
   SpenderGetTxnResult,
   BatchSpendResponse,
@@ -65,6 +66,10 @@ export const client = ({
     async getBalance(): Promise<number> {
       const { balance } = await get("getbalance");
       return balance;
+    },
+    async getBalances(): Promise<BalancesInfo> {
+      const { balances: balancesInfo } = await get("getbalances");
+      return balancesInfo;
     },
     getMemPool(): Promise<number> {
       return get("getmempoolinfo");

@@ -267,6 +267,11 @@ export interface BlockChainInfo {
   };
   warnings: "Warning: unknown new rules activated (versionbit 28)";
 }
+interface BalancesInfo {
+  trusted: number;
+  untrusted_pending: number;
+  immature: number;
+}
 interface WatcherOptions {
   unconfirmedCallbackURL?: string;
   confirmedCallbackURL?: string;
@@ -346,6 +351,7 @@ export interface CypherNodeBtcClient {
     skip?: number
   ): Promise<[SpenderGetTxnResult]>;
   getBalance(): Promise<number>;
+  getBalances(): Promise<BalancesInfo>
   spend(
     address: Address,
     amount: number,

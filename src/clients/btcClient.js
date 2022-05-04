@@ -267,6 +267,20 @@ exports.client = function(_a) {
         });
       });
     },
+    getBalances: function() {
+      return __awaiter(this, void 0, void 0, function() {
+        var balances;
+        return __generator(this, function(_a) {
+          switch (_a.label) {
+            case 0:
+              return [4 /*yield*/, get("getbalances")];
+            case 1:
+              balances = _a.sent().balances;
+              return [2 /*return*/, balances];
+          }
+        });
+      });
+    },
     getMemPool: function() {
       return get("getmempoolinfo");
     },

@@ -20,9 +20,14 @@ import {
   WatchedPub32,
   WatchPub32Txn,
   BlockChainInfo,
+  BalancesInfo,
   SpendConfirmation,
   SpenderGetTxnResult,
-  BumpfeeResp,
+  BatchSpendResponse,
+  BatchDetails,
+  RemoveFromBatchResponse,
+  AddToBatchResponse,
+  BumpFeeResponse,
 } from "../lib/types/btc.d";
 export const client = ({
   transport = cypherNodeHTTPTransport(),
@@ -62,6 +67,10 @@ export const client = ({
       const { balance } = await get("getbalance");
       return balance;
     },
+    async getBalances(): Promise<BalancesInfo> {
+      const { balances: balancesInfo } = await get("getbalances");
+      return balancesInfo;
+    },
     getMemPool(): Promise<number> {
       return get("getmempoolinfo");
     },
@@ -87,6 +96,47 @@ export const client = ({
         confTarget,
         replaceable,
         subtractfeefromamount,
+      });
+      return result;
+    },
+    async bumpFee(txid: string, confTarget: number): Promise<BumpFeeResponse> {
+      const result: BumpFeeResponse = await post("bumpfee", {
+        txid,
+        confTarget,
+      });
+      return result;
+    },
+    async addToBatch(
+      batcherId: number,
+      address: Address,
+      amount: number
+    ): Promise<AddToBatchResponse> {
+      const result: AddToBatchResponse = await post("addtobatch", {
+        batcherId,
+        address,
+        amount,
+      });
+      return result;
+    },
+    async removeFromBatch(outputId: number): Promise<RemoveFromBatchResponse> {
+      const result: RemoveFromBatchResponse = await post("removefrombatch", {
+        outputId,
+      });
+      return result;
+    },
+    async batchSpend(
+      batcherId: number,
+      confTarget?: number
+    ): Promise<BatchSpendResponse> {
+      const result: BatchSpendResponse = await post("batchspend", {
+        batcherId: batcherId,
+        confTarget: confTarget,
+      });
+      return result;
+    },
+    async getBatchDetails(batcherId: number): Promise<BatchDetails> {
+      const result: BatchDetails = await post("getbatchdetails", {
+        batcherId: batcherId,
       });
       return result;
     },
@@ -194,16 +244,6 @@ export const client = ({
         [label, count].join("/")
       );
       return label_txns;
-    },
-    async bumpTxnFee(
-      txnId: string,
-      confTarget: number = 0
-    ): Promise<BumpfeeResp> {
-      const { result } = await post("bumpfee", {
-        txid: txnId,
-        confTarget: confTarget > 0 ? confTarget : undefined,
-      });
-      return result;
     },
   };
   return api;

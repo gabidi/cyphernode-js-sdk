@@ -98,9 +98,138 @@ export interface TxnWatchConfimation extends WatchConfirmation {
   txnId: string;
   nbxconf: number;
 }
+export interface SpendConfirmationDetails {
+  address: string;
+  amount: number;
+  firstseen: string;
+  size: number;
+  vsize: number;
+  replaceable: boolean;
+  fee: number;
+  subtractfeefromamount: boolean;
+}
+export interface BumpFeeInput {
+  txid: string;
+  confTarget: number;
+}
+export interface BumpFeeResponse {
+  id: string | null;
+  result: BumpFeeResult | null;
+  errors: BumpFeeError | null;
+}
+export interface BumpFeeResult {
+  txid: string;
+  origfee: number;
+  fee: number;
+}
+export interface BumpFeeError {
+  code: number;
+  message: string;
+}
 export interface SpendConfirmation {
   status: string;
   hash: Hash;
+  txid: TxnId;
+  details: SpendConfirmationDetails;
+}
+export interface AddToBatchInput {
+  batcherId: number;
+  address: Address;
+  amount: number;
+}
+export interface AddToBatchResponse {
+  result: AddToBatchResult | null;
+  error: AddToBatchError | null;
+}
+export interface AddToBatchResult {
+  batcherId: number;
+  outputId: number;
+  nbOutputs: number;
+  oldest: string;
+  total: number;
+}
+export interface AddToBatchError {
+  code: number;
+  message: string;
+  data: AddToBatchInput;
+}
+export interface BatchSpendResponse {
+  result: BatchSpendResult | null;
+  error: BatchSpendError | null;
+}
+export interface BatchSpendResult {
+  batcherId: number;
+  confTarget: number;
+  nbOutputs: number;
+  oldest: string;
+  total: number;
+  status: string;
+  txid: TxnId;
+  hash: TxnHash;
+  details: BatchSpendDetails;
+  outputs: [BatchSpendOutput];
+}
+export interface BatchSpendDetails {
+  firstseen: number;
+  size: number;
+  vsize: number;
+  replaceable: boolean;
+  fee: number;
+}
+export interface BatchSpendOutput {
+  outputId: number;
+  address: Address;
+  amount: number;
+  webhookUrl: string;
+}
+export interface BatchSpendError {
+  code: number;
+  message: string;
+  data: BatchSpendInput;
+}
+export interface BatchSpendInput {
+  batcherId: number;
+}
+export interface BatchDetails {
+  result: BatchDetailsResult;
+  error: BatchSpendError;
+}
+export interface BatchDetailsResult {
+  batcherId: number;
+  batcherLabel: string;
+  txid: string | null;
+  outputs: [BatchOutput];
+  hash: string;
+  nbOutputs: number;
+  total: number;
+  confTarget: number;
+  oldest: string;
+}
+export interface BatchOutput {
+  outputId: number;
+  amount: number;
+  address: string;
+  addedTimestamp: string;
+  outputLabel: string;
+}
+export interface RemoveFromBatchInput {
+  outputId: number;
+}
+export interface RemoveFromBatchResponse {
+  result: RemoveFromBatchResult | null;
+  error: RemoveFromBatchError | null;
+}
+export interface RemoveFromBatchResult {
+  total: number;
+  outputId: number;
+  nbOutputs: number;
+  oldest: string;
+  batcherId: number;
+}
+export interface RemoveFromBatchError {
+  code: number;
+  message: string;
+  data: RemoveFromBatchInput;
 }
 export interface BlockChainSoftFork {
   id: "bip34";
@@ -137,6 +266,11 @@ export interface BlockChainInfo {
     };
   };
   warnings: "Warning: unknown new rules activated (versionbit 28)";
+}
+interface BalancesInfo {
+  trusted: number;
+  untrusted_pending: number;
+  immature: number;
 }
 interface WatcherOptions {
   unconfirmedCallbackURL?: string;
@@ -187,12 +321,6 @@ export interface WatchPub32Txn {
   v_out: number;
   amount: number;
 }
-export interface BumpfeeResp {
-  txid: string;
-  origfee: number;
-  fee: number;
-  errors?: string[];
-}
 export interface SpenderGetTxnResult {
   address: Address;
   category: "send" | "receive";
@@ -223,6 +351,7 @@ export interface CypherNodeBtcClient {
     skip?: number
   ): Promise<[SpenderGetTxnResult]>;
   getBalance(): Promise<number>;
+  getBalances(): Promise<BalancesInfo>
   spend(
     address: Address,
     amount: number,
@@ -231,6 +360,18 @@ export interface CypherNodeBtcClient {
     replaceable?: boolean,
     subtractfeefromamount?: boolean
   ): Promise<SpendConfirmation>;
+  bumpFee(txid: string, confTarget: number): Promise<BumpFeeResponse>;
+  addToBatch(
+    batcherId: number,
+    address: Address,
+    amount: number
+  ): Promise<AddToBatchResponse>;
+  removeFromBatch(outputId: number): Promise<RemoveFromBatchResponse>;
+  batchSpend(
+    batcherId: number,
+    confTarget?: number
+  ): Promise<BatchSpendResponse>;
+  getBatchDetails(batcherId: number): Promise<BatchDetails>;
   watchTxnId(
     txnId: string,
     options: TxnWatchOptions
@@ -262,5 +403,4 @@ export interface CypherNodeBtcClient {
     label: string,
     count?: number
   ): Promise<[WatchPub32Txn]>;
-  bumpTxnFee(txnId: string, confTarget: number): Promise<BumpfeeResp>;
 }

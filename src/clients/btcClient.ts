@@ -20,12 +20,17 @@ import {
   WatchedPub32,
   WatchPub32Txn,
   BlockChainInfo,
+  BalancesInfo,
   SpendConfirmation,
   SpenderGetTxnResult,
-  BumpfeeResp
+  BatchSpendResponse,
+  BatchDetails,
+  RemoveFromBatchResponse,
+  AddToBatchResponse,
+  BumpFeeResponse,
 } from "../lib/types/btc.d";
 export const client = ({
-  transport = cypherNodeHTTPTransport()
+  transport = cypherNodeHTTPTransport(),
 }: ClientConfig = {}): CypherNodeBtcClient => {
   const { get, post } = transport;
   const api = {
@@ -38,7 +43,7 @@ export const client = ({
       return address;
     },
     async getBlockHash(height: number): Promise<Hash> {
-      const blockHash = await get("getblockhash", height);
+      const blockHash: string = await get("getblockhash", height);
       return blockHash;
     },
 
@@ -62,6 +67,13 @@ export const client = ({
       const { balance } = await get("getbalance");
       return balance;
     },
+    async getBalances(): Promise<BalancesInfo> {
+      const { balances: balancesInfo } = await get("getbalances");
+      return balancesInfo;
+    },
+    getMemPool(): Promise<number> {
+      return get("getmempoolinfo");
+    },
     async getTxnsSpending(
       count = 10,
       skip = 0
@@ -69,8 +81,63 @@ export const client = ({
       const { txns } = await get("get_txns_spending", [count, skip].join("/"));
       return txns;
     },
-    async spend(address: Address, amount: number): Promise<SpendConfirmation> {
-      const result = await post("spend", { address, amount });
+    async spend(
+      address: Address,
+      amount: number,
+      eventMessage?: string,
+      confTarget?: number,
+      replaceable?: boolean,
+      subtractfeefromamount?: boolean
+    ): Promise<SpendConfirmation> {
+      const result: SpendConfirmation = await post("spend", {
+        address,
+        amount,
+        eventMessage,
+        confTarget,
+        replaceable,
+        subtractfeefromamount,
+      });
+      return result;
+    },
+    async bumpFee(txid: string, confTarget: number): Promise<BumpFeeResponse> {
+      const result: BumpFeeResponse = await post("bumpfee", {
+        txid,
+        confTarget,
+      });
+      return result;
+    },
+    async addToBatch(
+      batcherId: number,
+      address: Address,
+      amount: number
+    ): Promise<AddToBatchResponse> {
+      const result: AddToBatchResponse = await post("addtobatch", {
+        batcherId,
+        address,
+        amount,
+      });
+      return result;
+    },
+    async removeFromBatch(outputId: number): Promise<RemoveFromBatchResponse> {
+      const result: RemoveFromBatchResponse = await post("removefrombatch", {
+        outputId,
+      });
+      return result;
+    },
+    async batchSpend(
+      batcherId: number,
+      confTarget?: number
+    ): Promise<BatchSpendResponse> {
+      const result: BatchSpendResponse = await post("batchspend", {
+        batcherId: batcherId,
+        confTarget: confTarget,
+      });
+      return result;
+    },
+    async getBatchDetails(batcherId: number): Promise<BatchDetails> {
+      const result: BatchDetails = await post("getbatchdetails", {
+        batcherId: batcherId,
+      });
       return result;
     },
     /** Txn and Address watch & unwatch */
@@ -79,19 +146,22 @@ export const client = ({
       options: TxnWatchOptions
     ): Promise<TxnWatchConfimation> {
       let param = {
-        nbxconf: 6,
-        ...options
+        // nbxconf: 6,
+        ...options,
       };
-      const result = await post("watchtxid", { txid: txn, ...param });
+      const result: TxnWatchConfimation = await post("watchtxid", {
+        txid: txn,
+        ...param,
+      });
       return result;
     },
     async watchAddress(
       address: Address,
       options?: WatcherOptions
     ): Promise<AddressWatchConfirmation> {
-      const result = await post("watch", {
+      const result: AddressWatchConfirmation = await post("watch", {
         address,
-        ...options
+        ...options,
       });
       return result;
     },
@@ -100,7 +170,7 @@ export const client = ({
       return watches;
     },
     async unwatchAddress(address: Address): Promise<AddressWatchConfirmation> {
-      const result = await get("unwatch", address);
+      const result: AddressWatchConfirmation = await get("unwatch", address);
       return result;
     },
     /** Pub32 watch & unwatch */
@@ -113,9 +183,9 @@ export const client = ({
         throw "Labels must be alpha numeric or _";
       if (!options.nstart || isNaN(options.nstart))
         throw "nstart must be provided and must be a number";
-      const result = await post("watchxpub", {
+      const result: Pub32WatchConfirmation = await post("watchxpub", {
         pub32: xpub,
-        ...options
+        ...options,
       });
       return result;
     },
@@ -135,12 +205,15 @@ export const client = ({
       const { watches } = await get("getactivexpubwatches");
       return watches;
     },
-    async unwatchPub32(xpub: string): Promise<AddressWatchConfirmation> {
-      const result = await get("unwatchxpubbyxpub", xpub);
+    async unwatchPub32(xpub: string): Promise<GenericWatchResponse> {
+      const result: GenericWatchResponse = await get("unwatchxpubbyxpub", xpub);
       return result;
     },
     async unwatchPub32ByLabel(label: string): Promise<GenericWatchResponse> {
-      const result = await get("unwatchxpubbylabel", label);
+      const result: GenericWatchResponse = await get(
+        "unwatchxpubbylabel",
+        label
+      );
       return result;
     },
     /** Pub32 Balance */
@@ -172,16 +245,6 @@ export const client = ({
       );
       return label_txns;
     },
-    async bumpTxnFee(
-      txnId: string,
-      confTarget: number = 0
-    ): Promise<BumpfeeResp> {
-      const { result } = await post("bumpfee", {
-        txid: txnId,
-        confTarget: confTarget > 0 ? confTarget : undefined
-      });
-      return resp;
-    }
   };
   return api;
 };
